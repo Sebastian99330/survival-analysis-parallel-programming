@@ -8,7 +8,7 @@ if (length(args)==0) {
   stop("Sciezka do pliku wejsciowego jest wymagana.", call.=FALSE)
 } else if (length(args)==1) {
   # drugi skrypt moze byc default
-  args[2] = "output.txt"
+  args[2] = ".//output//output.txt"
 }
 
 # funkcja do wczytania danych
@@ -26,12 +26,16 @@ my_data <- load_file(args[1], separator = "" , has_headers = T)
 library(survival)
 library(ggfortify) #plot
 
+# Tworzymy folder output do ktorego bedziemy wrzucac pliki outputowe
+dir.create("output", showWarnings = FALSE)
+
+
 # Kaplan Meier plot
 # grupuje po treatment
 mykm <- survfit(Surv(time, status) ~ treatment, data = my_data)
 
 # otwarcie pliku do ktorego rysujemy wykres KM
-jpeg("KM_plot.jpg", width = 1698, height = 754)
+jpeg(".//output//KM_plot.jpg", width = 1698, height = 754)
 
 # Wykres zawiera dwie linie, po jednej dla kazdej wartosci zmiennej "treatment" czyli 1 i 2
 # Sa takze zaznaczone przedzialy ufnosci wokol kazdej linii
@@ -59,7 +63,7 @@ summary(cox)
 sink()
 
 # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
-jpeg("cph_plot.jpg", width = 1698, height = 754)
+jpeg(".//output//cph_plot.jpg", width = 1698, height = 754)
 
 # funkcja autoplot() nie przyjmuje bezposrednio obiektu cox 
 # czyli obiektu, ktory zwraca funkcja coxph,
