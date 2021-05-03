@@ -7,11 +7,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 public class DisplayImage {
 
     public static void displayImage(String path) throws IOException
@@ -30,8 +25,8 @@ public class DisplayImage {
     }
 
     public static void displayPlots() throws IOException {
-        String cphPlotPath = "cph_plot.jpg";
-        String kmPlotPath = "KM_plot.jpg";
+        String cphPlotPath = "output//cph_plot.jpg";
+        String kmPlotPath = "output//KM_plot.jpg";
         displayImage(cphPlotPath);
         displayImage(kmPlotPath);
     }
