@@ -43,4 +43,10 @@ public class Main {
         System.out.println(Thread.activeCount());
         System.out.println(Runtime.getRuntime().availableProcessors());
     }
+    public static void doBlad() {
+        String cphPlotPath = "cph_plot.jpg";
+        String kmPlotPath = "KM_plot.jpg";
+        String command = "rscript --vanilla script.r ";
+        System.out.println(command);
+    }
 }
