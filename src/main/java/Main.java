@@ -7,9 +7,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
         System.out.println("Hello");
 
-//        String inputFileName = "prostate_cancer.txt";
-        String inputFileName = "prost_cancer_mln.csv";
+        String inputFileName = "prostate_cancer.txt";
+//        String inputFileName = "prost_cancer_mln.csv";
         String outputFileName = "output.txt";
+
+        ParallelAlgorithm.runScript();
 
         // sciezka do pliku musi byc w cudzyslowach
         inputFileName = "\"" + inputFileName + "\"";
