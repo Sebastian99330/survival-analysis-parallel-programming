@@ -6,13 +6,13 @@ public class Main {
 //        String inputFileName = "prost_cancer_mln.csv";
         String outputFileName = "output\\output.txt";
 
-        ParallelAlgorithm.runScript();
-
         // sciezka do pliku musi byc w cudzyslowach
         inputFileName = "\"" + inputFileName + "\"";
         outputFileName = "\"" + outputFileName + "\"";
 
         SequentialAlgorithm.runScript(inputFileName,outputFileName);
+        ParallelAlgorithm.runScript(inputFileName,outputFileName);
+
 
         // wyswietlenie wykresow
         DisplayImage.displayPlots();
