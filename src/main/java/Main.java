@@ -2,22 +2,23 @@ public class Main {
     public static void main(String[] args) throws Exception {
         System.out.println("Hello");
 
-        String inputFileName = "prostate_cancer.txt";
-//        String inputFileName = "prost_cancer_mln.csv";
-        String outputFileName = "output\\output.txt";
+        String inputFilePath = "prostate_cancer.txt";
+//        String inputFilePath = "prost_cancer_mln.csv";
+        String outputFilePath = "output\\output.txt";
 
         // sciezka do pliku musi byc w cudzyslowach
-        inputFileName = "\"" + inputFileName + "\"";
-        outputFileName = "\"" + outputFileName + "\"";
+        inputFilePath = "\"" + inputFilePath + "\"";
+        outputFilePath = "\"" + outputFilePath + "\"";
 
-        SequentialAlgorithm.runScript(inputFileName,outputFileName);
-        ParallelAlgorithm.runScript(inputFileName,outputFileName);
+        SequentialAlgorithm.runScript(inputFilePath,outputFilePath);
 
+        ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(inputFilePath, outputFilePath);
+        parallelAlgorithm.runScript(inputFilePath,outputFilePath);
 
         // wyswietlenie wykresow
         DisplayImage.displayPlots();
 
-        System.out.println(Thread.activeCount());
-        System.out.println(Runtime.getRuntime().availableProcessors());
+        System.out.println("\n" + "Liczba aktywnych watkow Thread.activeCount(): " + Thread.activeCount());
+        System.out.println("Liczba dostepnych watkow Runtime.getRuntime().availableProcessors(): " + Runtime.getRuntime().availableProcessors());
     }
 }
