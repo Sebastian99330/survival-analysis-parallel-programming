@@ -1,5 +1,5 @@
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         System.out.println("Hello");
 
         String inputFilePath = "prostate_cancer.txt";
@@ -13,12 +13,13 @@ public class Main {
         SequentialAlgorithm.runScript(inputFilePath,outputFilePath);
 
         ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(inputFilePath, outputFilePath);
-        parallelAlgorithm.runScript(inputFilePath,outputFilePath);
+        parallelAlgorithm.splitInputData(inputFilePath);
+//        parallelAlgorithm.runScript(inputFilePath,outputFilePath);
 
         // wyswietlenie wykresow
-        DisplayImage.displayPlots();
+//        DisplayImage.displayPlots();
 
-        System.out.println("\n" + "Liczba aktywnych watkow Thread.activeCount(): " + Thread.activeCount());
-        System.out.println("Liczba dostepnych watkow Runtime.getRuntime().availableProcessors(): " + Runtime.getRuntime().availableProcessors());
+//        System.out.println("\n" + "Liczba aktywnych watkow Thread.activeCount(): " + Thread.activeCount());
+//        System.out.println("Liczba dostepnych watkow Runtime.getRuntime().availableProcessors(): " + Runtime.getRuntime().availableProcessors());
     }
 }

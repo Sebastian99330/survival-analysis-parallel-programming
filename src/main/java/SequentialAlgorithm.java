@@ -1,8 +1,8 @@
 public class SequentialAlgorithm {
     public static void runScript(String inputFileName, String outputFileName){
-        try {
-            System.out.println("Tworze proces");
+        System.out.println("Tworze proces");
 
+        try {
             // polecenie ktore odpalimy
             String command = "rscript --vanilla script.r " + inputFileName + " "  + outputFileName;
             System.out.println(command);

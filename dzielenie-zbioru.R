@@ -5,7 +5,7 @@ args = commandArgs(trailingOnly = TRUE)
 # Jak przy wywolaniu skryptu nie podano pierwszego argumentu to rzucamy blad
 if (length(args)==0) {
   stop("Sciezka do pliku wejsciowego jest wymagana.", call.=FALSE)
-}
+} 
 
 # wczytanie danych
 df <- read.table(args[1], sep = "" , header = T)
@@ -20,14 +20,28 @@ ilosc_zbiorow = 4
 # numery_zbiorow dostaja tyle wierszy, ile jest obserwacji w danych wejsciowych (df)
 # losujemy tutaj indeksy - sample zwraca wektor liczb. Wektor indeksow od 1 do ilosci zbiorow (np. 4).
 # dzieki temu przyporzadkowuje kazdej wartosci z wejsciowego zbioru (df) indeks - do ktorego zbioru ma trafic
-# np. jak mamy dane wejsciowe df "63 10 63 18 24", to mozemy miec tutaj wartosci typu "1 3 3 2 4"
+# np. jak mamy dane wejsciowe df "63 10 63 18 24", to mozemy miec tutaj wartosci typu "1 3 3 2 4" 
 # i to daje informacje do ktorego zbioru (1-4) ma trafic kazda z danych wejsciowych df
 numery_zbiorow = sample(1:ilosc_zbiorow, size = licza_wierszy,
                         replace = TRUE)
-?which
+
+
+# Usuniecie katalogu jesli istnieje
+unlink("Split-data", recursive = TRUE)
+
+# utworzenie katalogu na nowe pliki z danymi wejsciowymi
+dir.create(file.path("Split-data"), showWarnings = FALSE)
+
+# zapisze dane statystyczne / logi do pliku tekstowego
+sink("Split-data\\splitting-data-logs.txt")
+print("Proporcje z jakimi rozdzielono obserwacje miedzy watkami: ")
 # zwraca proporcje - najlepiej po 25% (jesli dzielimy na 4), wtedy jest dobrze
 # trzeba zbadac czy dobrze dzieli, bo musi byc rowne obciazenie watkow
 prop.table(table(numery_zbiorow))
+
+start.time <- Sys.time()
+
+
 
 # tworzy pusta liste - konstruktor utworzenia pustej listy
 lista_zbiorow = list()
@@ -48,5 +62,16 @@ for(numer in 1:ilosc_zbiorow){
 
   # potem ta liste zapisujemy do pliku
   # paste0 skleja string, normalnie jak w javie + konkatenacja
-  write.csv(df[wybrane_idx, ], paste0("zbior_", numer,".csv"), row.names = F)
+  # write.csv(df[wybrane_idx, ], paste0("zbior_", numer,".csv"), row.names = F)
+  write.csv(df[wybrane_idx, ], paste0("Split-data\\zbior_", numer,".csv"), row.names = F)
 }
+
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+cat("\n\n")
+print(paste0("Dzielenie zbioru danych wejsciowych zajelo: ",time.taken))
+print(paste0("Start wykonania skryptu: ",start.time))
+print(paste0("Koniec wykonania skryptu: ",end.time))
+
+#zamkniecie pliku
+sink()

@@ -1,6 +1,8 @@
 public class ParallelAlgorithm implements Runnable{
     String inputFilePath;
     String outputFilePath;
+    String splitInputFilePath = "Split-data\\zbior_"; // wartosc podana na sztywno
+    String splitInputFilePathSuffix = ".csv";
 
     public ParallelAlgorithm(String inputFilePath, String outputFilePath) {
         this.inputFilePath = inputFilePath;
@@ -8,7 +10,15 @@ public class ParallelAlgorithm implements Runnable{
     }
 
     public void splitInputData(String inputFilePath){
-        System.out.println("Splitting Data");
+        String command = "rscript --vanilla dzielenie-zbioru.R " + inputFilePath;
+        System.out.println("Splitting Data with "+command);
+        try {
+            Process p = Runtime.getRuntime().exec(command);
+            // obecny proces czeka dopoki wykonanie skryptu sie nie skonczy
+            p.waitFor();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void runScript(String inputFileName, String outputFileName){

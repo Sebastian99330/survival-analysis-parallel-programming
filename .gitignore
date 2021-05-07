@@ -7,7 +7,8 @@ mgrmaven.iml
 Nieważne smietnik.txt
 .idea
 /target/
-
+.csv
+.txt
 
 ## from template
 # Compiled class file
