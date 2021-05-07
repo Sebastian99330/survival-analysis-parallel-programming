@@ -7,6 +7,10 @@ public class ParallelAlgorithm implements Runnable{
         this.outputFilePath = outputFilePath;
     }
 
+    public void splitInputData(String inputFilePath){
+        System.out.println("Splitting Data");
+    }
+
     public void runScript(String inputFileName, String outputFileName){
         for(var i =0;i<4; i++) {
 //            System.out.println("\n" + "Nazwa " + i + " watku w petli" + Thread.currentThread().getName());
