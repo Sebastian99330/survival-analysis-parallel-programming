@@ -19,6 +19,7 @@ public class Main {
         DisplayImage.displayPlots();
 
         System.out.println("To jest blad ktory bede chcial usunac");
+        System.out.println("To jest drugi blad ktory bede chcial usunac");
 
         System.out.println("\n" + "Liczba aktywnych watkow Thread.activeCount(): " + Thread.activeCount());
         System.out.println("Liczba dostepnych watkow Runtime.getRuntime().availableProcessors(): " + Runtime.getRuntime().availableProcessors());
