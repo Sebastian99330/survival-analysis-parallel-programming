@@ -2,15 +2,15 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hello");
 
-        String inputFilePath = "prostate_cancer.txt";
-//        String inputFilePath = "prost_cancer_mln.csv";
+//        String inputFilePath = "prostate_cancer.txt";
+        String inputFilePath = "prost_cancer_mln.csv";
         String outputFilePath = "output\\output.txt";
 
         // sciezka do pliku musi byc w cudzyslowach
         inputFilePath = "\"" + inputFilePath + "\"";
         outputFilePath = "\"" + outputFilePath + "\"";
 
-        SequentialAlgorithm.runScript(inputFilePath,outputFilePath);
+//        SequentialAlgorithm.runScript(inputFilePath,outputFilePath);
 
         ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(inputFilePath, outputFilePath);
         parallelAlgorithm.splitInputData(inputFilePath);
