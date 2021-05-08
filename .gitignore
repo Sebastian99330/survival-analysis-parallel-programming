@@ -5,10 +5,10 @@ KM_plot.jpg
 output.txt
 mgrmaven.iml
 Nieważne smietnik.txt
-.idea
+*.idea
 /target/
-.csv
-.txt
+*.csv
+*.txt
 
 ## from template
 # Compiled class file
