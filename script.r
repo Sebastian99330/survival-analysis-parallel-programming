@@ -11,24 +11,24 @@ if (length(args)==0) {
   args[2] = ".//output//output.txt"
 }
 
-# funkcja do wczytania danych
-load_file <- function(file_path, separator, has_headers) {
-  my_data <- read.table(file_path, sep = separator , header = has_headers)
-  return (my_data)
-}
-
 # wczytanie danych
-my_data <- load_file(args[1], separator = "" , has_headers = T)
+my_data <- read.table(args[1], sep = "" , header = T)
+
+start.time <- Sys.time()
+
+# Usuniecie katalogu na output jesli istnieje
+unlink("output", recursive = TRUE)
+
+# utworzenie katalogu na nowe pliki z danymi wejsciowymi
+dir.create(file.path("output"), showWarnings = FALSE)
+
 
 # zapis danych do pliku - nie jest potrzebny poki co
-#write.table(data, file = args[2], sep = " ", row.names = TRUE)
+# write.table(data, file = args[2], sep = " ", row.names = TRUE)
+
 
 library(survival)
 library(ggfortify) #plot
-
-# Tworzymy folder output do ktorego bedziemy wrzucac pliki outputowe
-dir.create("output", showWarnings = FALSE)
-
 
 # Kaplan Meier plot
 # grupuje po treatment
@@ -59,17 +59,24 @@ cox <- coxph(Surv(time, status) ~ treatment + age + sh+ size + index, data = my_
 # wypisanie statystyk
 summary(cox)
 
-# zamkniecie pliku
-sink()
 
 # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
 jpeg(".//output//cph_plot.jpg", width = 1698, height = 754)
 
-# funkcja autoplot() nie przyjmuje bezposrednio obiektu cox 
+# funkcja autoplot() nie przyjmuje bezposrednio obiektu cox
 # czyli obiektu, ktory zwraca funkcja coxph,
 # wiec trzeba go wpakowac po drodze w funkcje survfit()
 autoplot(survfit(cox))
 
-# zamykamy plik do ktorego rysujemy wykres
-dev.off()
 
+
+end.time <- Sys.time()
+time.taken <- as.numeric(end.time - start.time)
+time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch miejsc po przecinku
+cat("\n\n")
+print(paste0("Dzielenie zbioru danych wejsciowych zajelo: ",time.taken, " sekund(y)"))
+print(paste0("Start wykonania skryptu: ",start.time))
+print(paste0("Koniec wykonania skryptu: ",end.time))
+
+#zamkniecie pliku output
+sink()
