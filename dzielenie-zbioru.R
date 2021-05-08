@@ -5,7 +5,7 @@ args = commandArgs(trailingOnly = TRUE)
 # Jak przy wywolaniu skryptu nie podano pierwszego argumentu to rzucamy blad
 if (length(args)==0) {
   stop("Sciezka do pliku wejsciowego jest wymagana.", call.=FALSE)
-} 
+}
 
 # wczytanie danych
 df <- read.table(args[1], sep = "" , header = T)
