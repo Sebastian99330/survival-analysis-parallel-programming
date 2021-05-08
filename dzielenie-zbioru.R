@@ -20,7 +20,7 @@ ilosc_zbiorow = 4
 # numery_zbiorow dostaja tyle wierszy, ile jest obserwacji w danych wejsciowych (df)
 # losujemy tutaj indeksy - sample zwraca wektor liczb. Wektor indeksow od 1 do ilosci zbiorow (np. 4).
 # dzieki temu przyporzadkowuje kazdej wartosci z wejsciowego zbioru (df) indeks - do ktorego zbioru ma trafic
-# np. jak mamy dane wejsciowe df "63 10 63 18 24", to mozemy miec tutaj wartosci typu "1 3 3 2 4" 
+# np. jak mamy dane wejsciowe df "63 10 63 18 24", to mozemy miec tutaj wartosci typu "1 3 3 2 4"
 # i to daje informacje do ktorego zbioru (1-4) ma trafic kazda z danych wejsciowych df
 numery_zbiorow = sample(1:ilosc_zbiorow, size = licza_wierszy,
                         replace = TRUE)
