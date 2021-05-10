@@ -4,13 +4,13 @@ import java.time.Instant;
 public class Main {
     public static void main(String[] args) {
 
-//        String inputFilePath = "prostate_cancer.txt";
-        String inputFilePath = "prost_cancer_mln.csv";
+        String inputFilePath = "prostate_cancer.txt";
+//        String inputFilePath = "prost_cancer_mln.csv";
         String outputFilePath = "output\\output.txt";
 
         SequentialAlgorithm.runScript(inputFilePath,outputFilePath);
 
-        ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(inputFilePath, outputFilePath);
+        ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(inputFilePath);
         parallelAlgorithm.splitInputData(inputFilePath);
 //        parallelAlgorithm.runScript(inputFilePath,outputFilePath);
 

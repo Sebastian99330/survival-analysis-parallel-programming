@@ -3,13 +3,13 @@ import java.time.Instant;
 
 public class ParallelAlgorithm implements Runnable{
     String inputFilePath;
-    String outputFilePath;
+    String splitOutputFilePath = "output\\output";
+    String splitOutputFilePathSuffix = ".txt";
     String splitInputFilePath = "Split-data\\zbior_";
     String splitInputFilePathSuffix = ".csv";
 
-    public ParallelAlgorithm(String inputFilePath, String outputFilePath) {
+    public ParallelAlgorithm(String inputFilePath) {
         this.inputFilePath = inputFilePath;
-        this.outputFilePath = outputFilePath;
     }
 
     public void splitInputData(String inputFilePath){
@@ -31,10 +31,16 @@ public class ParallelAlgorithm implements Runnable{
     }
 
     public void runScript(String inputFileName, String outputFileName){
-        for(var i =0;i<4; i++) {
-//            System.out.println("\n" + "Nazwa " + i + " watku w petli" + Thread.currentThread().getName());
-            Thread thread = new Thread(this);
-            thread.start();
+        for(int i =0;i<4; i++) {
+            String input = splitInputFilePath+i+splitInputFilePathSuffix;
+            String output = splitOutputFilePath + i + splitOutputFilePathSuffix;
+            System.out.println("\n" + "Nazwa " + i + " watku w petli" + Thread.currentThread().getName());
+            System.out.println("input: " + input);
+            System.out.println("output: " + output);
+//            Thread thread = new Thread(this);
+//            thread.start();
+            SequentialAlgorithm.runScript(input,output);
+
         }
 
     }
