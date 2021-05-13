@@ -2,14 +2,18 @@ import java.time.Duration;
 import java.time.Instant;
 
 public class ParallelAlgorithm implements Runnable{
-    String inputFilePath;
-    String splitOutputFilePath = "output\\output";
+    String input;
+    String splitOutputFilePath = "output";
     String splitOutputFilePathSuffix = ".txt";
-    String splitInputFilePath = "Split-data\\zbior_";
+//    String splitInputFilePath = "Split-data\\zbior_";
+    String splitInputFilePath = "zbior_";
     String splitInputFilePathSuffix = ".csv";
+    String cphPlotOutputPath = "cph";
+    String kphPlotOutputPath = "km";
+    String plotSuffix = ".jpg";
 
-    public ParallelAlgorithm(String inputFilePath) {
-        this.inputFilePath = inputFilePath;
+    public ParallelAlgorithm(String input) {
+        this.input = input;
     }
 
     public void splitInputData(String inputFilePath){
@@ -31,16 +35,16 @@ public class ParallelAlgorithm implements Runnable{
     }
 
     public void runScript(String inputFileName, String outputFileName){
-        for(int i =0;i<4; i++) {
-            String input = splitInputFilePath+i+splitInputFilePathSuffix;
+        String rSeparator = "\",\"";
+        for(int i =1;i<=4; i++) {
+            String input = "Split-data\\\\"+ splitInputFilePath + i + splitInputFilePathSuffix;
             String output = splitOutputFilePath + i + splitOutputFilePathSuffix;
-            System.out.println("\n" + "Nazwa " + i + " watku w petli" + Thread.currentThread().getName());
-            System.out.println("input: " + input);
-            System.out.println("output: " + output);
-//            Thread thread = new Thread(this);
-//            thread.start();
-            SequentialAlgorithm.runScript(input,output);
-
+            String km = kphPlotOutputPath  + i + plotSuffix;
+            String cph = cphPlotOutputPath + i + plotSuffix;
+            String outputFolderName = "output_" + i;
+            SequentialAlgorithm.runScript(input,output, km, cph, outputFolderName, rSeparator);
+//rscript --vanilla script.r Split-data\zbior_1.csv output1.txt km1.jpg cph1.jpg
+            // to dziala w folderze R, separator musi byc ustawiony w skrypcie ; albo spacja.
         }
 
     }

@@ -4,15 +4,21 @@ import java.time.Instant;
 public class Main {
     public static void main(String[] args) {
 
-        String inputFilePath = "prostate_cancer.txt";
-//        String inputFilePath = "prost_cancer_mln.csv";
-        String outputFilePath = "output\\output.txt";
+        String input = "prostate_cancer.txt";
+//        String input = "prost_cancer_mln.csv";
+        String output = "output.txt";
+        String kphPlotPath = "km-seq.jpg";
+        String cphPlotPath = "cph-seq.jpg";
+        String outputSequential = "output_seq";
+        String rSeparator = "\"\"";
 
-        SequentialAlgorithm.runScript(inputFilePath,outputFilePath);
+        SequentialAlgorithm.clearWorkspace();
+        SequentialAlgorithm.runScript(input, output, kphPlotPath, cphPlotPath, outputSequential, rSeparator);
 
-        ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(inputFilePath);
-        parallelAlgorithm.splitInputData(inputFilePath);
-//        parallelAlgorithm.runScript(inputFilePath,outputFilePath);
+        ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(input);
+        parallelAlgorithm.splitInputData(input);
+        parallelAlgorithm.runScript(input,output);
+
 
         // wyswietlenie wykresow
 //        DisplayImage.displayPlots();

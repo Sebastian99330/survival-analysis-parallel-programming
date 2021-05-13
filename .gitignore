@@ -9,6 +9,9 @@ Nieważne smietnik.txt
 /target/
 *.csv
 *.txt
+*.jpg
+*.png
+
 
 ## from template
 # Compiled class file

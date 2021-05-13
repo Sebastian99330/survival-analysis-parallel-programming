@@ -54,7 +54,7 @@ for(numer in 1:ilosc_zbiorow){
   # czyli podajemy numer_zbiorow np. "3 2 3 1 3 3 1 3" i which == 1 i to zwroci "4 7"
   # bo na 4 i 7 pozycji sa wartosci == 1.
   wybrane_idx = which(numery_zbiorow == 1)
-
+  
   # potem jak mamy te indeksy, to wyciagamy odpowiednie wiersze i zapisujemy do listy
   # df [nr_wiersza, ] siegamy z ramki danych po wybrany wiersz, i po wszystkie kolumny
   # bo jak miejsce na kolumny jest puste to wybiera wartosci ze wszystkich kolumn
@@ -63,7 +63,12 @@ for(numer in 1:ilosc_zbiorow){
   # potem ta liste zapisujemy do pliku
   # paste0 skleja string, normalnie jak w javie + konkatenacja
   # write.csv(df[wybrane_idx, ], paste0("zbior_", numer,".csv"), row.names = F)
-  write.csv(df[wybrane_idx, ], paste0("Split-data\\zbior_", numer,".csv"), row.names = F)
+  
+  write.csv(df[wybrane_idx, ], paste0("Split-data\\zbior_", numer,".csv"), row.names = F) # to dziala
+  ?write.csv
+  #write.table(df[wybrane_idx, ], file = paste0("zbior_", numer,".csv"),
+  #append = TRUE, sep = "\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
+  
 }
 
 end.time <- Sys.time()
