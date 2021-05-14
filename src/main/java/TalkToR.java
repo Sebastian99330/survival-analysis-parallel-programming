@@ -15,11 +15,27 @@ public class TalkToR {
             ex.printStackTrace();
         }
 
-
         Instant end = Instant.now();
         Duration interval = Duration.between(start, end);
-        if (measureTime == true) {
+        if (measureTime) {
             System.out.println("Czas wykonania skryptu w sekundach: " + interval.getSeconds() + "\n");
         }
+    }
+
+    // metoda "czysci" i przygotowuje przestrzen dla algorytmow
+    // czyli usuwa foldery z wynikami poprzednich wykonan programu (jesli istnieja)
+    // i tworzy nowe, puste foldery
+    public static void clearWorkspace(int numberOfThreads) {
+
+        // tworzymy fodlery na output dla algorytmu sekwencyjnego
+        String command = "Rscript --vanilla utworz-output.r output_seq";
+        TalkToR.runScript(command, false); // nie mierzymy czasu wykonania bo to tylko usuniecie i utworzenie katalogu
+
+        // tworzymy foldery na output dla algorytmu odpalanego rownolegle
+        for (int i = 1; i <= numberOfThreads; i++) {
+            command = "Rscript --vanilla utworz-output.r output_" + i;
+            TalkToR.runScript(command, false); // nie mierzymy czasu wykonania bo to tylko usuniecie i utworzenie katalogu
+        }
+
     }
 }

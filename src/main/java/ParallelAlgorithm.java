@@ -1,6 +1,3 @@
-import java.time.Duration;
-import java.time.Instant;
-
 public class ParallelAlgorithm implements Runnable {
     String input;
     String splitOutputFilePath = "output";
@@ -12,21 +9,19 @@ public class ParallelAlgorithm implements Runnable {
     String kphPlotOutputPath = "km";
     String plotSuffix = ".jpg";
 
-    int numerOfThreads = 4;
-
     public ParallelAlgorithm(String input) {
         this.input = input;
     }
 
     // metoda odpala skrypt ktory dzieli plik z danymi wejsciowymi na odpowiednia ilosc czesci
     // zeby moc je potem rownolegle obliczyc
-    public void splitInputData(String inputFilePath) {
-        String command = "rscript --vanilla dzielenie-zbioru.R " + inputFilePath;
+    public void splitInputData(String inputFilePath, int numberOfThreads) {
+        String command = "rscript --vanilla dzielenie-zbioru.R " + inputFilePath + " " + numberOfThreads;
         TalkToR.runScript(command, true);
     }
 
     // metoda wywoluje odpalenie algorytmu analizy przezycia dla kazdego pliku z podzielonymi danymi wejsciowymi
-    public void runParallelAlgorithm(String inputFileName, String outputFileName) {
+    public void runParallelAlgorithm(String inputFileName, String outputFileName, int numberOfThreads) {
         // separator dla wszystkich plikow z podzielonymi danymi wejsciowymi to przecinek ","
         String rSeparator = "\",\"";
 
@@ -37,7 +32,7 @@ public class ParallelAlgorithm implements Runnable {
          * petla jest numerowana od 1, bo R tak numeruje swoje iteracje (1 jest pierwsze a nie 0)
          * i pliki z czesciami danych zaczynaja sie od 1
          */
-        for (int i = 1; i <= numerOfThreads; i++) {
+        for (int i = 1; i <= numberOfThreads; i++) {
             String input = "Split-data\\\\" + splitInputFilePath + i + splitInputFilePathSuffix;
             String outputPath = splitOutputFilePath + i + splitOutputFilePathSuffix;
             String KaplanMeierOutputPlotPath = kphPlotOutputPath + i + plotSuffix;
