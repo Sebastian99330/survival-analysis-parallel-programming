@@ -1,11 +1,8 @@
-import java.time.Duration;
-import java.time.Instant;
-
 public class Main {
     public static void main(String[] args) {
 
-        String input = "prostate_cancer.txt";
-//        String input = "prost_cancer_mln.csv";
+//        String input = "prostate_cancer.txt";
+        String input = "prost_cancer_mln.csv";
         String output = "output.txt";
         String kphPlotPath = "km-seq.jpg";
         String cphPlotPath = "cph-seq.jpg";
@@ -13,11 +10,11 @@ public class Main {
         String rSeparator = "\"\"";
 
         SequentialAlgorithm.clearWorkspace();
-        SequentialAlgorithm.runScript(input, output, kphPlotPath, cphPlotPath, outputSequential, rSeparator);
+        SequentialAlgorithm.runSequentialAlgorithm(input, output, kphPlotPath, cphPlotPath, outputSequential, rSeparator);
 
         ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(input);
         parallelAlgorithm.splitInputData(input);
-        parallelAlgorithm.runScript(input,output);
+        parallelAlgorithm.runParallelAlgorithm(input,output);
 
 
         // wyswietlenie wykresow
