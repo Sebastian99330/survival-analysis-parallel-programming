@@ -3,30 +3,24 @@ import java.time.Instant;
 
 public class Main {
     public static void main(String[] args) {
-
-        String input = "prostate_cancer.txt";
-//        String input = "prost_cancer_mln.csv";
-        String output = "output.txt";
-        String kphPlotPath = "km-seq.jpg";
-        String cphPlotPath = "cph-seq.jpg";
-        String outputSequential = "output_seq";
-        String rSeparator = "\"\"";
-
-        int numberOfThreads = 6;
-
-        Instant startSeq = Instant.now(); // pobranie czasu do mierzenia czasu wykonania skryptu
+        final int numberOfThreads = 5;
+        final int numberOfFirstThread = 1;
 
         TalkToR.clearWorkspace(numberOfThreads);
-        SequentialAlgorithm.runSequentialAlgorithm(input, output, kphPlotPath, cphPlotPath, outputSequential, rSeparator);
+
+        // sekwencyjnie
+        Instant startSeq = Instant.now(); // pobranie czasu do mierzenia czasu wykonania algorytmu metoda sekwencyjna
+        SequentialAlgorithm.callRScript();
         Instant endSeq = Instant.now();
         Duration intervalSeq = Duration.between(startSeq, endSeq);
 
 
-        Instant startParallel = Instant.now(); // pobranie czasu do mierzenia czasu wykonania skryptu
+        //rownolegle
+        Instant startParallel = Instant.now(); // pobranie czasu do mierzenia czasu wykonania algorytmu metoda rownolegla
 
-        ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(input);
-        parallelAlgorithm.splitInputData(input, numberOfThreads);
-        parallelAlgorithm.runParallelAlgorithm(input,output, numberOfThreads);
+        ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(numberOfFirstThread, numberOfThreads);
+        parallelAlgorithm.splitInputData();
+        parallelAlgorithm.runScriptParallel();
 
         Instant endParallel = Instant.now();
         Duration intervalParallel = Duration.between(startParallel, endParallel);
