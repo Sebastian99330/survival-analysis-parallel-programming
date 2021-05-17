@@ -16,19 +16,19 @@ public class Main {
 
         //rownolegle
         Instant startParallel = Instant.now(); // pobranie czasu do mierzenia czasu wykonania algorytmu metoda rownolegla
-        System.out.println("Przed ParallelAlgorithm parallelAlgorithm");
+        System.out.println("1 Przed ParallelAlgorithm parallelAlgorithm");
         ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(numberOfFirstThread, numberOfThreads, null);
-        System.out.println("Po ParallelAlgorithm parallelAlgorithm");
+        System.out.println("2 Po ParallelAlgorithm parallelAlgorithm");
         parallelAlgorithm.splitInputData();
-        System.out.println("Po parallelAlgorithm.splitInputData();");
+        System.out.println("3 Po parallelAlgorithm.splitInputData();");
         parallelAlgorithm.runScriptParallel();
-        System.out.println("Po parallelAlgorithm.runScriptParallel();");
+        System.out.println("4 Po parallelAlgorithm.runScriptParallel();");
 
         Instant endParallel = Instant.now();
         Duration intervalParallel = Duration.between(startParallel, endParallel);
 
-        System.out.println("Czas wykonania skryptu dla algorytmu sekwencyjnego: " + intervalSeq.getSeconds() + "\n");
-        System.out.println("Czas wykonania skryptu dla algorytmu rownoleglego: " + intervalParallel.getSeconds() + "\n");
+        System.out.println("5 Czas wykonania skryptu dla algorytmu sekwencyjnego: " + intervalSeq.getSeconds() + "\n");
+        System.out.println("6 Czas wykonania skryptu dla algorytmu rownoleglego: " + intervalParallel.getSeconds() + "\n");
 
 
         // wyswietlenie wykresow

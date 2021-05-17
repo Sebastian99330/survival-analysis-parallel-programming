@@ -52,6 +52,11 @@ public class ParallelAlgorithm implements Runnable {
                     outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator;
             Thread t = new Thread(new ParallelAlgorithm(i, numberOfThreads, command));
             t.start();
+/*            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
         }
     }
 
