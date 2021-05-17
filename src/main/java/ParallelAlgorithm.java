@@ -17,10 +17,13 @@ public class ParallelAlgorithm implements Runnable {
 
     int currentThreadNumber;
     int numberOfThreads;
+    String threadCommand;
 
-    public ParallelAlgorithm(int currentThreadNumber, int numberOfThreads) {
+
+    public ParallelAlgorithm(int currentThreadNumber, int numberOfThreads, String threadCommand) {
         this.currentThreadNumber = currentThreadNumber;
         this.numberOfThreads = numberOfThreads;
+        this.threadCommand = threadCommand;
     }
 
 
@@ -47,12 +50,16 @@ public class ParallelAlgorithm implements Runnable {
 
             String command = "rscript --vanilla script.r " + inputFullName + " " +
                     outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator;
-            TalkToR.runScript(command, false);
+            Thread t = new Thread(new ParallelAlgorithm(i, numberOfThreads, command));
+            t.start();
         }
     }
 
     @Override
     public void run() {
         System.out.println("Thread name (ParallelAlgorithm.run): " + Thread.currentThread().getName());
+        System.out.println("Thread " + currentThreadNumber + " out of " + numberOfThreads);
+        TalkToR.runScript(threadCommand, false);
+
     }
 }
