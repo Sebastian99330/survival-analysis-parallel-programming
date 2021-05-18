@@ -1,11 +1,14 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class ParallelAlgorithm implements Runnable {
     // argumenty dla algorytmu rownoleglego
     // nazwy plikow sa rozbite na czesci, ktore sklada metoda runScriptParallel().
     // trzeba podstaw nazwy np zbior_, numer iteracji np 2 oraz suffix czyli rozszerzenie np. .txt
     // co zlaczone poda pelna nazwe zbior_2.txt
-    String input = "prostate_cancer.txt";
+//    String input = "prostate_cancer.txt";
     String splitInput = "Split-data\\\\zbior_";
-    //        String input = "prost_cancer_mln.csv";
+    String input = "prost_cancer_mln.csv";
     String splitInputFileSuffix = ".csv";
     String outputTxtFile = "output_";
     String txtSuffix = ".txt";
@@ -41,6 +44,8 @@ public class ParallelAlgorithm implements Runnable {
          * petla jest numerowana od 1, bo R tak numeruje swoje iteracje (1 jest pierwsze a nie 0)
          * i pliki z czesciami danych zaczynaja sie od 1
          */
+        List<Thread> threads = new ArrayList<>();
+
         for (int i = 1; i <= numberOfThreads; i++) {
             String inputFullName = splitInput + i + splitInputFileSuffix;
             String outputFullName = outputTxtFile + i + txtSuffix;
@@ -52,12 +57,17 @@ public class ParallelAlgorithm implements Runnable {
                     outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator;
             Thread t = new Thread(new ParallelAlgorithm(i, numberOfThreads, command));
             t.start();
-/*            try {
-                t.join();
+            threads.add(t);
+        }
+
+        for (Thread tt : threads) {
+            try {
+                tt.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }*/
+            }
         }
+
     }
 
     @Override
