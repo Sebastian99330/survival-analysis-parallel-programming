@@ -54,7 +54,12 @@ start.time <- Sys.time()
 # tworzy pusta liste - konstruktor utworzenia pustej listy
 lista_zbiorow <- list()
 
+# zamiast for - for each rownolegla petla
+# library(foreach)
+# library(doParallel)
 
+# przerobic for na foreach, potem ta petla foreach na doParallel
+# https://privefl.github.io/blog/a-guide-to-parallelism-in-r/
 for(numer in 1:ilosc_zbiorow){
   # which zwraca wektor indeksow
   # which zwraca dla podanego wektora indeksow numery tych rekordow, ktore odpowiadaja numerowi
@@ -73,7 +78,6 @@ for(numer in 1:ilosc_zbiorow){
   # write.csv(df[wybrane_idx, ], paste0("zbior_", numer,".csv"), row.names = F)
 
   write.csv(df[wybrane_idx, ], paste0(plik_output, numer,".csv"), row.names = F) # to dziala
-  ?write.csv
   #write.table(df[wybrane_idx, ], file = paste0("zbior_", numer,".csv"),
   #append = TRUE, sep = "\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
 
