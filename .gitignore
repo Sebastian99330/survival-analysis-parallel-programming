@@ -12,6 +12,7 @@ Nieważne smietnik.txt
 *.jpg
 *.png
 .Rhistory
+.RData
 
 
 ## from template
