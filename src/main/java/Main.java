@@ -3,7 +3,7 @@ import java.time.Instant;
 
 public class Main {
     public static void main(String[] args) {
-        final int numberOfThreads = 9;
+        final int numberOfThreads = 7;
         final int numberOfFirstThread = 1;
 
         TalkToR.clearWorkspace(numberOfThreads); // tworzy puste foldery na output (i ewentualnie usuwa istniejace)
@@ -19,11 +19,11 @@ public class Main {
         System.out.println("1 Przed ParallelAlgorithm parallelAlgorithm");
         ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(numberOfFirstThread, numberOfThreads, null);
         System.out.println("2 Po ParallelAlgorithm parallelAlgorithm");
-        Instant startParallel = Instant.now(); // pobranie czasu do mierzenia czasu wykonania algorytmu metoda rownolegla
 
         parallelAlgorithm.splitInputData();
         System.out.println("3 Po parallelAlgorithm.splitInputData();");
 
+        Instant startParallel = Instant.now(); // pobranie czasu do mierzenia czasu wykonania algorytmu metoda rownolegla
         parallelAlgorithm.runScriptParallel();
         System.out.println("4 Po parallelAlgorithm.runScriptParallel();");
 

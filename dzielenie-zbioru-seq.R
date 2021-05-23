@@ -47,15 +47,15 @@ start.time <- Sys.time()
 lista_zbiorow <- list()
 
 
-library(doParallel)
-library(foreach)
+#library(doParallel)
+#library(foreach)
 
 #register a parallel backend (clusters)
-cl <- parallel::makeCluster(7)
-doParallel::registerDoParallel(cl)
+#cl <- parallel::makeCluster(4)
+#doParallel::registerDoParallel(cl)
 
-#for(numer in 1:ilosc_zbiorow){
-foreach(numer=1:ilosc_zbiorow) %dopar% {
+for(numer in 1:ilosc_zbiorow){
+#foreach(numer=1:ilosc_zbiorow) %dopar% {
   wybrane_idx <- which(numery_zbiorow == 1)
   
   lista_zbiorow[[numer]] <- df[wybrane_idx, ]
@@ -63,7 +63,7 @@ foreach(numer=1:ilosc_zbiorow) %dopar% {
   write.csv(df[wybrane_idx, ], paste0(plik_output, numer,".csv"), row.names = F) # to dziala
 }
 
-parallel::stopCluster(cl)
+#parallel::stopCluster(cl)
 
 
 end.time <- Sys.time()

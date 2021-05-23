@@ -6,9 +6,9 @@ public class ParallelAlgorithm implements Runnable {
     // nazwy plikow sa rozbite na czesci, ktore sklada metoda runScriptParallel().
     // trzeba podstaw nazwy np zbior_, numer iteracji np 2 oraz suffix czyli rozszerzenie np. .txt
     // co zlaczone poda pelna nazwe zbior_2.txt
-//    String input = "prostate_cancer.txt";
+    String input = "prostate_cancer.txt";
+//    String input = "prost_cancer_mln.csv";
     String splitInput = "Split-data\\\\zbior_";
-    String input = "prost_cancer_mln.csv";
     String splitInputFileSuffix = ".csv";
     String outputTxtFile = "output_";
     String txtSuffix = ".txt";
@@ -33,7 +33,7 @@ public class ParallelAlgorithm implements Runnable {
     // metoda odpala skrypt ktory dzieli plik z danymi wejsciowymi na odpowiednia ilosc czesci
     // (tworzy kilka plikow z czesciami danych) zeby moc je potem rownolegle obliczyc
     public void splitInputData() {
-        String command = "rscript --vanilla dzielenie-zbioru.R " + input + " " + numberOfThreads + " " + splitInput;
+        String command = "rscript --vanilla dzielenie-zbioru-seq.R " + input + " " + numberOfThreads + " " + splitInput;
         TalkToR.runScript(command, true);
     }
 
