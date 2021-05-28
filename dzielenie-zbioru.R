@@ -10,7 +10,7 @@ if (length(args)==0) {
 }
 
 input_sciezka <- args[1]
-ilosc_zbiorow <- args[2]
+ilosc_zbiorow <- as.numeric(args[2]) # wczesniej byl string i rzucalo blad przy tworzeniu klastra do obliczen rownoleglych
 plik_output <- args[3]
 
 
@@ -39,7 +39,6 @@ print("Proporcje z jakimi rozdzielono obserwacje miedzy watkami: ")
 # trzeba zbadac czy dobrze dzieli, bo musi byc rowne obciazenie watkow
 prop.table(table(numery_zbiorow))
 
-start.time <- Sys.time()
 
 
 
@@ -51,22 +50,24 @@ library(doParallel)
 library(foreach)
 
 #register a parallel backend (clusters)
-cl <- parallel::makeCluster(7)
+cl <- parallel::makeCluster(ilosc_zbiorow)
 doParallel::registerDoParallel(cl)
+
+start.time <- Sys.time()
 
 #for(numer in 1:ilosc_zbiorow){
 foreach(numer=1:ilosc_zbiorow) %dopar% {
   wybrane_idx <- which(numery_zbiorow == 1)
   
-  lista_zbiorow[[numer]] <- df[wybrane_idx, ]
+  #lista_zbiorow[[numer]] <- df[wybrane_idx, ]
   
   write.csv(df[wybrane_idx, ], paste0(plik_output, numer,".csv"), row.names = F) # to dziala
 }
+end.time <- Sys.time()
 
 parallel::stopCluster(cl)
 
 
-end.time <- Sys.time()
 time.taken <- as.numeric(end.time - start.time)
 time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch miejsc po przecinku
 cat("\n\n")

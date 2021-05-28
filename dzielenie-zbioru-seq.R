@@ -10,7 +10,7 @@ if (length(args)==0) {
 }
 
 input_sciezka <- args[1]
-ilosc_zbiorow <- args[2]
+ilosc_zbiorow <- as.numeric(args[2]) # wczesniej byl string i rzucalo blad przy tworzeniu klastra do obliczen rownoleglych
 plik_output <- args[3]
 
 
