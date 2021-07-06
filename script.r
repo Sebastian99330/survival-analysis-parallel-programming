@@ -16,7 +16,7 @@ if (length(args)==0) {
 
 nazwa_folderu_output = args[5]
 
-# wrzucenie nazw plików do foleru output
+# wrzucenie nazw plikï¿½w do foleru output
 output_txt = paste0(".//",nazwa_folderu_output,"//",args[2])
 KM_file_path = paste0(".//",nazwa_folderu_output,"//",args[3])
 CPH_file_path = paste0(".//",nazwa_folderu_output,"//",args[4])
@@ -57,13 +57,19 @@ sink(output_txt)
 
 
 # Log-rank test
-survdiff(Surv(my_data$time, my_data$status) ~ my_data$treatment)
+#survdiff(Surv(my_data$time, my_data$status) ~ my_data$treatment)
 
 # Cox Proportional Hazards Model
 cox <- coxph(Surv(time, status) ~ treatment + age + sh+ size + index, data = my_data)
 
-# wypisanie statystyk
+
+# wypisanie statystyk - nie potrzebujemy tego, bo to wypisuje wspolczynniki,
+# a nas interesuja dokladne momenty w czasie (po nich bedziemy laczyc)
+print("Summary(cox)")
 summary(cox)
+
+# wypisanie tabelki z obliczonymi wartosciami dla konkretnych momentow w czasie
+summary(survfit(cox))
 
 
 # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
