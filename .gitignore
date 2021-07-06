@@ -13,6 +13,7 @@ Nieważne smietnik.txt
 *.png
 .Rhistory
 .RData
+prostate_cancer.txt
 
 
 ## from template
