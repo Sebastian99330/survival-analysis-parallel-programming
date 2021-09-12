@@ -6,7 +6,7 @@ args = commandArgs(trailingOnly=TRUE)
 # Jak przy wywolaniu skryptu nie podano pierwszego argumentu to rzucamy blad
 if (length(args)==0) {
   stop("Sciezka do pliku wejsciowego jest wymagana.", call.=FALSE)
-} else if (length(args)==1) {
+} else if (length(args)==1) { # DOMYSLNE WARTOSCI
   # drugi skrypt moze byc default
   args[2] = ".//output//output.txt"
   args[3] = ".//output//KM_plot.jpg"
@@ -16,7 +16,7 @@ if (length(args)==0) {
 
 nazwa_folderu_output = args[5]
 
-# wrzucenie nazw plik�w do foleru output
+# wrzucenie nazw plikow do foleru output
 output_txt = paste0(".//",nazwa_folderu_output,"//",args[2])
 KM_file_path = paste0(".//",nazwa_folderu_output,"//",args[3])
 CPH_file_path = paste0(".//",nazwa_folderu_output,"//",args[4])
@@ -24,7 +24,7 @@ my_separator = args[6]
 
 # wczytanie danych
 my_data <- read.table(args[1], sep = my_separator , header = T)
-# my_data <- read.table(args[1], sep = "" , header = T)
+#my_data <- read.table(args[1], sep = "" , header = T)
 
 start.time <- Sys.time()
 
@@ -38,7 +38,8 @@ library(ggfortify) #plot
 
 # Kaplan Meier plot
 # grupuje po treatment
-mykm <- survfit(Surv(time, status) ~ treatment, data = my_data)
+# mykm <- survfit(Surv(exp, event) ~ branch + pipeline, data = my_data)
+mykm <- survfit(Surv(exp, event) ~ branch, data = my_data)
 
 # otwarcie pliku do ktorego rysujemy wykres KM
 jpeg(KM_file_path, width = 1698, height = 754)
@@ -60,7 +61,9 @@ sink(output_txt)
 #survdiff(Surv(my_data$time, my_data$status) ~ my_data$treatment)
 
 # Cox Proportional Hazards Model
-cox <- coxph(Surv(time, status) ~ treatment + age + sh+ size + index, data = my_data)
+#cox <- coxph(Surv(exp, event) ~ branch + pipeline, data = my_data)
+#cox <- coxph(Surv(exp, event) ~ 1, data = my_data)
+cox <- coxph(Surv(exp, event) ~ 1, data = my_data)
 
 
 # wypisanie statystyk - nie potrzebujemy tego, bo to wypisuje wspolczynniki,

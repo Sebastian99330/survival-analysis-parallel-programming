@@ -3,7 +3,7 @@ import java.time.Instant;
 
 public class Main {
     public static void main(String[] args) {
-        final int numberOfThreads = 6;
+        final int numberOfThreads = 3;
         final int numberOfFirstThread = 1;
 
         TalkToR.clearWorkspace(numberOfThreads); // tworzy puste foldery na output (i ewentualnie usuwa istniejace)

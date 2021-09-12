@@ -6,7 +6,8 @@ public class ParallelAlgorithm implements Runnable {
     // nazwy plikow sa rozbite na czesci, ktore sklada metoda runScriptParallel().
     // trzeba podstaw nazwy np zbior_, numer iteracji np 2 oraz suffix czyli rozszerzenie np. .txt
     // co zlaczone poda pelna nazwe zbior_2.txt
-    String input = "prostate_cancer.txt";
+    String input = "turnover.csv";
+//    String input = "prostate_cancer.txt";
 //    String input = "prost_cancer_mln.csv";
     String splitInput = "Split-data\\\\zbior_";
     String splitInputFileSuffix = ".csv";
@@ -17,6 +18,7 @@ public class ParallelAlgorithm implements Runnable {
     String imgSuffix = ".jpg";
     String outputFolderName = "output_";
     String rSeparator = ","; // separator dla wszystkich plikow z podzielonymi danymi wejsciowymi to przecinek ","
+
 
     int currentThreadNumber;
     int numberOfThreads;
@@ -33,7 +35,7 @@ public class ParallelAlgorithm implements Runnable {
     // metoda odpala skrypt ktory dzieli plik z danymi wejsciowymi na odpowiednia ilosc czesci
     // (tworzy kilka plikow z czesciami danych) zeby moc je potem rownolegle obliczyc
     public void splitInputData() {
-        String command = "rscript --vanilla dzielenie-zbioru.R " + input + " " + numberOfThreads + " " + splitInput;
+        String command = "rscript --vanilla dzielenie-zbioru-seq.R " + input + " " + numberOfThreads + " " + splitInput;
         TalkToR.runScript(command, true);
     }
 
@@ -53,8 +55,14 @@ public class ParallelAlgorithm implements Runnable {
             String CoxPHOutputPlotPath = cphPlotOutputPath + i + imgSuffix;
             String outputFolderFullName = outputFolderName + i;
 
-            String command = "rscript --vanilla script.r " + inputFullName + " " +
+            // prostate cancer
+//            String command = "rscript --vanilla script.r " + inputFullName + " " +
+//                    outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator;
+
+            // work
+            String command = "rscript --vanilla script-work.r " + inputFullName + " " +
                     outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator;
+
             Thread t = new Thread(new ParallelAlgorithm(i, numberOfThreads, command));
             t.start();
             threads.add(t);

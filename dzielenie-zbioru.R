@@ -16,8 +16,8 @@ plik_output <- args[3]
 
 
 # wczytanie danych
-df <- read.table(input_sciezka, sep = "" , header = T)
-#df <- read.table("prostate_cancer.txt", sep = "" , header = T)
+#df <- read.table(input_sciezka, sep = "" , header = T)
+df <- read.table("prostate_cancer.txt", sep = "" , header = T)
 
 licza_wierszy <- nrow(df)
 

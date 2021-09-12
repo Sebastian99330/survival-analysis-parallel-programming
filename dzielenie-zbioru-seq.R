@@ -16,7 +16,8 @@ plik_output <- args[3]
 
 
 # wczytanie danych
-df <- read.table(input_sciezka, sep = "" , header = T)
+# df <- read.table(input_sciezka, sep = "" , header = T)
+df <- read.table(input_sciezka, sep = "," , header = T)
 #df <- read.table("prostate_cancer.txt", sep = "" , header = T)
 
 licza_wierszy <- nrow(df)
@@ -56,7 +57,8 @@ lista_zbiorow <- list()
 
 for(numer in 1:ilosc_zbiorow){
 #foreach(numer=1:ilosc_zbiorow) %dopar% {
-  wybrane_idx <- which(numery_zbiorow == 1)
+  # wybrane_idx <- which(numery_zbiorow == 1)
+  wybrane_idx <- which(numery_zbiorow == numer)
   
   lista_zbiorow[[numer]] <- df[wybrane_idx, ]
   
