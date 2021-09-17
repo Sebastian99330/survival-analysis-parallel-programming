@@ -1,9 +1,6 @@
-args = commandArgs(trailingOnly=TRUE)
+# args = commandArgs(trailingOnly=TRUE)
+args <- array(c("Split-data\\zbior_2.csv","output_2.txt","km_2.jpg","cph_2.jpg","output_2",","))
 
-# ten skrypt przyjmuje dwa argumenty:
-# 1 sciezka do pliku z danymi wejsciowymi oraz
-# 2 sciezka do pliku na dane wyjsciowe
-# Jak przy wywolaniu skryptu nie podano pierwszego argumentu to rzucamy blad
 if (length(args)==0) {
   stop("Sciezka do pliku wejsciowego jest wymagana.", call.=FALSE)
 } else if (length(args)==1) { # DOMYSLNE WARTOSCI
@@ -71,10 +68,6 @@ cox <- coxph(Surv(exp, event) ~ 1, data = my_data)
 # print("Summary(cox)")
 # summary(cox)
 
-# wypisanie tabelki z obliczonymi wartosciami dla konkretnych momentow w czasie
-summary(survfit(cox))
-# tabelka <- data.frame(summary(survfit(cox)))
-# write.csv(tabelka, "ramka.csv", row.names = F)
 
 
 # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
@@ -97,3 +90,14 @@ print(paste0("Koniec wykonania skryptu: ",end.time))
 
 #zamkniecie pliku output
 sink()
+
+
+# zapisanie samej ramki i nadanie innych nazw kolumn
+
+# wypisanie tabelki z obliczonymi wartosciami dla konkretnych momentow w czasie
+#tabelka <- 
+
+wyniki <- summary(survfit(cox))
+length(wyniki)
+tabelka <- as.data.frame(wyniki[c("strata", "time", "n_risk", "n_event", "survival", "std_err", "lower_CI", "upper_CI")])
+write.csv(tabelka, "ramka.csv", row.names = F)
