@@ -2,9 +2,7 @@
 ## mine
 cph_plot.jpg
 KM_plot.jpg
-output.txt
 mgrmaven.iml
-Nieważne smietnik.txt
 *.idea
 /target/
 *.csv
@@ -13,7 +11,6 @@ Nieważne smietnik.txt
 *.png
 .Rhistory
 .RData
-prostate_cancer.txt
 
 
 ## from template

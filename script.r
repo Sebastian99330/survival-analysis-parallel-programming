@@ -65,11 +65,14 @@ cox <- coxph(Surv(time, status) ~ treatment + age + sh+ size + index, data = my_
 
 # wypisanie statystyk - nie potrzebujemy tego, bo to wypisuje wspolczynniki,
 # a nas interesuja dokladne momenty w czasie (po nich bedziemy laczyc)
-print("Summary(cox)")
-summary(cox)
+# print("Summary(cox)")
+# summary(cox)
 
 # wypisanie tabelki z obliczonymi wartosciami dla konkretnych momentow w czasie
 summary(survfit(cox))
+# tabelka <- data.frame(summary(survfit(cox)))
+# write.csv(tabelka, "ramka.csv", row.names = F)
+
 
 
 # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
