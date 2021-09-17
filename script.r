@@ -51,9 +51,6 @@ autoplot(mykm)
 dev.off()
 
 
-# zapisze do pliku dane tekstowe - statystyki z log-rank oraz z regresji coxa
-# ustawiam plik do ktoego bedziemy pisac
-sink(output_txt)
 
 
 # Log-rank test
@@ -69,7 +66,7 @@ cox <- coxph(Surv(time, status) ~ treatment + age + sh+ size + index, data = my_
 # summary(cox)
 
 # wypisanie tabelki z obliczonymi wartosciami dla konkretnych momentow w czasie
-summary(survfit(cox))
+# summary(survfit(cox))
 # tabelka <- data.frame(summary(survfit(cox)))
 # write.csv(tabelka, "ramka.csv", row.names = F)
 
@@ -88,10 +85,33 @@ autoplot(survfit(cox))
 end.time <- Sys.time()
 time.taken <- as.numeric(end.time - start.time)
 time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch miejsc po przecinku
-cat("\n\n")
+
+# zapisze do pliku dane tekstowe - statystyki z log-rank oraz z regresji coxa
+# ustawiam plik do ktoego bedziemy pisac
+sink(output_txt)
 print(paste0("Wykonywanie skryptu generujacego wykres KM, obliczajacego test log-rank oraz przetwarzajacy model regresji coxa: ",time.taken, " sekund(y)"))
 print(paste0("Start wykonania skryptu: ",start.time))
 print(paste0("Koniec wykonania skryptu: ",end.time))
 
 #zamkniecie pliku output
 sink()
+
+
+
+
+
+# zapisanie samej ramki i nadanie innych nazw kolumn
+
+# wypisanie tabelki z obliczonymi wartosciami dla konkretnych momentow w czasie
+# tabelka <- 
+
+podsumowanie_cox <- summary(survfit(cox)) 
+# obiekt 'wyniki' ma teraz duzo niepotrzebnych wartosci, dlatego wyciagniemy tylko to co potrzebujemy
+# czyli kolumny tworzace tabelke ktora laczymy
+tabelka_cox <- as.data.frame(podsumowanie_cox[c("time", "n.risk", "n.event", "surv")])
+colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival")
+# zeby nie robic kolejnego parametru, wyciagamy na nr zbioru z nazwy folderu na outputu
+library(stringr)
+nr_zbioru <- str_sub(nazwa_folderu_output,nchar(nazwa_folderu_output),nchar(nazwa_folderu_output))
+lokalizacja_output_ramki = paste0(".//",nazwa_folderu_output,"//ramka_",nr_zbioru,".csv")
+write.csv(tabelka_cox, lokalizacja_output_ramki, row.names = F)

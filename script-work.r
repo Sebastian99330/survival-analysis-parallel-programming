@@ -1,5 +1,5 @@
-# args = commandArgs(trailingOnly=TRUE)
-args <- array(c("Split-data\\zbior_2.csv","output_2.txt","km_2.jpg","cph_2.jpg","output_2",","))
+args = commandArgs(trailingOnly=TRUE)
+# args <- array(c("Split-data\\zbior_2.csv","output_2.txt","km_2.jpg","cph_2.jpg","output_2",",")) # jak bym sam uruchamial w rstudio
 
 if (length(args)==0) {
   stop("Sciezka do pliku wejsciowego jest wymagana.", call.=FALSE)
@@ -21,8 +21,6 @@ my_separator = args[6]
 
 # wczytanie danych
 my_data <- read.table(args[1], sep = my_separator , header = T)
-#my_data <- read.table(args[1], sep = "" , header = T)
-
 start.time <- Sys.time()
 
 
@@ -49,28 +47,22 @@ autoplot(mykm)
 dev.off()
 
 
-# zapisze do pliku dane tekstowe - statystyki z log-rank oraz z regresji coxa
-# ustawiam plik do ktoego bedziemy pisac
-sink(output_txt)
 
 
 # Log-rank test
 #survdiff(Surv(my_data$time, my_data$status) ~ my_data$treatment)
 
 # Cox Proportional Hazards Model
-#cox <- coxph(Surv(exp, event) ~ branch + pipeline, data = my_data)
-#cox <- coxph(Surv(exp, event) ~ 1, data = my_data)
-cox <- coxph(Surv(exp, event) ~ 1, data = my_data)
-
+# cox <- coxph(Surv(exp, event) ~ branch + pipeline, data = my_data)
+# cox <- coxph(Surv(exp, event) ~ 1, data = my_data)
+cox <- coxph(Surv(exp, event) ~ branch + pipeline, data = my_data)
 
 # wypisanie statystyk - nie potrzebujemy tego, bo to wypisuje wspolczynniki,
 # a nas interesuja dokladne momenty w czasie (po nich bedziemy laczyc)
-# print("Summary(cox)")
 # summary(cox)
 
 
-
-# otwarcie pliku do ktoego rysujemy wykres z regresji coxa
+# otworzenie pliku do ktorego rysujemy wykres z regresji coxa
 jpeg(CPH_file_path, width = 1698, height = 754)
 
 # funkcja autoplot() nie przyjmuje bezposrednio obiektu cox
@@ -79,11 +71,13 @@ jpeg(CPH_file_path, width = 1698, height = 754)
 autoplot(survfit(cox))
 
 
-
 end.time <- Sys.time()
 time.taken <- as.numeric(end.time - start.time)
 time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch miejsc po przecinku
-cat("\n\n")
+
+# zapisze do pliku dane tekstowe
+# ustawiam plik do ktoego bedziemy pisac
+sink(output_txt)
 print(paste0("Wykonywanie skryptu generujacego wykres KM, obliczajacego test log-rank oraz przetwarzajacy model regresji coxa: ",time.taken, " sekund(y)"))
 print(paste0("Start wykonania skryptu: ",start.time))
 print(paste0("Koniec wykonania skryptu: ",end.time))
@@ -95,9 +89,15 @@ sink()
 # zapisanie samej ramki i nadanie innych nazw kolumn
 
 # wypisanie tabelki z obliczonymi wartosciami dla konkretnych momentow w czasie
-#tabelka <- 
+# tabelka <- 
 
-wyniki <- summary(survfit(cox))
-length(wyniki)
-tabelka <- as.data.frame(wyniki[c("strata", "time", "n_risk", "n_event", "survival", "std_err", "lower_CI", "upper_CI")])
-write.csv(tabelka, "ramka.csv", row.names = F)
+podsumowanie_cox <- summary(survfit(cox)) 
+# obiekt 'wyniki' ma teraz duzo niepotrzebnych wartosci, dlatego wyciagniemy tylko to co potrzebujemy
+# czyli kolumny tworzace tabelke ktora laczymy
+tabelka_cox <- as.data.frame(podsumowanie_cox[c("time", "n.risk", "n.event", "surv")])
+colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival")
+# zeby nie robic kolejnego parametru, wyciagamy na nr zbioru z nazwy folderu na outputu
+library(stringr)
+nr_zbioru <- str_sub(nazwa_folderu_output,nchar(nazwa_folderu_output),nchar(nazwa_folderu_output))
+lokalizacja_output_ramki = paste0(".//",nazwa_folderu_output,"//ramka_",nr_zbioru,".csv")
+write.csv(tabelka_cox, lokalizacja_output_ramki, row.names = F)
