@@ -22,7 +22,7 @@ my_files = paste0(".//output_", 1:liczba_watkow, "//", "ramka_", 1:liczba_watkow
 # zaladowanie kilku ramek danych (data frame) do listy
 lista_ramek <- lapply(my_files, read.table, header = T, sep=",")
 # nazywamy tak elementy listy (czyli pojedyncze data frame'y), aby ich nazwy pasowa³y do nazw plików
-names(lista_ramek) <- stringr::str_replace(my_files, pattern = ".txt", replacement = "")
+names(lista_ramek) <- stringr::str_replace(my_files, pattern = ".csv", replacement = "")
 
 # data frame sekwencyjny, tzn. na zbior danych otrzymanych metoda sekwencyjna, bez dzielenia zbioru wejsciowego
 df_seq <- read.table(".//output_seq//ramka_q.csv", sep = "," , header = T)
@@ -62,7 +62,7 @@ identical(df_final[['time']],df_seq[['time']]) # zwraca TRUE
 
 # teraz zbiory czastkowe uzupelnimy o brakujace wiersze
 # tzn. zrobimy join kazdej czastkowej ramki z wynikowa kolumna time
-# po to zeby moc puste wiersze jakos zastapic w dalszych krokach 
+# po to zeby moc puste wiersze jakos zastapic w dalszych krokach
 # i potem polaczyc ze soba odpowiadajace sobie kolumny w ramkach
 
 # iterujemy po liscie z data frame czastkowych zbiorow
@@ -77,9 +77,9 @@ for (i in 1:length(lista_ramek)){
 # ------------------ przygotowanie funkcji pomocniczej ------------------ #
 
 
-# do polaczenia niektorych kolumn (najpewniej n_risks oraz survival) miedzy zbiorami 
+# do polaczenia niektorych kolumn (najpewniej n_risks oraz survival) miedzy zbiorami
 # bedzie przydatne zastapienie wartosci NA wartosciami z nastepnych wierszy
-# Czyli jak np wartosci w kolumnie (w kolejnych wierszach) sa: NA NA 513 510 itp, 
+# Czyli jak np wartosci w kolumnie (w kolejnych wierszach) sa: NA NA 513 510 itp,
 # to na miejsce pierwszych dwoch NA dajemy 513.
 # przygotujemy taka funkcje, ktora to zrobi niezaleznie od tego jakie argumenty (ramke i kolumne) jej podamy
 
@@ -87,16 +87,16 @@ for (i in 1:length(lista_ramek)){
 
 # funkcja, ktora zastepuje wartosc NA w dataframe wartoscia w wierszu ponizej
 replace_with_next_row <- function(df, row_index, col_name) {
-  
+
   # dla widocznosci zapisuje do zmiennej, aktualne pole w data frame na ktorym jestesmy w petli poziom wyzej
-  element <- df[row_index,col_name] 
+  element <- df[row_index,col_name]
   liczba_wierszy <- nrow(df)
-  
+
   # jesli wiesz jest ostatnim w data rame oraz ma wartosc NA to zwracamy 0
   if(row_index == liczba_wierszy && is.na(element) ) {
     return (0)
   }
-  # jesli wiersz NIE jest ostatnim w data rame 
+  # jesli wiersz NIE jest ostatnim w data rame
   # oraz jesli aktualny wiersz jest rowny NA, to siegamy rekurencyjnie po wartosc wiersz nizej
   else if(row_index != liczba_wierszy && is.na(element)) {
     return(replace_with_next_row(df, (row_index+1),col_name))
@@ -114,30 +114,19 @@ replace_with_next_row <- function(df, row_index, col_name) {
 # ------------------ Koniec: przygotowanie funkcji pomocniczej ------------------ #
 
 # ------------------ Laczenie kolumny n_risks ------------------ #
-# 
-# length(lista_ramek)
-# lengths(lista_ramek)
-# head(lista_ramek[[2]]) # porownanie przed i po roznych zmianach
-# head(old_lista_ramek[[2]])
-# tail(lista_ramek[[2]])
-# tail(old_lista_ramek[[2]])
-# nrow(lista_ramek[[3]])
-# nrow(old_lista_ramek[[3]])
-
-
 
 # teraz zastapimy wartosci NA wartosciami z wiersza ponizej
 
 # iterujemy po liscie z data frame czastkowych zbiorow
 for (i in 1:length(lista_ramek)){
-  # jak juz jestesmy w pierwszej petli na pojedynczym data frame, 
+  # jak juz jestesmy w pierwszej petli na pojedynczym data frame,
   # to teraz iterujemy po wierszach tego data frame
   # podajemy nazwe kolumny oraz nr wiersza z petli
   # zastepujemy wybrany element - tym samym elementem jesli ma jakas wartosc (nie jest NA)
   # a jesli jest NA, to wywolujemy funkcje ktora wpisuje wartosc z tej samej kolumny z nastepnego wiersza
   # a jesli to jest ostatni wiersz to podaje wartosc 0
   for(row in 1:nrow(lista_ramek[[i]])){
-    lista_ramek[[i]][row,"n_risk"] <- ifelse(is.na(lista_ramek[[i]][row,"n_risk"]), replace_with_next_row(df = lista_ramek[[i]], row_index = row, col_name = "n_risk"), lista_ramek[[i]][row,"n_risk"]) 
+    lista_ramek[[i]][row,"n_risk"] <- ifelse(is.na(lista_ramek[[i]][row,"n_risk"]), replace_with_next_row(df = lista_ramek[[i]], row_index = row, col_name = "n_risk"), lista_ramek[[i]][row,"n_risk"])
   }
 }
 
@@ -213,7 +202,7 @@ for (i in 1:length(lista_ramek)){
   df_final[, cols] = df_final[, cols] + lista_ramek[[i]][,cols]
 }
 
-# mamy juz polaczone poprawnie ale musimy zmienic typ kolumn zeby nam funkcja zwrocila true 
+# mamy juz polaczone poprawnie ale musimy zmienic typ kolumn zeby nam funkcja zwrocila true
 # sprawdzamy typy kolumn - moze sie potem ta instrukcja przydac przy porownywaniu jakby nie pokazywalo ze jest identyczne mimo ze wartosci bylyby takie same
 sapply(df_final, class)
 sapply(df_seq, class)
@@ -259,7 +248,6 @@ df_final$survival_na_rm <- survival_polaczony$avg_survival
 # sprawdzamy roznice
 bledy_kazdy_wiersz$survival_na_rm_err <- abs(df_final$survival_na_rm  - df_seq$survival)
 bledy_kazdy_wiersz$survival_na_rm_err <- round(bledy_kazdy_wiersz$survival_na_rm_err,4)
-head(bledy_kazdy_wiersz)
 
 # sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
 proporcja_bledu_do_wyniku_seq <- sum(bledy_kazdy_wiersz$survival_na_rm_err) / sum(df_seq$survival)
@@ -271,24 +259,21 @@ bledy[nrow(bledy) + 1,] = c("n_survival_srednia_bez_na",procent_blad_survival)
 # -------------- Laczenie kolumny survival za pomoca wypelniania NA wierszami ponizej (tak jak n_risk) ------- #
 # robimy kopie ramki i bedziemy pracowac na niej, bo musimy ja edytowac
 lista_ramek_surv_na_to_next_wiersz <- lista_ramek
-head(lista_ramek_surv_na_to_next_wiersz[[1]])
 # teraz zastapimy wartosci NA wartosciami z wiersza ponizej
 
 cols = c("survival")
 
-head(lista_ramek_surv_na_to_next_wiersz[[1]])
-
 # zastepujemy wartosci NA wartosciami z wiersza ponizej
 # iterujemy po liscie z data frame czastkowych zbiorow
 for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
-  # jak juz jestesmy w pierwszej petli na pojedynczym data frame, 
+  # jak juz jestesmy w pierwszej petli na pojedynczym data frame,
   # to teraz iterujemy po wierszach tego data frame
   # podajemy nazwe kolumny oraz nr wiersza z petli
   # zastepujemy wybrany element - tym samym elementem jesli ma jakas wartosc (nie jest NA)
   # a jesli jest NA, to wywolujemy funkcje ktora wpisuje wartosc z tej samej kolumny z nastepnego wiersza
   # a jesli to jest ostatni wiersz to podaje wartosc 0
   for(row in 1:nrow(lista_ramek_surv_na_to_next_wiersz[[i]])){
-    lista_ramek_surv_na_to_next_wiersz[[i]][row,cols] <- ifelse(is.na(lista_ramek_surv_na_to_next_wiersz[[i]][row,cols]), replace_with_next_row(df = lista_ramek_surv_na_to_next_wiersz[[i]], row_index = row, col_name = cols), lista_ramek_surv_na_to_next_wiersz[[i]][row,cols]) 
+    lista_ramek_surv_na_to_next_wiersz[[i]][row,cols] <- ifelse(is.na(lista_ramek_surv_na_to_next_wiersz[[i]][row,cols]), replace_with_next_row(df = lista_ramek_surv_na_to_next_wiersz[[i]], row_index = row, col_name = cols), lista_ramek_surv_na_to_next_wiersz[[i]][row,cols])
   }
 }
 
@@ -305,42 +290,34 @@ survival_polaczony <- lista_df_rbind %>%
   summarise(avg_survival = mean(replace(survival, survival == 0, NA), na.rm=TRUE)) %>%
   data.frame()
 
-# 
+#
 survival_polaczony$avg_survival <- round(survival_polaczony$avg_survival,4)
 df_final$survival_na_next_row <- survival_polaczony$avg_survival
 
-tail(bledy_kazdy_wiersz)
 
 bledy_kazdy_wiersz$survival_na_next_row_err <- abs(df_final$survival_na_next_row - df_seq$survival)
 bledy_kazdy_wiersz$survival_na_next_row_err <- round(bledy_kazdy_wiersz$survival_na_next_row_err,4)
 
 
-head(bledy_kazdy_wiersz)
 
 # ramka dla ladnego porownania wszystkich wartosci (zlaczonych, seq i bledow)
-wszystkie_survivale <- left_join(x = df_final, y = df_seq, by = "time", copy = FALSE) %>% 
+wszystkie_survivale <- left_join(x = df_final, y = df_seq, by = "time", copy = FALSE) %>%
   left_join(y = bledy_kazdy_wiersz, by = "time", copy = FALSE) %>%
   select(time, survival_na_rm, survival_na_rm_err, survival_na_next_row, survival_na_next_row_err, survival)
 
-head(wszystkie_survivale)
 nazwy_kolumn_surv <- c("time", "survival_na_rm", "survival_na_rm_err", "survival_na_next_row", "survival_na_next_row_err", "survival_seq")
 colnames(wszystkie_survivale) <- nazwy_kolumn_surv
 
 # dorzucamy jeszcze czastkowe survivale
 for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
-  wszystkie_survivale <- 
-    wszystkie_survivale %>% 
+  wszystkie_survivale <-
+    wszystkie_survivale %>%
     left_join(y=select(lista_ramek_surv_na_to_next_wiersz[[i]], time, survival), by = "time", copy = FALSE)
   nazwy_kolumn_surv <- c(nazwy_kolumn_surv, paste0("survival_", i))
   colnames(wszystkie_survivale) <- nazwy_kolumn_surv
 }
 
 
-
-
-tail(wszystkie_survivale)
-head(wszystkie_survivale)
-head(select(lista_ramek_surv_na_to_next_wiersz[[1]], time, survival))
 
 
 # sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
