@@ -1,5 +1,5 @@
-# args = commandArgs(trailingOnly=TRUE)
-args = as.vector(c(2))
+args = commandArgs(trailingOnly=TRUE)
+#args = as.vector(c(2))
 
 # Ten skrypt laczy output czesciowych zbiorow danych. Bierze np. 3 czesciowe outputy i laczy je w jeden.
 # Dzieki temu otrzymujemy polaczony zbior danych (liczonych sekwencyjnie),
@@ -22,7 +22,7 @@ liczba_watkow <- args[1]
 my_files = paste0(".//output_", 1:liczba_watkow, "//", "ramka_", 1:liczba_watkow, ".csv")
 # zaladowanie kilku ramek danych (data frame) do listy
 lista_ramek <- lapply(my_files, read.table, header = T, sep=",")
-# nazywamy tak elementy listy (czyli pojedyncze data frame'y), aby ich nazwy pasowa³y do nazw plików
+# nazywamy tak elementy listy (czyli pojedyncze data frame'y), aby ich nazwy pasowaï¿½y do nazw plikï¿½w
 names(lista_ramek) <- stringr::str_replace(my_files, pattern = ".csv", replacement = "")
 
 # data frame sekwencyjny, tzn. na zbior danych otrzymanych metoda sekwencyjna, bez dzielenia zbioru wejsciowego
@@ -326,7 +326,7 @@ proporcja_bledu_do_wyniku_seq_dwa <- sum(bledy_kazdy_wiersz$survival_na_next_row
 procent_blad_survival_dwa <- paste(round((proporcja_bledu_do_wyniku_seq_dwa * 100),2),"%")
 
 
-bledy[nrow(bledy) + 1,] = c("n_survival_na_to_wiersz_ponizej",procent_blad_survival_dwa)
+bledy[nrow(bledy) + 1,] <- c("n_survival_na_to_wiersz_ponizej",procent_blad_survival_dwa)
 
 
 
@@ -340,11 +340,30 @@ unlink(".//output_laczenie", recursive = TRUE)
 # utworzenie katalogu na nowe pliki z danymi wejsciowymi
 dir.create(file.path(".//output_laczenie"), showWarnings = FALSE)
 
-
+# wypisanie wszystkich waznych danych - wyniku skryptu do folderu na output
 write.csv(df_final, ".//output_laczenie//output-polaczone.csv", row.names = F)
 write.csv(wszystkie_survivale, ".//output_laczenie//wszystkie_survivale.csv", row.names = F)
 write.csv(bledy_kazdy_wiersz, ".//output_laczenie//bledy-cale-wiersze.csv", row.names = F)
 write.csv(bledy, ".//output_laczenie//bledy_podsumowanie.csv", row.names=F)
 
-write(paste0("\n\nLiczba watkow: ",liczba_watkow), file = ".//statystyki.csv", append = TRUE)
-write.table(bledy, ".//statystyki.csv", row.names=F, append = T)
+# wypisanie statystyk jako nowe linijki do istniejacego pliku z wynikami
+write(paste0("\n\nLiczba watkow: ",liczba_watkow), file = ".//wyniki-testow-wszystkie.csv", append = TRUE)
+write.table(bledy, ".//wyniki-testow-wszystkie.csv", row.names=F, append = T)
+
+# transponuje ramke na bledy
+potrzebne_staty_df <- as.data.frame(t(bledy))
+colnames(potrzebne_staty_df) <- c(potrzebne_staty_df[1,]) # pierwszy wiersz po transpozycji ma nazwy kolumn
+potrzebne_staty_df <- potrzebne_staty_df[-1,] # usuwam 1 kolumne czyli stara nazwe kolumny - sprzed transpozycji
+rownames(potrzebne_staty_df) <- NULL #niepotrzebnie 1 wiersz ma niby nazwe wiersza
+potrzebne_staty_df <- potrzebne_staty_df[,-2] # usuwam kolumne "n_event" bo ona i tak zawsze jest identyczna
+
+# lacze pierwszy wiersz we wpis string
+wpis <- paste0(potrzebne_staty_df[1,1],",",potrzebne_staty_df[1,2],",",potrzebne_staty_df[1,3],",")
+# wpis prawie gotowy ale trzeba jeszcze usunac ' %', zeby zostaly same liczby, a nie np. 0.18 %
+wpis <- str_replace_all(wpis, " %", "")
+
+# write(string, file = ".//statystyki.csv", append = TRUE) # inna opcja, dokleja new line na koniec linii
+cat(wpis, file = ".//statystyki.csv", append = T)
+#file_connection = file(".//statystyki.csv", open='wb') # open='a' wczesniej bylo
+#writeLines(text = string, con = file_connection)
+#close(file_connection)

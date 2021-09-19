@@ -1,15 +1,10 @@
 import com.google.common.base.Stopwatch;
 
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        final int numberOfThreads = 2;
+        final Integer numberOfThreads = 2;
         final int numberOfFirstThread = 1;
 
         TalkToR.clearWorkspace(numberOfThreads); // tworzy puste foldery na output (i ewentualnie usuwa istniejace)
@@ -47,8 +42,7 @@ public class Main {
         // wypisanie do zbiorczego programu ze statystykami wykonania programu (dopisanie na jego koniec z kazdym wykonaniem programu, nie tworzenie od nowa)
 
 
-        // wyswietlenie wykresow
-//        DisplayImage.displayPlots();
+        WriteToFile.writeRowsNumber(numberOfThreads, seqTimeFormatted, parallelTimeFormatted);
 
 //        System.out.println("\n" + "Liczba aktywnych watkow Thread.activeCount(): " + Thread.activeCount());
 //        System.out.println("Liczba dostepnych watkow Runtime.getRuntime().availableProcessors(): " + Runtime.getRuntime().availableProcessors());

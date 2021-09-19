@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -47,7 +48,29 @@ public class WriteToFile {
                 + "Czas wykonania skryptu w sekundach dla algorytmu rownoleglego: " + parallelTimeFormatted + "\n"
                 + "Data testu: " + formatter.format(date) + "\n\n";
         try {
-            Files.write(Paths.get("statystyki.csv"), s.getBytes(), StandardOpenOption.APPEND);
+            Files.write(Paths.get("wyniki-testow-wszystkie.csv"), s.getBytes(), StandardOpenOption.APPEND);
+        }catch (IOException e) {
+            System.out.println("Something went wrong.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * metoda wpisujaca do pliku testkwego liczbe wierszy w danych wejsciowych
+     * potrzebna jest, bo potrzebujemy pliku, ktory zbierze w calosc wyniki testow
+     * @param numberOfThreads
+     */
+    public static void writeRowsNumber(Integer numberOfThreads, String timeSeq, String timePar){
+        try {
+            String numberOfLinesStr = "1785,"; // obiekt niepotrzebny ale dla czytelnosci
+            // str moze miec wartosc np. "1785,2," czyli poczatek linijki ze statystykami - wpis do pliku csv
+            // potem skrypt R dokonczy ta linijke i zrobi znak new line. Na kazde wykonanie programu bedzie 1 taka linijka
+            String str = numberOfLinesStr + numberOfThreads.toString() + "," + timeSeq + "," + timePar + "\n";
+            // wstawia znak nowej linii zanim doklei zawartosc stringa str
+//            Files.write(Paths.get("statystyki.csv"), str.getBytes(), StandardOpenOption.APPEND);
+            // nie wstawia nowej linii, tylko od razu dopisuje na koncu ostatniej linijki
+            Files.write(Paths.get("statystyki.csv"), str.getBytes(Charset.forName("UTF-8")), StandardOpenOption.APPEND);
+
         }catch (IOException e) {
             System.out.println("Something went wrong.");
             e.printStackTrace();
