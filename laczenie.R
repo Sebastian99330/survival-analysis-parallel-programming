@@ -1,4 +1,5 @@
-args = commandArgs(trailingOnly=TRUE)
+# args = commandArgs(trailingOnly=TRUE)
+args = as.vector(c(2))
 
 # Ten skrypt laczy output czesciowych zbiorow danych. Bierze np. 3 czesciowe outputy i laczy je w jeden.
 # Dzieki temu otrzymujemy polaczony zbior danych (liczonych sekwencyjnie),
@@ -344,3 +345,6 @@ write.csv(df_final, ".//output_laczenie//output-polaczone.csv", row.names = F)
 write.csv(wszystkie_survivale, ".//output_laczenie//wszystkie_survivale.csv", row.names = F)
 write.csv(bledy_kazdy_wiersz, ".//output_laczenie//bledy-cale-wiersze.csv", row.names = F)
 write.csv(bledy, ".//output_laczenie//bledy_podsumowanie.csv", row.names=F)
+
+write(paste0("\n\nLiczba watkow: ",liczba_watkow), file = ".//statystyki.csv", append = TRUE)
+write.table(bledy, ".//statystyki.csv", row.names=F, append = T)

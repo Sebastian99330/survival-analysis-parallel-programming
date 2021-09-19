@@ -1,21 +1,26 @@
+import com.google.common.base.Stopwatch;
+
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        final int numberOfThreads = 4;
+        final int numberOfThreads = 2;
         final int numberOfFirstThread = 1;
 
         TalkToR.clearWorkspace(numberOfThreads); // tworzy puste foldery na output (i ewentualnie usuwa istniejace)
 
         // sekwencyjnie
-        Instant startSeq = Instant.now(); // pobranie czasu do mierzenia czasu wykonania algorytmu metoda sekwencyjna
+        Stopwatch timeSeq = Stopwatch.createStarted(); // pobranie czasu do mierzenia czasu wykonania algorytmu metoda sekwencyjna
         SequentialAlgorithm.callRScript();
-        Instant endSeq = Instant.now();
-        Duration intervalSeq = Duration.between(startSeq, endSeq);
+        timeSeq.stop();
 
         //rownolegle
-//        Instant startParallel = Instant.now(); // pobranie czasu do mierzenia czasu wykonania algorytmu metoda rownolegla
+        Stopwatch timeParallel = Stopwatch.createStarted(); // pobranie czasu do mierzenia czasu wykonania algorytmu metoda rownolegla
         System.out.println("1 Przed ParallelAlgorithm parallelAlgorithm");
         ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(numberOfFirstThread, numberOfThreads, null);
         System.out.println("2 Po ParallelAlgorithm parallelAlgorithm");
@@ -23,17 +28,21 @@ public class Main {
         parallelAlgorithm.splitInputData();
         System.out.println("3 Po parallelAlgorithm.splitInputData();");
 
-        Instant startParallel = Instant.now(); // pobranie czasu do mierzenia czasu wykonania algorytmu metoda rownolegla
         parallelAlgorithm.runScriptParallel();
         System.out.println("4 Po parallelAlgorithm.runScriptParallel();");
 
         parallelAlgorithm.mergePartialOutputs();
         System.out.println("5 Po parallelAlgorithm.mergePartialOutputs();");
-        Instant endParallel = Instant.now();
-        Duration intervalParallel = Duration.between(startParallel, endParallel);
+        timeParallel.stop();
 
-        System.out.println("6 Czas wykonania skryptu w sekundach dla algorytmu sekwencyjnego: " + intervalSeq.getSeconds() + "\n");
-        System.out.println("7 Czas wykonania skryptu w sekundach dla algorytmu rownoleglego: " + intervalParallel.getSeconds() + "\n");
+        // zapisanie do obiektu czasu wykonania obliczen metoda sekwencyjna i rownolegla
+        String seqTimeFormatted = WriteToFile.getMillisAsFormattedSeconds(timeSeq.elapsed(TimeUnit.MILLISECONDS));
+        String parallelTimeFormatted = WriteToFile.getMillisAsFormattedSeconds(timeParallel.elapsed(TimeUnit.MILLISECONDS));
+        // wypisanie czasu wykonania programu do pliku -
+        // do folderu, do ktorego wpada output z laczenia modeli po zrownolegleniu
+        WriteToFile.saveTimeToMergedFolder(seqTimeFormatted, parallelTimeFormatted);
+        WriteToFile.appendStatsToFile(seqTimeFormatted, parallelTimeFormatted);
+        // wypisanie do zbiorczego programu ze statystykami wykonania programu (dopisanie na jego koniec z kazdym wykonaniem programu, nie tworzenie od nowa)
 
 
         // wyswietlenie wykresow
@@ -42,4 +51,6 @@ public class Main {
 //        System.out.println("\n" + "Liczba aktywnych watkow Thread.activeCount(): " + Thread.activeCount());
 //        System.out.println("Liczba dostepnych watkow Runtime.getRuntime().availableProcessors(): " + Runtime.getRuntime().availableProcessors());
     }
+
+
 }
