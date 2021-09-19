@@ -40,10 +40,10 @@ public class WriteToFile {
      * @param parallelTimeFormatted - czas wykonywania programu wykonujacego obliczenia sekwencyjnie (String, format ss.ms)
      * @param seqTimeFormatted - czas wykonywania programu wykonujacego obliczenia rownolegle (String, format ss.ms)
      */
-    public static void appendStatsToFile (String parallelTimeFormatted, String seqTimeFormatted) {
+    public static void appendStatsToFile (String seqTimeFormatted, String parallelTimeFormatted) {
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date(System.currentTimeMillis());
-        String s = "Czas wykonania skryptu w sekundach dla algorytmu sekwencyjnego: " + parallelTimeFormatted + "\n"
+        String s = "Czas wykonania skryptu w sekundach dla algorytmu sekwencyjnego: " + seqTimeFormatted + "\n"
                 + "Czas wykonania skryptu w sekundach dla algorytmu rownoleglego: " + parallelTimeFormatted + "\n"
                 + "Data testu: " + formatter.format(date) + "\n\n";
         try {

@@ -38,6 +38,8 @@ public class Main {
         // zapisanie do obiektu czasu wykonania obliczen metoda sekwencyjna i rownolegla
         String seqTimeFormatted = WriteToFile.getMillisAsFormattedSeconds(timeSeq.elapsed(TimeUnit.MILLISECONDS));
         String parallelTimeFormatted = WriteToFile.getMillisAsFormattedSeconds(timeParallel.elapsed(TimeUnit.MILLISECONDS));
+        System.out.println("seqTimeFormatted: " + seqTimeFormatted);
+        System.out.println("parallelTimeFormatted: " + parallelTimeFormatted);
         // wypisanie czasu wykonania programu do pliku -
         // do folderu, do ktorego wpada output z laczenia modeli po zrownolegleniu
         WriteToFile.saveTimeToMergedFolder(seqTimeFormatted, parallelTimeFormatted);
