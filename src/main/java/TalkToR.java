@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -29,6 +31,13 @@ public class TalkToR {
         try {
             Process p = Runtime.getRuntime().exec(command); // uruchomienie procesu ktory wykona "w konsoli" komende command
             p.waitFor(); // obecny proces czeka dopoki wykonanie skryptu sie nie skonczy
+
+            // wypisanie do konsoli Java outputu ze skryptu
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String s = null;
+            while ((s = in.readLine()) != null) {
+                System.out.println(s);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

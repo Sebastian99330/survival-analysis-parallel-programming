@@ -3,7 +3,7 @@ import java.time.Instant;
 
 public class Main {
     public static void main(String[] args) {
-        final int numberOfThreads = 3;
+        final int numberOfThreads = 4;
         final int numberOfFirstThread = 1;
 
         TalkToR.clearWorkspace(numberOfThreads); // tworzy puste foldery na output (i ewentualnie usuwa istniejace)
@@ -27,11 +27,13 @@ public class Main {
         parallelAlgorithm.runScriptParallel();
         System.out.println("4 Po parallelAlgorithm.runScriptParallel();");
 
+        parallelAlgorithm.mergePartialOutputs();
+        System.out.println("5 Po parallelAlgorithm.mergePartialOutputs();");
         Instant endParallel = Instant.now();
         Duration intervalParallel = Duration.between(startParallel, endParallel);
 
-        System.out.println("5 Czas wykonania skryptu w sekundach dla algorytmu sekwencyjnego: " + intervalSeq.getSeconds() + "\n");
-        System.out.println("6 Czas wykonania skryptu w sekundach dla algorytmu rownoleglego: " + intervalParallel.getSeconds() + "\n");
+        System.out.println("6 Czas wykonania skryptu w sekundach dla algorytmu sekwencyjnego: " + intervalSeq.getSeconds() + "\n");
+        System.out.println("7 Czas wykonania skryptu w sekundach dla algorytmu rownoleglego: " + intervalParallel.getSeconds() + "\n");
 
 
         // wyswietlenie wykresow

@@ -78,6 +78,18 @@ public class ParallelAlgorithm implements Runnable {
 
     }
 
+    /**
+     * Metoda odpala skrypt R, ktory laczy wyniki skryptu R
+     * Wczesniej podzielilismy zbior danych wejsciowych, wykonalismy obliczenia analizy przezycia i zbudowalismy modele
+     * dla oddzielnych zbiorow i w tej metodzie je z powrotem laczymy do jednego wynikowego modelu
+     */
+    public void mergePartialOutputs(){
+        // komenda R, ktora odpala skrypt laczenie.R, ktory laczy wyniki skryptu script.R
+         String command = "rscript --vanilla laczenie.R " + numberOfThreads;
+//        String command = "rscript --vanilla sciezka.R";
+        TalkToR.runScript(command, true);
+    }
+
     @Override
     public void run() {
         System.out.println("Thread name (ParallelAlgorithm.run): " + Thread.currentThread().getName());
