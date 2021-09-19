@@ -90,6 +90,14 @@ public class ParallelAlgorithm implements Runnable {
         TalkToR.runScript(command, true);
     }
 
+    /**
+     * Metoda bierze statystyki ktore wyliczyl program, liczy srednia i wypisuje do pliku.
+     */
+    public static void writeGroupedOutputToFile(){
+        String command = "rscript --vanilla odczyt-testow.R";
+        TalkToR.runScript(command, false);
+    }
+
     @Override
     public void run() {
         System.out.println("Thread name (ParallelAlgorithm.run): " + Thread.currentThread().getName());

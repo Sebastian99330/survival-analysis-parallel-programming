@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        final Integer numberOfThreads = 2;
+        final Integer numberOfThreads = 3;
         final int numberOfFirstThread = 1;
 
         TalkToR.clearWorkspace(numberOfThreads); // tworzy puste foldery na output (i ewentualnie usuwa istniejace)
@@ -41,8 +41,10 @@ public class Main {
         WriteToFile.appendStatsToFile(seqTimeFormatted, parallelTimeFormatted);
         // wypisanie do zbiorczego programu ze statystykami wykonania programu (dopisanie na jego koniec z kazdym wykonaniem programu, nie tworzenie od nowa)
 
-
         WriteToFile.writeRowsNumber(numberOfThreads, seqTimeFormatted, parallelTimeFormatted);
+
+        parallelAlgorithm.writeGroupedOutputToFile();
+
 
 //        System.out.println("\n" + "Liczba aktywnych watkow Thread.activeCount(): " + Thread.activeCount());
 //        System.out.println("Liczba dostepnych watkow Runtime.getRuntime().availableProcessors(): " + Runtime.getRuntime().availableProcessors());

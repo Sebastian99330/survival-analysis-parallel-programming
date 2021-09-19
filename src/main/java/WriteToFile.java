@@ -76,6 +76,7 @@ public class WriteToFile {
             e.printStackTrace();
         }
     }
+    
 
     public static String getMillisAsFormattedSeconds(long millis) {
         long secs = millis / 1000;
