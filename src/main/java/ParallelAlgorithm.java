@@ -18,6 +18,8 @@ public class ParallelAlgorithm implements Runnable {
     String imgSuffix = ".jpg";
     String outputFolderName = "output_";
     String rSeparator = ","; // separator dla wszystkich plikow z podzielonymi danymi wejsciowymi to przecinek ","
+    String dfTxtFile = "ramka_";
+    String csvSuffix = ".csv";
 
 
     int currentThreadNumber;
@@ -54,14 +56,17 @@ public class ParallelAlgorithm implements Runnable {
             String KaplanMeierOutputPlotPath = kphPlotOutputPath + i + imgSuffix;
             String CoxPHOutputPlotPath = cphPlotOutputPath + i + imgSuffix;
             String outputFolderFullName = outputFolderName + i;
+            String dfFullName = dfTxtFile + i + csvSuffix;
 
             // prostate cancer
 //            String command = "rscript --vanilla script.r " + inputFullName + " " +
-//                    outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator;
+//                    outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator
+//                      + " " + dfFullName;
 
             // work
             String command = "rscript --vanilla script-work.r " + inputFullName + " " +
-                    outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator;
+                    outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator
+                    + " " + dfFullName;
 
             Thread t = new Thread(new ParallelAlgorithm(i, numberOfThreads, command));
             t.start();

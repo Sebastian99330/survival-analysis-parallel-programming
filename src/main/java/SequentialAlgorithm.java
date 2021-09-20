@@ -5,17 +5,18 @@ public class SequentialAlgorithm {
 //        String input = "prostate_cancer.txt";
 //        String input = "prost_cancer_mln.csv";
         String outputTxtFile = "output-seq.txt";
-        String kphPlotPath = "km-seq.jpg";
-        String cphPlotPath = "cph-seq.jpg";
+        String kphPlotPath = "km_seq.jpg";
+        String cphPlotPath = "cph_seq.jpg";
         String outputFolderName = "output_seq";
 //        String rSeparator = "\"\""; // dla prostate cancer
         String rSeparator = ",";     // dla work
+        String dfName = "ramka_seq.csv";
 
 //        String command = "rscript --vanilla script.r " + input + " " +
-//                outputTxtFile + " " + kphPlotPath + " " + cphPlotPath + " " + outputFolderName + " " + rSeparator;
+//                outputTxtFile + " " + kphPlotPath + " " + cphPlotPath + " " + outputFolderName + " " + rSeparator + " " + dfName;
 
         String command = "rscript --vanilla script-work.r " + input + " " +
-                outputTxtFile + " " + kphPlotPath + " " + cphPlotPath + " " + outputFolderName + " " + rSeparator;
+                outputTxtFile + " " + kphPlotPath + " " + cphPlotPath + " " + outputFolderName + " " + rSeparator + " "  + dfName;
 
         TalkToR.runScript(command, false);
     }

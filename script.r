@@ -21,6 +21,7 @@ output_txt = paste0(".//",nazwa_folderu_output,"//",args[2])
 KM_file_path = paste0(".//",nazwa_folderu_output,"//",args[3])
 CPH_file_path = paste0(".//",nazwa_folderu_output,"//",args[4])
 my_separator = args[6]
+df_file <- args[7]
 
 # wczytanie danych
 my_data <- read.table(args[1], sep = my_separator , header = T)
@@ -110,8 +111,6 @@ podsumowanie_cox <- summary(survfit(cox))
 # czyli kolumny tworzace tabelke ktora laczymy
 tabelka_cox <- as.data.frame(podsumowanie_cox[c("time", "n.risk", "n.event", "surv")])
 colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival")
-# zeby nie robic kolejnego parametru, wyciagamy na nr zbioru z nazwy folderu na outputu
-library(stringr)
-nr_zbioru <- str_sub(nazwa_folderu_output,nchar(nazwa_folderu_output),nchar(nazwa_folderu_output))
-lokalizacja_output_ramki = paste0(".//",nazwa_folderu_output,"//ramka_",nr_zbioru,".csv")
+
+lokalizacja_output_ramki = paste0(".//",nazwa_folderu_output,"//",df_file)
 write.csv(tabelka_cox, lokalizacja_output_ramki, row.names = F)

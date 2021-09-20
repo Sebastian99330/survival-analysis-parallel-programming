@@ -26,7 +26,7 @@ lista_ramek <- lapply(my_files, read.table, header = T, sep=",")
 names(lista_ramek) <- stringr::str_replace(my_files, pattern = ".csv", replacement = "")
 
 # data frame sekwencyjny, tzn. na zbior danych otrzymanych metoda sekwencyjna, bez dzielenia zbioru wejsciowego
-df_seq <- read.table(".//output_seq//ramka_q.csv", sep = "," , header = T)
+df_seq <- read.table(".//output_seq//ramka_seq.csv", sep = "," , header = T)
 
 
 # 2. Tworzymy pusty data frame na wynikowy (polaczony) zbior
