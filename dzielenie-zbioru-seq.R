@@ -12,19 +12,17 @@ if (length(args)==0) {
 }
 
 input_sciezka <- args[1]
-ilosc_zbiorow <- as.numeric(args[2]) # wczesniej byl string i rzucalo blad przy tworzeniu klastra do obliczen rownoleglych
+liczba_zbiorow <- as.numeric(args[2]) # wczesniej byl string i rzucalo blad przy tworzeniu klastra do obliczen rownoleglych
 plik_output <- args[3]
 
 
 
 # wczytanie danych
-# df <- read.table(input_sciezka, sep = "" , header = T)
 df <- read.table(input_sciezka, sep = "," , header = T)
-#df <- read.table("prostate_cancer.txt", sep = "" , header = T)
 
 licza_wierszy <- nrow(df)
 
-numery_zbiorow <- sample(1:ilosc_zbiorow, size = licza_wierszy,
+numery_zbiorow <- sample(1:liczba_zbiorow, size = licza_wierszy,
                          replace = TRUE)
 
 
@@ -35,14 +33,14 @@ unlink("Split-data", recursive = TRUE)
 dir.create(file.path("Split-data"), showWarnings = FALSE)
 
 # zapisze dane statystyczne / logi do pliku tekstowego
-sink("Split-data\\splitting-data-logs.txt")
+# sink("Split-data\\splitting-data-logs.txt") # zakomentowane na czas testow
 
-print("Proporcje z jakimi rozdzielono obserwacje miedzy watkami: ")
+# print("Proporcje z jakimi rozdzielono obserwacje miedzy watkami: ") # zakomentowane na czas testow
 # zwraca proporcje - najlepiej po 25% (jesli dzielimy na 4), wtedy jest dobrze
 # trzeba zbadac czy dobrze dzieli, bo musi byc rowne obciazenie watkow
-prop.table(table(numery_zbiorow))
-
-start.time <- Sys.time()
+# prop.table(table(numery_zbiorow)) # zakomentowane na czas testow
+# 
+# start.time <- Sys.time() # zakomentowane na czas testow
 
 
 
@@ -57,26 +55,26 @@ lista_zbiorow <- list()
 #cl <- parallel::makeCluster(4)
 #doParallel::registerDoParallel(cl)
 
-for(numer in 1:ilosc_zbiorow){
-#foreach(numer=1:ilosc_zbiorow) %dopar% {
+for(numer in 1:liczba_zbiorow){
+#foreach(numer=1:liczba_zbiorow) %dopar% {
   # wybrane_idx <- which(numery_zbiorow == 1)
   wybrane_idx <- which(numery_zbiorow == numer)
   
   lista_zbiorow[[numer]] <- df[wybrane_idx, ]
   
-  write.csv(df[wybrane_idx, ], paste0(plik_output, numer,".csv"), row.names = F) # to dziala
+  write.csv(df[wybrane_idx, ], paste0(plik_output, numer,".csv"), row.names = F)
 }
 
 #parallel::stopCluster(cl)
 
-
-end.time <- Sys.time()
-time.taken <- as.numeric(end.time - start.time)
-time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch miejsc po przecinku
-cat("\n\n")
-print(paste0("Dzielenie zbioru danych wejsciowych zajelo: ",time.taken, " sekund(y)"))
-print(paste0("Start wykonania skryptu: ",start.time))
-print(paste0("Koniec wykonania skryptu: ",end.time))
+# zakomentowane na czas testow ponizsze
+# end.time <- Sys.time()
+# time.taken <- as.numeric(end.time - start.time)
+# time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch miejsc po przecinku
+# cat("\n\n") # zakomentowane na czas testow
+# print(paste0("Dzielenie zbioru danych wejsciowych zajelo: ",time.taken, " sekund(y)")) # zakomentowane na czas testow
+# print(paste0("Start wykonania skryptu: ",start.time)) # zakomentowane na czas testow
+# print(paste0("Koniec wykonania skryptu: ",end.time)) # zakomentowane na czas testow
 
 #zamkniecie pliku
-sink()
+# sink() # zakomentowane na czas testow
