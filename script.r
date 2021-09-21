@@ -1,6 +1,8 @@
-args = commandArgs(trailingOnly=TRUE)
+#args = commandArgs(trailingOnly=TRUE)
 # args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment", "treatment + age + sh + size + index")) # dla parallel
-# args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "exp, event", "branch", "branch + pipeline")) # dla parallel
+# args = array(c("Split-data\\zbior_2.rds", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.rds", "exp, event", "branch", "branch + pipeline")) # dla parallel
+args = array(c("turnover.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "exp, event", "branch", "branch + pipeline")) # dla parallel
+
 
 
 if (length(args)==0) {
@@ -28,10 +30,15 @@ zmienne_grupowanie_km <- noquote(args[9]) # usuwam cudzyslowia ze zmiennej
 zmienne_grupowanie_cox <- noquote(args[10]) 
 
 
-
 # wczytanie danych
-my_data <- read.table(sciezka_do_input, sep = my_separator , header = T)
-# my_data <- read.table(args[1], sep = "" , header = T)
+# jak czytamy plik sekwencyjny, to inputem jest plik csv, a jak czastkowy, to rds
+# dlatego tu sprawdzimy czy 3 ostatnie znaki inputu to csv i czy rds i wczytamy w odpowiedni sposob
+suffix_inputu <- substr(sciezka_do_input, nchar(sciezka_do_input)-2, nchar(sciezka_do_input))
+if(tolower(suffix_inputu) == "csv"){
+  my_data <- read.table(sciezka_do_input, sep = my_separator , header = T)
+} else if (tolower(suffix_inputu) == "rds"){
+  my_data <- readRDS(sciezka_do_input)
+}
 
 start.time <- Sys.time()
 
@@ -130,5 +137,7 @@ tabelka_cox <- as.data.frame(podsumowanie_cox[c("time", "n.risk", "n.event", "su
 colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival")
 
 lokalizacja_output_ramki = paste0(".//",nazwa_folderu_output,"//",df_file)
-write.csv(tabelka_cox, lokalizacja_output_ramki, row.names = F)
+# write.csv(tabelka_cox, lokalizacja_output_ramki, row.names = F)
+saveRDS(tabelka_cox, lokalizacja_output_ramki)
+
 

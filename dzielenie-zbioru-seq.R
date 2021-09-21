@@ -62,7 +62,8 @@ for(numer in 1:liczba_zbiorow){
   
   lista_zbiorow[[numer]] <- df[wybrane_idx, ]
   
-  write.csv(df[wybrane_idx, ], paste0(plik_output, numer,".csv"), row.names = F)
+  # write.csv(df[wybrane_idx, ], paste0(plik_output, numer,".csv"), row.names = F)
+  saveRDS(df[wybrane_idx, ], paste0(plik_output, numer,".rds"))
 }
 
 #parallel::stopCluster(cl)

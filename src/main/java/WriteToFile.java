@@ -63,7 +63,7 @@ public class WriteToFile {
      */
     public static void writeRowsNumber(Integer numberOfThreads, String timeSeq, String timePar){
         try {
-            String numberOfLinesStr = "63,"; // obiekt niepotrzebny ale dla czytelnosci
+            String numberOfLinesStr = "1785,"; // obiekt niepotrzebny ale dla czytelnosci
             // str moze miec wartosc np. "1785,2," czyli poczatek linijki ze statystykami - wpis do pliku csv
             // potem skrypt R dokonczy ta linijke i zrobi znak new line. Na kazde wykonanie programu bedzie 1 taka linijka
             String str = numberOfLinesStr + numberOfThreads.toString() + "," + timeSeq + "," + timePar + "\n";

@@ -19,14 +19,14 @@ liczba_watkow <- args[1]
 
 #wektor z nazwami plikow input zeby moc wczytac kilka(nascie) plikow z danymi wejsciowymi w petli
 # my_files = paste0("output_", 1:liczba_watkow, ".txt")
-my_files = paste0(".//output_", 1:liczba_watkow, "//", "ramka_", 1:liczba_watkow, ".csv")
+my_files = paste0(".//output_", 1:liczba_watkow, "//", "ramka_", 1:liczba_watkow, ".rds")
 # zaladowanie kilku ramek danych (data frame) do listy
 lista_ramek <- lapply(my_files, read.table, header = T, sep=",")
 # nazywamy tak elementy listy (czyli pojedyncze data frame'y), aby ich nazwy pasowa�y do nazw plik�w
-names(lista_ramek) <- stringr::str_replace(my_files, pattern = ".csv", replacement = "")
+names(lista_ramek) <- stringr::str_replace(my_files, pattern = ".rds", replacement = "")
 
 # data frame sekwencyjny, tzn. na zbior danych otrzymanych metoda sekwencyjna, bez dzielenia zbioru wejsciowego
-df_seq <- read.table(".//output_seq//ramka_seq.csv", sep = "," , header = T)
+df_seq <- read.table(".//output_seq//ramka_seq.rds", sep = "," , header = T)
 
 
 # 2. Tworzymy pusty data frame na wynikowy (polaczony) zbior

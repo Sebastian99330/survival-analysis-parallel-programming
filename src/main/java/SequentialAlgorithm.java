@@ -10,7 +10,8 @@ public class SequentialAlgorithm {
         String outputFolderName = "output_seq";
 //        String rSeparator = "\"\""; // dla prostate cancer
         String rSeparator = ",";     // dla work oraz prost cancer mln
-        String dfName = "ramka_seq.csv";
+//        String dfName = "ramka_seq.csv";
+        String dfName = "ramka_seq.rds";
 //        String timeStatus = "time, status"; // dla input prostate cancer
 //        String groupingVariablesKm = "treatment"; // dla input prostate cancer
 //        String groupingVariablesCox = "treatment + age + sh + size + index"; // dla input prostate cancer

@@ -10,7 +10,8 @@ public class ParallelAlgorithm implements Runnable {
 //    String input = "prostate_cancer.csv";
 //    String input = "prost_cancer_mln.csv";
     String splitInput = "Split-data\\\\zbior_";
-    String splitInputFileSuffix = ".csv";
+//    String splitInputFileSuffix = ".csv";
+    String splitInputFileSuffix = ".rds";
     String outputTxtFile = "output_";
     String txtSuffix = ".txt";
     String kphPlotOutputPath = "km_";
@@ -20,6 +21,7 @@ public class ParallelAlgorithm implements Runnable {
     String rSeparator = ","; // separator dla wszystkich plikow z podzielonymi danymi wejsciowymi to przecinek ","
     String dfTxtFile = "ramka_";
     String csvSuffix = ".csv";
+    String rdsSuffix = ".rds";
 //    String timeStatus = "time, status"; // dla input prostate cancer
 //    String groupingVariablesKm = "treatment"; // dla input prostate cancer
 //    String groupingVariablesCox = "treatment + age + sh + size + index"; // dla input prostate cancer
@@ -62,7 +64,7 @@ public class ParallelAlgorithm implements Runnable {
             String KaplanMeierOutputPlotPath = kphPlotOutputPath + i + imgSuffix;
             String CoxPHOutputPlotPath = cphPlotOutputPath + i + imgSuffix;
             String outputFolderFullName = outputFolderName + i;
-            String dfFullName = dfTxtFile + i + csvSuffix;
+            String dfFullName = dfTxtFile + i + rdsSuffix;
 
             String command = "rscript --vanilla script.r " + inputFullName + " " +
                     outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator + " " +
