@@ -63,10 +63,15 @@ public class WriteToFile {
      */
     public static void writeRowsNumber(Integer numberOfThreads, String timeSeq, String timePar){
         try {
-            String numberOfLinesStr = "1785,"; // obiekt niepotrzebny ale dla czytelnosci
+            String numberOfLinesStr = "3394561,"; // obiekt niepotrzebny ale dla czytelnosci
+            // parallel jest jaka czescia seq? np. jak czas parallel wynosil 20 sek a seq 30 sek, to tutaj bedzie 66%
+            long parTimePercentageOfSeq = Math.round((Double.parseDouble(timePar) / Double.parseDouble(timeSeq)) * 100);
+            // bierzemy procent - o ile jest lepsze, jaka jest roznica miedzy nimi
+            parTimePercentageOfSeq = Math.abs(100-parTimePercentageOfSeq);
+            String strParTimePercentageOfSeq = Long.toString(parTimePercentageOfSeq) + "%";
             // str moze miec wartosc np. "1785,2," czyli poczatek linijki ze statystykami - wpis do pliku csv
             // potem skrypt R dokonczy ta linijke i zrobi znak new line. Na kazde wykonanie programu bedzie 1 taka linijka
-            String str = numberOfLinesStr + numberOfThreads.toString() + "," + timeSeq + "," + timePar + "\n";
+            String str = numberOfLinesStr + numberOfThreads.toString() + "," + timeSeq + "," + timePar  + "," + strParTimePercentageOfSeq + "\n";
             // wstawia znak nowej linii zanim doklei zawartosc stringa str
 //            Files.write(Paths.get("statystyki.csv"), str.getBytes(), StandardOpenOption.APPEND);
             // nie wstawia nowej linii, tylko od razu dopisuje na koncu ostatniej linijki

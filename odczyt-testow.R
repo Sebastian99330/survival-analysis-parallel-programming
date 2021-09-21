@@ -13,4 +13,10 @@ df_wyniki <- df %>%
             liczba_testow = n()) %>%
             data.frame()
 
+# licze jeszcze o ile % jest lepszy wynik parallel od seq (tzn. jakim procentem sekwencyjnego czasu jest czas równoleg³y)
+par_jest_jaka_czescia_seq <- round((df_wyniki$czas_par / df_wyniki$czas_seq)*100,2)
+par_o_ile_lepszy_niz_seq <- abs(100 - par_jest_jaka_czescia_seq)
+df_wyniki$par_better_seq <- paste0(as.character(par_o_ile_lepszy_niz_seq),"%")
+
+
 write.csv(df_wyniki, ".//pogrupowany-wynik-testow.csv", row.names = F)
