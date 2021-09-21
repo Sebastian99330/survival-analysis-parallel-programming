@@ -1,5 +1,5 @@
-#args = commandArgs(trailingOnly=TRUE)
-args = as.vector(c(10))
+args = commandArgs(trailingOnly=TRUE)
+#args = as.vector(c(10)) # ewentualnie array(c(10))
 
 # Ten skrypt laczy output czesciowych zbiorow danych. Bierze np. 3 czesciowe outputy i laczy je w jeden.
 # Dzieki temu otrzymujemy polaczony zbior danych (liczonych sekwencyjnie),

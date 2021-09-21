@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        final Integer numberOfThreads = 10;
+        final Integer numberOfThreads = 3;
         final int numberOfFirstThread = 1;
 
         TalkToR.clearWorkspace(numberOfThreads); // tworzy puste foldery na output (i ewentualnie usuwa istniejace)
@@ -20,14 +20,17 @@ public class Main {
         ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(numberOfFirstThread, numberOfThreads, null);
         System.out.println("2 Po ParallelAlgorithm parallelAlgorithm");
 
+
         parallelAlgorithm.splitInputData();
         System.out.println("3 Po parallelAlgorithm.splitInputData();");
 
         parallelAlgorithm.runScriptParallel();
         System.out.println("4 Po parallelAlgorithm.runScriptParallel();");
 
+
         parallelAlgorithm.mergePartialOutputs();
         System.out.println("5 Po parallelAlgorithm.mergePartialOutputs();");
+
         timeParallel.stop();
 
         // zapisanie do obiektu czasu wykonania obliczen metoda sekwencyjna i rownolegla

@@ -6,9 +6,9 @@ public class ParallelAlgorithm implements Runnable {
     // nazwy plikow sa rozbite na czesci, ktore sklada metoda runScriptParallel().
     // trzeba podstaw nazwy np zbior_, numer iteracji np 2 oraz suffix czyli rozszerzenie np. .txt
     // co zlaczone poda pelna nazwe zbior_2.txt
-    String input = "turnover.csv";
+//    String input = "turnover.csv";
 //    String input = "prostate_cancer.txt";
-//    String input = "prost_cancer_mln.csv";
+    String input = "prost_cancer_mln.csv";
     String splitInput = "Split-data\\\\zbior_";
     String splitInputFileSuffix = ".csv";
     String outputTxtFile = "output_";
@@ -59,14 +59,14 @@ public class ParallelAlgorithm implements Runnable {
             String dfFullName = dfTxtFile + i + csvSuffix;
 
             // prostate cancer
-//            String command = "rscript --vanilla script.r " + inputFullName + " " +
-//                    outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator
-//                      + " " + dfFullName;
+            String command = "rscript --vanilla script.r " + inputFullName + " " +
+                    outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator
+                      + " " + dfFullName;
 
             // work
-            String command = "rscript --vanilla script-work.r " + inputFullName + " " +
-                    outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator
-                    + " " + dfFullName;
+//            String command = "rscript --vanilla script-work.r " + inputFullName + " " +
+//                    outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator
+//                    + " " + dfFullName;
 
             Thread t = new Thread(new ParallelAlgorithm(i, numberOfThreads, command));
             t.start();

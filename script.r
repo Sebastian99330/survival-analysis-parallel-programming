@@ -1,9 +1,9 @@
 args = commandArgs(trailingOnly=TRUE)
+# trzeba w wierszu ponizej, w funkcji c dac cudzyslowia miedzy elementami i przecinki miedzy nimi
+# args = array(c("prost_cancer_mln.csv", "output-seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.csv")) # dla seq
+#args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv")) # dla parallel
 
-# ten skrypt przyjmuje dwa argumenty:
-# 1 sciezka do pliku z danymi wejsciowymi oraz
-# 2 sciezka do pliku na dane wyjsciowe
-# Jak przy wywolaniu skryptu nie podano pierwszego argumentu to rzucamy blad
+
 if (length(args)==0) {
   stop("Sciezka do pliku wejsciowego jest wymagana.", call.=FALSE)
 } else if (length(args)==1) {
@@ -16,7 +16,7 @@ if (length(args)==0) {
 
 nazwa_folderu_output = args[5]
 
-# wrzucenie nazw plik�w do foleru output
+# wrzucenie nazw plikow w do foleru output
 output_txt = paste0(".//",nazwa_folderu_output,"//",args[2])
 KM_file_path = paste0(".//",nazwa_folderu_output,"//",args[3])
 CPH_file_path = paste0(".//",nazwa_folderu_output,"//",args[4])

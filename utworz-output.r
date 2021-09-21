@@ -1,4 +1,5 @@
 args = commandArgs(trailingOnly = TRUE)
+# args = as.vector(c("output_1")) lub c("output_seq") # albo array(c(...))
 
 if (length(args)==0) {
   stop("Nazwa katalogu jest wymagana.", call.=FALSE)

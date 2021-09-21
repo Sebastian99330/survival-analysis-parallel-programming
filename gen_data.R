@@ -52,4 +52,4 @@ differ <- (new - old)
 print(differ)
 
 # row names ma byc false, bo inaczej dokleja kolumne na poczatku
-write.table(output, file = "prost_cancer_mln.csv", sep = " ", row.names = FALSE)
+write.table(output, file = "prost_cancer_mln_comma.csv", sep = ",", row.names = FALSE)
