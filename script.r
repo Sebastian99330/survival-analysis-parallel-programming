@@ -1,7 +1,6 @@
-args = commandArgs(trailingOnly=TRUE)
+# args = commandArgs(trailingOnly=TRUE)
 # trzeba w wierszu ponizej, w funkcji c dac cudzyslowia miedzy elementami i przecinki miedzy nimi
-# args = array(c("prost_cancer_mln.csv", "output-seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.csv")) # dla seq
-#args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv")) # dla parallel
+args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment + age + sh + size + index")) # dla parallel
 
 
 if (length(args)==0) {
@@ -17,14 +16,20 @@ if (length(args)==0) {
 nazwa_folderu_output = args[5]
 
 # wrzucenie nazw plikow w do foleru output
+sciezka_do_input <- args[1]
 output_txt = paste0(".//",nazwa_folderu_output,"//",args[2])
 KM_file_path = paste0(".//",nazwa_folderu_output,"//",args[3])
 CPH_file_path = paste0(".//",nazwa_folderu_output,"//",args[4])
 my_separator = args[6]
 df_file <- args[7]
+time_status <- args[8]
+time_status <- noquote(time_status) # usuwam cudzyslowia ze zmiennej
+zmienne_grupowanie <- noquote(args[9]) # usuwam cudzyslowia ze zmiennej
+
+
 
 # wczytanie danych
-my_data <- read.table(args[1], sep = my_separator , header = T)
+my_data <- read.table(sciezka_do_input, sep = my_separator , header = T)
 # my_data <- read.table(args[1], sep = "" , header = T)
 
 start.time <- Sys.time()
@@ -38,8 +43,18 @@ library(survival)
 library(ggfortify) #plot
 
 # Kaplan Meier plot
-# grupuje po treatment
-mykm <- survfit(Surv(time, status) ~ treatment, data = my_data)
+# wszystko to co ponizej robimy po to, zeby sparametryzowac wywolanie funkcji, ktora buduje model coxa
+# potrzebujemy miec instrukcje, w ktorej podajemy zmienne po ktorej grupujemy jako parametr, ale po prostu podanie zmiennej
+# w miejscu zmiennych grupujacych rzuca blad 
+# interpreter wtedy nie patrzy co mamy zapisane w zmiennej zmienne_grupowanie, tylko probuje od razu po niej grupowac dane wejsciowe
+# tworze jedna instrukcje wsadzajac za parametr zmienne, po ktorych grupujemy (one zostaly podane jako argument odpalenia tego skryptu)
+instrukcja <- sprintf("survfit(Surv(%s) ~ %s, data = my_data)", time_status, zmienne_grupowanie)
+
+mykm <- survfit(Surv(exp, event) ~ branch, data = my_data)
+
+# za pomoca eval(parse(...) uruchamiamy instrukcje, ktora jest zapisana w zmiennej
+mykm <- eval(parse(text=instrukcja))
+
 
 # otwarcie pliku do ktorego rysujemy wykres KM
 jpeg(KM_file_path, width = 1698, height = 754)
@@ -58,7 +73,11 @@ dev.off()
 #survdiff(Surv(my_data$time, my_data$status) ~ my_data$treatment)
 
 # Cox Proportional Hazards Model
-cox <- coxph(Surv(time, status) ~ treatment + age + sh+ size + index, data = my_data)
+#cox <- coxph(Surv(time, status) ~ treatment + age + sh + size + index, data = my_data) # przed zmiana
+# tworze jedna instrukcje wsadzajac za parametr zmienne, po ktorych grupujemy (one zostaly podane jako argument odpalenia tego skryptu)
+instrukcja <- sprintf("coxph(Surv(time, status) ~ %s, data = my_data)", zmienne_grupowanie)
+# za pomoca eval(parse(...) uruchamiamy instrukcje, ktora jest zapisana w zmiennej
+cox <- eval(parse(text=instrukcja))
 
 
 # wypisanie statystyk - nie potrzebujemy tego, bo to wypisuje wspolczynniki,

@@ -11,12 +11,12 @@ public class SequentialAlgorithm {
 //        String rSeparator = "\"\""; // dla prostate cancer
         String rSeparator = ",";     // dla work oraz prost cancer mln
         String dfName = "ramka_seq.csv";
+        String timeStatus = "time, status"; // dla input prostate cancer
+        String groupingVariables = "treatment + age + sh + size + index"; // dla input prostate cancer
 
         String command = "rscript --vanilla script.r " + input + " " +
-                outputTxtFile + " " + kphPlotPath + " " + cphPlotPath + " " + outputFolderName + " " + rSeparator + " " + dfName;
-
-//        String command = "rscript --vanilla script-work.r " + input + " " +
-//                outputTxtFile + " " + kphPlotPath + " " + cphPlotPath + " " + outputFolderName + " " + rSeparator + " "  + dfName;
+                outputTxtFile + " " + kphPlotPath + " " + cphPlotPath + " " + outputFolderName + " " + rSeparator + " " +
+                dfName + " " + timeStatus + " " + groupingVariables;
 
         TalkToR.runScript(command, false);
     }
