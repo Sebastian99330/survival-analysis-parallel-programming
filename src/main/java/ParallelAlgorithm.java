@@ -108,9 +108,8 @@ public class ParallelAlgorithm implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Thread name (ParallelAlgorithm.run): " + Thread.currentThread().getName());
-        System.out.println("Thread " + currentThreadNumber + " out of " + numberOfThreads);
+        //System.out.println("Thread name (ParallelAlgorithm.run): " + Thread.currentThread().getName());
+        //System.out.println("Thread " + currentThreadNumber + " out of " + numberOfThreads);
         TalkToR.runScript(threadCommand, false);
-
     }
 }

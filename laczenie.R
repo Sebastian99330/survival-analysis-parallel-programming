@@ -1,5 +1,5 @@
 args = commandArgs(trailingOnly=TRUE)
-#args = as.vector(c(3)) # ewentualnie array(c(10))
+# args = as.vector(c(3)) # ewentualnie array(c(10))
 
 # Ten skrypt laczy output czesciowych zbiorow danych. Bierze np. 3 czesciowe outputy i laczy je w jeden.
 # Dzieki temu otrzymujemy polaczony zbior danych (liczonych sekwencyjnie),
@@ -12,8 +12,7 @@ args = commandArgs(trailingOnly=TRUE)
 #current_path
 #setwd(current_path)
 
-
-liczba_watkow <- args[1]
+liczba_watkow <- as.numeric(args[1])
 
 # ------------------ Wczytanie danych z plikow input ------------------ #
 
@@ -21,13 +20,12 @@ liczba_watkow <- args[1]
 # my_files = paste0("output_", 1:liczba_watkow, ".txt")
 my_files = paste0(".//output_", 1:liczba_watkow, "//", "ramka_", 1:liczba_watkow, ".rds")
 # zaladowanie kilku ramek danych (data frame) do listy
-lista_ramek <- lapply(my_files, read.table, header = T, sep=",")
-# nazywamy tak elementy listy (czyli pojedyncze data frame'y), aby ich nazwy pasowa�y do nazw plik�w
+lista_ramek <- lapply(my_files, readRDS)
+# nazywamy tak elementy listy (czyli pojedyncze data frame'y), aby ich nazwy pasowaly do nazw plikow
 names(lista_ramek) <- stringr::str_replace(my_files, pattern = ".rds", replacement = "")
 
 # data frame sekwencyjny, tzn. na zbior danych otrzymanych metoda sekwencyjna, bez dzielenia zbioru wejsciowego
-df_seq <- read.table(".//output_seq//ramka_seq.rds", sep = "," , header = T)
-
+df_seq <- readRDS(".//output_seq//ramka_seq.rds")
 
 # 2. Tworzymy pusty data frame na wynikowy (polaczony) zbior
 # df_final - data frame finalne, wynikowe
@@ -51,12 +49,6 @@ pomocniczy_df <- Reduce(function(...) merge(..., by = "time", all=T), lista_rame
 # df_final$time <- select(pomocniczy_df, time) # tak nie moge zrobic bo krzyczy ze sa rozne ilosci wierszy
 # dlatego trzeba polaczyc
 df_final <- merge(df_final, select(pomocniczy_df, time), by = "time", all = TRUE)
-
-
-
-# porownanie kolumny "time" z dwoch zbiorow - 1. output sekwencyjny, 2. output polaczony z czastkowych outputow (obliczonych rownolegle)
-# powinny byc takie same (na tym nam zalezy skladajac wyniki)
-identical(df_final[['time']],df_seq[['time']]) # zwraca TRUE
 
 
 
@@ -205,15 +197,15 @@ for (i in 1:length(lista_ramek)){
 
 # mamy juz polaczone poprawnie ale musimy zmienic typ kolumn zeby nam funkcja zwrocila true
 # sprawdzamy typy kolumn - moze sie potem ta instrukcja przydac przy porownywaniu jakby nie pokazywalo ze jest identyczne mimo ze wartosci bylyby takie same
-sapply(df_final, class)
-sapply(df_seq, class)
+# sapply(df_final, class)
+# sapply(df_seq, class)
 
 # chcemy typ interger po 1. bo to sa liczby calkowite
 # a po 2. bo kolumna n_event w data frame sekwencyjnym df_seq ma taki typ
 df_final$n_event <- as.integer(df_final$n_event)
 
 # badam czy kolumny sa identyczne
-identical(df_final[['n_event']],df_seq[['n_event']]) # zwraca TRUE
+# identical(df_final[['n_event']],df_seq[['n_event']]) # zwraca TRUE
 # wpis o tym ze polaczona kolumna jest identyczna
 bledy[nrow(bledy) + 1,] = c("n_event","identyczna")
 
@@ -281,7 +273,7 @@ for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
 # ukladamy wartosci z ramek pod siebie
 # czyli zamiast miec kilka ramek w liscie "obok siebie",
 # bedziemy mieli jedna ramke w ktorej zawartosci data frame beda doklejone po prostu pod spodem jako kolejne wiersze
-lista_df_rbind = bind_rows(lista_ramek_surv_na_to_next_wiersz)
+lista_df_rbind <- bind_rows(lista_ramek_surv_na_to_next_wiersz)
 
 # liczymy srednia z wierszy
 survival_polaczony <- lista_df_rbind %>%
