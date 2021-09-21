@@ -1,6 +1,6 @@
-# args = commandArgs(trailingOnly=TRUE)
-# trzeba w wierszu ponizej, w funkcji c dac cudzyslowia miedzy elementami i przecinki miedzy nimi
-args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment + age + sh + size + index")) # dla parallel
+args = commandArgs(trailingOnly=TRUE)
+# args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment", "treatment + age + sh + size + index")) # dla parallel
+# args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "exp, event", "branch", "branch + pipeline")) # dla parallel
 
 
 if (length(args)==0) {
@@ -24,7 +24,8 @@ my_separator = args[6]
 df_file <- args[7]
 time_status <- args[8]
 time_status <- noquote(time_status) # usuwam cudzyslowia ze zmiennej
-zmienne_grupowanie <- noquote(args[9]) # usuwam cudzyslowia ze zmiennej
+zmienne_grupowanie_km <- noquote(args[9]) # usuwam cudzyslowia ze zmiennej
+zmienne_grupowanie_cox <- noquote(args[10]) 
 
 
 
@@ -48,10 +49,7 @@ library(ggfortify) #plot
 # w miejscu zmiennych grupujacych rzuca blad 
 # interpreter wtedy nie patrzy co mamy zapisane w zmiennej zmienne_grupowanie, tylko probuje od razu po niej grupowac dane wejsciowe
 # tworze jedna instrukcje wsadzajac za parametr zmienne, po ktorych grupujemy (one zostaly podane jako argument odpalenia tego skryptu)
-instrukcja <- sprintf("survfit(Surv(%s) ~ %s, data = my_data)", time_status, zmienne_grupowanie)
-
-mykm <- survfit(Surv(exp, event) ~ branch, data = my_data)
-
+instrukcja <- sprintf("survfit(Surv(%s) ~ %s, data = my_data)", time_status, zmienne_grupowanie_km)
 # za pomoca eval(parse(...) uruchamiamy instrukcje, ktora jest zapisana w zmiennej
 mykm <- eval(parse(text=instrukcja))
 
@@ -75,7 +73,7 @@ dev.off()
 # Cox Proportional Hazards Model
 #cox <- coxph(Surv(time, status) ~ treatment + age + sh + size + index, data = my_data) # przed zmiana
 # tworze jedna instrukcje wsadzajac za parametr zmienne, po ktorych grupujemy (one zostaly podane jako argument odpalenia tego skryptu)
-instrukcja <- sprintf("coxph(Surv(time, status) ~ %s, data = my_data)", zmienne_grupowanie)
+instrukcja <- sprintf("coxph(Surv(%s) ~ %s, data = my_data)", time_status, zmienne_grupowanie_cox)
 # za pomoca eval(parse(...) uruchamiamy instrukcje, ktora jest zapisana w zmiennej
 cox <- eval(parse(text=instrukcja))
 
@@ -133,3 +131,4 @@ colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival")
 
 lokalizacja_output_ramki = paste0(".//",nazwa_folderu_output,"//",df_file)
 write.csv(tabelka_cox, lokalizacja_output_ramki, row.names = F)
+

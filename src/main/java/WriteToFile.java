@@ -19,6 +19,7 @@ public class WriteToFile {
     public static void saveTimeToMergedFolder(String seqTimeFormatted, String parallelTimeFormatted){
         // wypisanie czasu do pliku - do folderu z outputem z polaczona ramka danych po zrownolegleniu
         try {
+            Files.createDirectories(Paths.get("output_laczenie"));
             PrintWriter writer = new PrintWriter("output_laczenie\\\\czas.txt", "UTF-8");
             writer.println("Czas wykonania skryptu w sekundach dla algorytmu sekwencyjnego: " + seqTimeFormatted);
             writer.println("Czas wykonania skryptu w sekundach dla algorytmu rownoleglego: " + parallelTimeFormatted);
@@ -62,7 +63,7 @@ public class WriteToFile {
      */
     public static void writeRowsNumber(Integer numberOfThreads, String timeSeq, String timePar){
         try {
-            String numberOfLinesStr = "1000000,"; // obiekt niepotrzebny ale dla czytelnosci
+            String numberOfLinesStr = "63,"; // obiekt niepotrzebny ale dla czytelnosci
             // str moze miec wartosc np. "1785,2," czyli poczatek linijki ze statystykami - wpis do pliku csv
             // potem skrypt R dokonczy ta linijke i zrobi znak new line. Na kazde wykonanie programu bedzie 1 taka linijka
             String str = numberOfLinesStr + numberOfThreads.toString() + "," + timeSeq + "," + timePar + "\n";
