@@ -50,26 +50,27 @@ start.time <- Sys.time()
 library(survival)
 library(ggfortify) #plot
 
+# poki co zakomentowujemy KM bo nie budujemy tego modelu bo model Coxa jest lepszy
 # Kaplan Meier plot
 # wszystko to co ponizej robimy po to, zeby sparametryzowac wywolanie funkcji, ktora buduje model coxa
 # potrzebujemy miec instrukcje, w ktorej podajemy zmienne po ktorej grupujemy jako parametr, ale po prostu podanie zmiennej
 # w miejscu zmiennych grupujacych rzuca blad 
 # interpreter wtedy nie patrzy co mamy zapisane w zmiennej zmienne_grupowanie, tylko probuje od razu po niej grupowac dane wejsciowe
 # tworze jedna instrukcje wsadzajac za parametr zmienne, po ktorych grupujemy (one zostaly podane jako argument odpalenia tego skryptu)
-instrukcja <- sprintf("survfit(Surv(%s) ~ %s, data = my_data)", time_status, zmienne_grupowanie_km)
+# instrukcja <- sprintf("survfit(Surv(%s) ~ %s, data = my_data)", time_status, zmienne_grupowanie_km)
 # za pomoca eval(parse(...) uruchamiamy instrukcje, ktora jest zapisana w zmiennej
-mykm <- eval(parse(text=instrukcja))
+# mykm <- eval(parse(text=instrukcja))
 
 
 # otwarcie pliku do ktorego rysujemy wykres KM
-jpeg(KM_file_path, width = 1698, height = 754)
+# jpeg(KM_file_path, width = 1698, height = 754)
 
 # Wykres zawiera dwie linie, po jednej dla kazdej wartosci zmiennej "treatment" czyli 1 i 2
 # Sa takze zaznaczone przedzialy ufnosci wokol kazdej linii
-autoplot(mykm)
+# autoplot(mykm)
 
 # zamkniecie pliku do ktoego rysujemy wykres
-dev.off()
+# dev.off()
 
 
 

@@ -34,22 +34,14 @@ x <- c("time", "n_risk", "n_event", "survival_na_rm", "survival_na_next_row")
 colnames(df_final) <- x
 
 library(dplyr)
-library(tidyverse)
 
-
-# Teraz polacze te oddzielne czesci w jeden zbior danych.
-# pomocniczy_df - przejsciowy data frame podczas laczenia.
-# do niego wrzucimy wszystkie wersje wszystkich kolumn.
-# tzn. zamiast miec kilka data frame, to bedziemy miec jeden wielki - robimy to np. po to zeby otrzyamac polaczona kolumne time
-pomocniczy_df <- Reduce(function(...) merge(..., by = "time", all=T), lista_ramek)
-nrow(pomocniczy_df)
 
 # ------------------ Laczenie kolumny time ------------------ #
 
 # narazie do wynikowej ramki wrzucimy kolumne time bo ona juz jest gotowa
 # df_final$time <- select(pomocniczy_df, time) # tak nie moge zrobic bo krzyczy ze sa rozne ilosci wierszy
 # dlatego trzeba polaczyc
-df_final <- merge(df_final, select(pomocniczy_df, time), by = "time", all = TRUE)
+df_final <- merge(df_final, select(Reduce(function(...) merge(..., by = "time", all=T), lista_ramek), time), by = "time", all = TRUE)
 
 
 
@@ -63,7 +55,6 @@ df_final <- merge(df_final, select(pomocniczy_df, time), by = "time", all = TRUE
 for (i in 1:length(lista_ramek)){
   lista_ramek[[i]] <- merge(lista_ramek[[i]], select(df_final, time), by = "time", all = TRUE)
 }
-
 
 # ------------------ Koniec laczenia kolumny time ------------------ #
 
@@ -158,10 +149,6 @@ for (i in 1:length(lista_ramek)){
 # ale procentowo juz posumowane dla calej kolumny np. "kolumna n_risk rozni sie 1% od sekwencyjnego
 # tutaj mamy roznice w kazdym wierszu kolumny a nie calosciowo dla kolumny
 bledy_kazdy_wiersz <- select(df_final,time)
-tail(df_final)
-tail(df_seq)
-abs(df_final$n_risk - df_seq$n_risk)
-nrow(df_seq)
 bledy_kazdy_wiersz$n_risk_errors <- c(abs(df_final$n_risk - df_seq$n_risk))
 
 # sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
@@ -357,6 +344,7 @@ potrzebne_staty_df <- potrzebne_staty_df[,-2] # usuwam kolumne "n_event" bo ona 
 # lacze pierwszy wiersz we wpis string
 wpis <- paste0(potrzebne_staty_df[1,1],",",potrzebne_staty_df[1,2],",",potrzebne_staty_df[1,3],",")
 # wpis prawie gotowy ale trzeba jeszcze usunac ' %', zeby zostaly same liczby, a nie np. 0.18 %
+library("stringr")
 wpis <- str_replace_all(wpis, " %", "")
 
 # write(string, file = ".//statystyki.csv", append = TRUE) # inna opcja, dokleja new line na koniec linii
@@ -364,3 +352,4 @@ cat(wpis, file = ".//statystyki.csv", append = T)
 #file_connection = file(".//statystyki.csv", open='wb') # open='a' wczesniej bylo
 #writeLines(text = string, con = file_connection)
 #close(file_connection)
+

@@ -1,9 +1,7 @@
 df <- read.table("statystyki.csv", sep = "," , header = T)
-
-df <- df[,c(4,5,6,7,8,9,1,2,3)] #zamieniam kolejnosc kolumn
+df <- df[,c("liczba_wierszy","liczba_watkow","czas_seq","czas_par","par_lepsze_niz_seq","nazwa_inputu","n_risk","n_survival_bez_na","n_survival_na_to_wiersz_ponizej")] #zamieniam kolejnosc kolumn
 
 library(dplyr)
-
 df_wyniki <- df %>%
   group_by(nazwa_inputu, liczba_wierszy, liczba_watkow) %>%
   summarise(czas_seq = round(mean(czas_seq, na.rm=TRUE),4), 
@@ -14,10 +12,11 @@ df_wyniki <- df %>%
             liczba_testow = n()) %>%
             data.frame()
 
-
 # otrzymujemy przyspieszenie - ile razy jest szybciej?
 par_jest_jaka_czescia_seq <- round((df_wyniki$czas_seq / df_wyniki$czas_par),2)
 df_wyniki$par_better_seq <- paste0(as.character(par_jest_jaka_czescia_seq),"x")
 
+#zamieniam kolejnosc kolumn
+df_wyniki <- df_wyniki[,c("nazwa_inputu","liczba_wierszy","liczba_watkow","liczba_testow","czas_seq","czas_par","par_better_seq","n_risk","n_survival_bez_na","n_survival_na_to_wiersz_ponizej")]
 
 write.csv(df_wyniki, ".//pogrupowany-wynik-testow.csv", row.names = F)
