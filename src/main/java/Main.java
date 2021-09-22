@@ -3,17 +3,18 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        final Integer numberOfThreads = 4;
-        final int numberOfFirstThread = 1;
-//        String argsSeq [] = {"turnover.csv","output-seq.txt","km_seq.jpg","cph_seq.jpg","output_seq",
-//                ",","ramka_seq.rds","exp, event","branch","branch + pipeline"}; // dla work
-         String argsSeq [] = {"prostate_cancer.csv","output-seq.txt","km_seq.jpg","cph_seq.jpg","output_seq",
-                ",","ramka_seq.rds","time, status","treatment","treatment + age + sh + size + index"}; // dla prostate cancer
 
-//        String argsPar [] = {"turnover.csv","Split-data\\\\zbior_",".rds","output_",".txt","km_","cph_",".jpg",
-//                "output_", ",","ramka_",".rds", "exp, event","branch","branch + pipeline"}; // dla work
-        String argsPar [] = {"prostate_cancer.csv","Split-data\\\\zbior_",".rds","output_",".txt","km_","cph_",".jpg",
-                "output_", ",","ramka_",".rds", "time, status","treatment","treatment + age + sh + size + index"}; // dla prostate cancer
+        final Integer numberOfThreads = 11;
+        final int numberOfFirstThread = 1;
+        String argsSeq [] = {"turnover.csv","output-seq.txt","km_seq.jpg","cph_seq.jpg","output_seq",
+                ",","ramka_seq.rds","exp, event","branch","branch + pipeline"}; // dla work
+//         String argsSeq [] = {"prost_cancer_3_mln.csv","output-seq.txt","km_seq.jpg","cph_seq.jpg","output_seq",
+//                ",","ramka_seq.rds","time, status","treatment","treatment + age + sh + size + index"}; // dla prostate cancer
+
+        String argsPar [] = {"turnover.csv","Split-data\\\\zbior_",".rds","output_",".txt","km_","cph_",".jpg",
+                "output_", ",","ramka_",".rds", "exp, event","branch","branch + pipeline"}; // dla work
+//        String argsPar [] = {"prost_cancer_3_mln.csv","Split-data\\\\zbior_",".rds","output_",".txt","km_","cph_",".jpg",
+//                "output_", ",","ramka_",".rds", "time, status","treatment","treatment + age + sh + size + index"}; // dla prostate cancer
 
         TalkToR.clearWorkspace(numberOfThreads); // tworzy puste foldery na output (i ewentualnie usuwa istniejace)
 
