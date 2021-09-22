@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 public class Main {
     public static void main(String[] args) {
         String[] newArgs = new String[5];
-        if(args.length != 4){
+        if(args.length != 5){
             newArgs[0] = "turnover.csv"; // input file name
             newArgs[1] = "exp, event"; // variables: time, status // exp, event / time, status
             newArgs[2] = "branch";     // treatment / branch
