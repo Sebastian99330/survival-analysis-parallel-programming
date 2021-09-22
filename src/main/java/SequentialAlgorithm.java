@@ -10,6 +10,8 @@ public class SequentialAlgorithm {
         String outputFolderName = "output_seq";
 //        String rSeparator = "\"\""; // dla prostate cancer
         String rSeparator = ",";     // dla work oraz prost cancer mln
+        // sekwencyjny wypisuje csv, bo to juz nie jest posredni output tylko ostateczny\
+        // jednak nie, musi byc rds bo potem rownolegle jeszcze to wczytuja
 //        String dfName = "ramka_seq.csv";
         String dfName = "ramka_seq.rds";
 //        String timeStatus = "time, status"; // dla input prostate cancer

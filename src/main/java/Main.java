@@ -40,7 +40,7 @@ public class Main {
         System.out.println("parallelTimeFormatted: " + parallelTimeFormatted);
         // wypisanie czasu wykonania programu do pliku -
         // do folderu, do ktorego wpada output z laczenia modeli po zrownolegleniu
-        WriteToFile.saveTimeToMergedFolder(seqTimeFormatted, parallelTimeFormatted);
+        // WriteToFile.saveTimeToMergedFolder(seqTimeFormatted, parallelTimeFormatted);
         WriteToFile.appendStatsToFile(seqTimeFormatted, parallelTimeFormatted);
         // wypisanie do zbiorczego programu ze statystykami wykonania programu (dopisanie na jego koniec z kazdym wykonaniem programu, nie tworzenie od nowa)
 

@@ -327,20 +327,20 @@ bledy[nrow(bledy) + 1,] <- c("n_survival_na_to_wiersz_ponizej",procent_blad_surv
 
 
 # Usuniecie katalogu na output jesli istnieje
-unlink(".//output_laczenie", recursive = TRUE)
+# unlink(".//output_laczenie", recursive = TRUE)
 
 # utworzenie katalogu na nowe pliki z danymi wejsciowymi
-dir.create(file.path(".//output_laczenie"), showWarnings = FALSE)
+# dir.create(file.path(".//output_laczenie"), showWarnings = FALSE)
 
 # wypisanie wszystkich waznych danych - wyniku skryptu do folderu na output
-write.csv(df_final, ".//output_laczenie//output-polaczone.csv", row.names = F)
-write.csv(wszystkie_survivale, ".//output_laczenie//wszystkie_survivale.csv", row.names = F)
-write.csv(bledy_kazdy_wiersz, ".//output_laczenie//bledy-cale-wiersze.csv", row.names = F)
-write.csv(bledy, ".//output_laczenie//bledy_podsumowanie.csv", row.names=F)
+# write.csv(df_final, ".//output_laczenie//output-polaczone.csv", row.names = F)
+# write.csv(wszystkie_survivale, ".//output_laczenie//wszystkie_survivale.csv", row.names = F)
+# write.csv(bledy_kazdy_wiersz, ".//output_laczenie//bledy-cale-wiersze.csv", row.names = F)
+# write.csv(bledy, ".//output_laczenie//bledy_podsumowanie.csv", row.names=F)
 
 # wypisanie statystyk jako nowe linijki do istniejacego pliku z wynikami
-write(paste0("\n\nLiczba watkow: ",liczba_watkow), file = ".//wyniki-testow-wszystkie.csv", append = TRUE)
-write.table(bledy, ".//wyniki-testow-wszystkie.csv", row.names=F, append = T)
+# write(paste0("\n\nLiczba watkow: ",liczba_watkow), file = ".//wyniki-testow-wszystkie.csv", append = TRUE)
+# write.table(bledy, ".//wyniki-testow-wszystkie.csv", row.names=F, append = T)
 
 # transponuje ramke na bledy
 potrzebne_staty_df <- as.data.frame(t(bledy))

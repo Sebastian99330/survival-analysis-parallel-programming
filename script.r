@@ -113,15 +113,15 @@ time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch m
 
 # zapisze do pliku dane tekstowe - statystyki z log-rank oraz z regresji coxa
 # ustawiam plik do ktoego bedziemy pisac
-sink(output_txt)
-print(paste0("Wykonywanie skryptu generujacego wykres KM, obliczajacego test log-rank oraz przetwarzajacy model regresji coxa: ",time.taken, " sekund(y)"))
-print(paste0("Start wykonania skryptu: ",start.time))
-print(paste0("Koniec wykonania skryptu: ",end.time))
-
-#zamkniecie pliku output
-sink()
-
-
+# sink(output_txt)
+# print(paste0("Wykonywanie skryptu generujacego wykres KM, obliczajacego test log-rank oraz przetwarzajacy model regresji coxa: ",time.taken, " sekund(y)"))
+# print(paste0("Start wykonania skryptu: ",start.time))
+# print(paste0("Koniec wykonania skryptu: ",end.time))
+# 
+# #zamkniecie pliku output
+# sink()
+# 
+# 
 
 
 
@@ -137,7 +137,14 @@ tabelka_cox <- as.data.frame(podsumowanie_cox[c("time", "n.risk", "n.event", "su
 colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival")
 
 lokalizacja_output_ramki = paste0(".//",nazwa_folderu_output,"//",df_file)
-# write.csv(tabelka_cox, lokalizacja_output_ramki, row.names = F)
+
+# zapis outputu do pliku
+# jak obliczalismy plik sekwencyjny, to output jest juz 'ostateczny' i ma byc zapisany do pliku csv
+# jak obliczalismy rownolegle, to output z tego jest jedynie przejsciowy i zapisujemy to rds
+# dlatego tu sprawdzimy czy 3 ostatnie znaki inputu to csv i czy rds i zapiszemy w odpowiedni sposob
+# if(tolower(suffix_inputu) == "csv"){
+#   write.csv(tabelka_cox, lokalizacja_output_ramki, row.names = F)
+# } else if (tolower(suffix_inputu) == "rds"){
+#   saveRDS(tabelka_cox, lokalizacja_output_ramki)
+# }
 saveRDS(tabelka_cox, lokalizacja_output_ramki)
-
-
