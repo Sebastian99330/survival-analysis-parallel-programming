@@ -42,6 +42,7 @@ library(tidyverse)
 # do niego wrzucimy wszystkie wersje wszystkich kolumn.
 # tzn. zamiast miec kilka data frame, to bedziemy miec jeden wielki - robimy to np. po to zeby otrzyamac polaczona kolumne time
 pomocniczy_df <- Reduce(function(...) merge(..., by = "time", all=T), lista_ramek)
+nrow(pomocniczy_df)
 
 # ------------------ Laczenie kolumny time ------------------ #
 
@@ -157,6 +158,10 @@ for (i in 1:length(lista_ramek)){
 # ale procentowo juz posumowane dla calej kolumny np. "kolumna n_risk rozni sie 1% od sekwencyjnego
 # tutaj mamy roznice w kazdym wierszu kolumny a nie calosciowo dla kolumny
 bledy_kazdy_wiersz <- select(df_final,time)
+tail(df_final)
+tail(df_seq)
+abs(df_final$n_risk - df_seq$n_risk)
+nrow(df_seq)
 bledy_kazdy_wiersz$n_risk_errors <- c(abs(df_final$n_risk - df_seq$n_risk))
 
 # sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi

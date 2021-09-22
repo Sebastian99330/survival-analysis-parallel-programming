@@ -3,7 +3,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        final int numberOfThreads = 3;
+        final Integer numberOfThreads = 3;
         final int numberOfFirstThread = 1;
         String argsSeq [] = {"turnover.csv","output-seq.txt","km_seq.jpg","cph_seq.jpg","output_seq",
                 ",","ramka_seq.rds","exp, event","branch","branch + pipeline"}; // dla work
@@ -53,7 +53,7 @@ public class Main {
         WriteToFile.appendStatsToFile(seqTimeFormatted, parallelTimeFormatted);
         // wypisanie do zbiorczego programu ze statystykami wykonania programu (dopisanie na jego koniec z kazdym wykonaniem programu, nie tworzenie od nowa)
 
-        WriteToFile.writeRowsNumber(numberOfThreads, seqTimeFormatted, parallelTimeFormatted);
+        WriteToFile.writeRowsNumber(numberOfThreads, seqTimeFormatted, parallelTimeFormatted, argsSeq[0]);
 
         parallelAlgorithm.writeGroupedOutputToFile();
 

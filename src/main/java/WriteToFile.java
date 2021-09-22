@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
@@ -59,19 +61,19 @@ public class WriteToFile {
     /**
      * metoda wpisujaca do pliku testkwego liczbe wierszy w danych wejsciowych
      * potrzebna jest, bo potrzebujemy pliku, ktory zbierze w calosc wyniki testow
-     * @param numberOfThreads
+     * @param numberOfThreads Liczba watkow dla ktorych obliczenia sa wykonywane rownolegle
      */
-    public static void writeRowsNumber(Integer numberOfThreads, String timeSeq, String timePar){
+    public static void writeRowsNumber(Integer numberOfThreads, String timeSeq, String timePar, String inputFileName){
         try {
-            String numberOfLinesStr = "800000,"; // obiekt niepotrzebny ale dla czytelnosci
+            // obiekt niepotrzebny ale dla czytelnosci. -1 bo pierwsza linia to header
+            String numberOfLinesStr = Integer.toString(checkNumberOfLinesInAFile(inputFileName)-1);
             // otrzymujemy przyspieszenie - ile razy jest szybciej?
             Double parTimePercentageOfSeq = (double)(Math.round((Double.parseDouble(timeSeq) / Double.parseDouble(timePar))*100))/100;
             String strParTimePercentageOfSeq = Double.toString(parTimePercentageOfSeq) + "x";
-            String inputDatasetName = "work-sztuczne";
             // str moze miec wartosc np. "1785,2," czyli poczatek linijki ze statystykami - wpis do pliku csv
             // potem skrypt R dokonczy ta linijke i zrobi znak new line. Na kazde wykonanie programu bedzie 1 taka linijka
-            String str = numberOfLinesStr + numberOfThreads.toString() + "," + timeSeq + "," + timePar  + "," + strParTimePercentageOfSeq +
-                    "," + inputDatasetName + "\n";
+            String str = numberOfLinesStr + "," + numberOfThreads.toString() + "," + timeSeq + "," + timePar  + "," + strParTimePercentageOfSeq +
+                    "," + inputFileName + "\n";
             // wstawia znak nowej linii zanim doklei zawartosc stringa str
 //            Files.write(Paths.get("statystyki.csv"), str.getBytes(), StandardOpenOption.APPEND);
             // nie wstawia nowej linii, tylko od razu dopisuje na koncu ostatniej linijki
@@ -82,7 +84,18 @@ public class WriteToFile {
             e.printStackTrace();
         }
     }
-    
+
+    public static int checkNumberOfLinesInAFile(String input){
+        int lines = 0;
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(input));
+            while (reader.readLine() != null) { lines++; }
+            reader.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return lines;
+    }
 
     public static String getMillisAsFormattedSeconds(long millis) {
         long secs = millis / 1000;
