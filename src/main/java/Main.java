@@ -1,20 +1,38 @@
 import com.google.common.base.Stopwatch;
+
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
+        String[] newArgs = new String[5];
+        if(args.length != 4){
+            newArgs[0] = "turnover.csv"; // input file name
+            newArgs[1] = "exp, event"; // variables: time, status // exp, event / time, status
+            newArgs[2] = "branch";     // treatment / branch
+            newArgs[3] = "branch + pipeline"; // treatment + age + sh + size + index / branch + pipeline
+            newArgs[4] = "3";  // number of threads
+        }
+        else {
+            newArgs[0] = args[0];
+            newArgs[1] = args[1];
+            newArgs[2] = args[2];
+            newArgs[3] = args[3];
+            newArgs[4] = args[4];
+        }
 
-        final Integer numberOfThreads = 11;
+        String inputFileName = newArgs[0];
+        String timeStatus = newArgs[1];
+        String groupingKM = newArgs[2];
+        String groupingCPH = newArgs[3];
+
+        final Integer numberOfThreads = Integer.parseInt(newArgs[4]);
         final int numberOfFirstThread = 1;
-        String argsSeq [] = {"turnover.csv","output-seq.txt","km_seq.jpg","cph_seq.jpg","output_seq",
-                ",","ramka_seq.rds","exp, event","branch","branch + pipeline"}; // dla work
-//         String argsSeq [] = {"prost_cancer_3_mln.csv","output-seq.txt","km_seq.jpg","cph_seq.jpg","output_seq",
-//                ",","ramka_seq.rds","time, status","treatment","treatment + age + sh + size + index"}; // dla prostate cancer
+        String argsSeq [] = {inputFileName,"output-seq.txt","km_seq.jpg","cph_seq.jpg","output_seq",
+                ",","ramka_seq.rds",timeStatus,groupingKM,groupingCPH};
 
-        String argsPar [] = {"turnover.csv","Split-data\\\\zbior_",".rds","output_",".txt","km_","cph_",".jpg",
-                "output_", ",","ramka_",".rds", "exp, event","branch","branch + pipeline"}; // dla work
-//        String argsPar [] = {"prost_cancer_3_mln.csv","Split-data\\\\zbior_",".rds","output_",".txt","km_","cph_",".jpg",
-//                "output_", ",","ramka_",".rds", "time, status","treatment","treatment + age + sh + size + index"}; // dla prostate cancer
+        String argsPar [] = {inputFileName,"Split-data\\\\zbior_",".rds","output_",".txt","km_","cph_",".jpg",
+                "output_", ",","ramka_",".rds", timeStatus,groupingKM,groupingCPH};
 
         TalkToR.clearWorkspace(numberOfThreads); // tworzy puste foldery na output (i ewentualnie usuwa istniejace)
 
@@ -51,7 +69,8 @@ public class Main {
         // wypisanie czasu wykonania programu do pliku -
         // do folderu, do ktorego wpada output z laczenia modeli po zrownolegleniu
         // WriteToFile.saveTimeToMergedFolder(seqTimeFormatted, parallelTimeFormatted);
-        WriteToFile.appendStatsToFile(seqTimeFormatted, parallelTimeFormatted);
+        // jednak statystyki zapisujemy do innych plikow, w inny sposob wiec zakomentowuje
+        // WriteToFile.appendStatsToFile(seqTimeFormatted, parallelTimeFormatted);
         // wypisanie do zbiorczego programu ze statystykami wykonania programu (dopisanie na jego koniec z kazdym wykonaniem programu, nie tworzenie od nowa)
 
         WriteToFile.writeRowsNumber(numberOfThreads, seqTimeFormatted, parallelTimeFormatted, argsSeq[0]);
