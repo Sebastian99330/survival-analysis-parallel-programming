@@ -1,5 +1,5 @@
-args = commandArgs(trailingOnly=TRUE)
-# args = as.vector(c(3)) # ewentualnie array(c(10))
+# args = commandArgs(trailingOnly=TRUE)
+args = as.vector(c(3)) # ewentualnie array(c(10))
 
 # Ten skrypt laczy output czesciowych zbiorow danych. Bierze np. 3 czesciowe outputy i laczy je w jeden.
 # Dzieki temu otrzymujemy polaczony zbior danych (liczonych sekwencyjnie),
@@ -354,3 +354,8 @@ if(!file.exists(".//statystyki.csv")){
   cat(headers, file = ".//statystyki.csv", append = T)
 }
 cat(wpis, file = ".//statystyki.csv", append = T)
+
+
+# wygenerowanie grafu z polaczonej ramki danych i zapisanie jej do pliku
+source(file.path("./narysuj_graf.R"))
+narysuj_graf(df_final)
