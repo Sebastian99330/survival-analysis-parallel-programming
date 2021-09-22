@@ -1,5 +1,5 @@
-# args = commandArgs(trailingOnly=TRUE)
-args = as.vector(c(3)) # ewentualnie array(c(10))
+args = commandArgs(trailingOnly=TRUE)
+# args = as.vector(c(3)) # ewentualnie array(c(10))
 
 # Ten skrypt laczy output czesciowych zbiorow danych. Bierze np. 3 czesciowe outputy i laczy je w jeden.
 # Dzieki temu otrzymujemy polaczony zbior danych (liczonych sekwencyjnie),
@@ -355,7 +355,17 @@ if(!file.exists(".//statystyki.csv")){
 }
 cat(wpis, file = ".//statystyki.csv", append = T)
 
-
 # wygenerowanie grafu z polaczonej ramki danych i zapisanie jej do pliku
 source(file.path("./narysuj_graf.R"))
-narysuj_graf(df_final)
+narysuj_graf(df_final$time, df_final$survival_na_next_row)
+
+# Usuniecie katalogu na output jesli istnieje
+unlink(".//output_polaczone", recursive = TRUE)
+
+# utworzenie katalogu na nowe pliki z danymi wejsciowymi
+dir.create(file.path(".//output_polaczone"), showWarnings = FALSE)
+
+png(filename=".//output_polaczone/cph_merged.png")
+plot(df_final$time, df_final$survival_na_next_row, type="l")
+
+dev.off()

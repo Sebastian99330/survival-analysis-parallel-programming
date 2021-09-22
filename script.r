@@ -1,7 +1,7 @@
 args = commandArgs(trailingOnly=TRUE)
 # args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment", "treatment + age + sh + size + index")) # dla parallel
 # args = array(c("Split-data\\zbior_2.rds", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.rds", "exp, event", "branch", "branch + pipeline")) # dla parallel
-# args = array(c("turnover.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "exp, event", "branch", "branch + pipeline")) # dla parallel
+#args = array(c("turnover.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "exp, event", "branch", "branch + pipeline")) # dla parallel
 
 
 
@@ -106,7 +106,7 @@ jpeg(CPH_file_path, width = 1698, height = 754)
 # wiec trzeba go wpakowac po drodze w funkcje survfit()
 autoplot(survfit(cox))
 
-
+dev.off()
 
 end.time <- Sys.time()
 time.taken <- as.numeric(end.time - start.time)
