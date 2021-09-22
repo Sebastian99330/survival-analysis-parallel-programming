@@ -6,41 +6,48 @@ public class ParallelAlgorithm implements Runnable {
     // nazwy plikow sa rozbite na czesci, ktore sklada metoda runScriptParallel().
     // trzeba podstaw nazwy np zbior_, numer iteracji np 2 oraz suffix czyli rozszerzenie np. .txt
     // co zlaczone poda pelna nazwe zbior_2.txt
-    String input = "turnover.csv";
-//    String input = "prostate_cancer.csv";
-//    String input = "prost_cancer_mln.csv";
-    String splitInput = "Split-data\\\\zbior_";
-//    String splitInputFileSuffix = ".csv";
-    String splitInputFileSuffix = ".rds";
-    String outputTxtFile = "output_";
-    String txtSuffix = ".txt";
-    String kphPlotOutputPath = "km_";
-    String cphPlotOutputPath = "cph_";
-    String imgSuffix = ".jpg";
-    String outputFolderName = "output_";
-    String rSeparator = ","; // separator dla wszystkich plikow z podzielonymi danymi wejsciowymi to przecinek ","
-    String dfTxtFile = "ramka_";
-    String csvSuffix = ".csv";
-    String rdsSuffix = ".rds";
-//    String timeStatus = "time, status"; // dla input prostate cancer
-//    String groupingVariablesKm = "treatment"; // dla input prostate cancer
-//    String groupingVariablesCox = "treatment + age + sh + size + index"; // dla input prostate cancer
-    String timeStatus = "exp, event"; // dla input work
-    String groupingVariablesKm = "branch"; // dla input work
-    String groupingVariablesCox = "branch + pipeline"; // dla input work
-
+    String input;
+    String splitInput;
+    String splitInputFileSuffix;
+    String outputTxtFile;
+    String txtSuffix;
+    String kphPlotOutputPath;
+    String cphPlotOutputPath;
+    String imgSuffix;
+    String outputFolderName;
+    String rSeparator;
+    String dfTxtFile;
+    String rdsSuffix;
+    String timeStatus;
+    String groupingVariablesKm;
+    String groupingVariablesCox;
+    String [] parArgs; // trzeba zapisac array w tej klasie, bo musimy go podac jako argument w metodzie runScriptParallel
 
     int currentThreadNumber;
     int numberOfThreads;
     String threadCommand;
 
-
-    public ParallelAlgorithm(int currentThreadNumber, int numberOfThreads, String threadCommand) {
+    public ParallelAlgorithm(int currentThreadNumber, int numberOfThreads, String threadCommand, String[] args) {
         this.currentThreadNumber = currentThreadNumber;
         this.numberOfThreads = numberOfThreads;
         this.threadCommand = threadCommand;
+        this.parArgs = args;
+        this.input = args[0];
+        this.splitInput = args[1];
+        this.splitInputFileSuffix = args[2];
+        this.outputTxtFile = args[3];
+        this.txtSuffix = args[4];
+        this.kphPlotOutputPath = args[5];
+        this.cphPlotOutputPath = args[6];
+        this.imgSuffix = args[7];
+        this.outputFolderName = args[8];
+        this.rSeparator = args[9];
+        this.dfTxtFile = args[10];
+        this.rdsSuffix = args[11];
+        this.timeStatus = args[12];
+        this.groupingVariablesKm = args[13];
+        this.groupingVariablesCox = args[14];
     }
-
 
     // metoda odpala skrypt ktory dzieli plik z danymi wejsciowymi na odpowiednia ilosc czesci
     // (tworzy kilka plikow z czesciami danych) zeby moc je potem rownolegle obliczyc
@@ -71,7 +78,7 @@ public class ParallelAlgorithm implements Runnable {
                     dfFullName + " " + timeStatus + " " + groupingVariablesKm + " " + groupingVariablesCox;
 
 
-            Thread t = new Thread(new ParallelAlgorithm(i, numberOfThreads, command));
+            Thread t = new Thread(new ParallelAlgorithm(i, numberOfThreads, command, parArgs));
             t.start();
             threads.add(t);
         }
@@ -101,7 +108,7 @@ public class ParallelAlgorithm implements Runnable {
     /**
      * Metoda bierze statystyki ktore wyliczyl program, liczy srednia i wypisuje do pliku.
      */
-    public static void writeGroupedOutputToFile(){
+    public void writeGroupedOutputToFile(){
         String command = "rscript --vanilla odczyt-testow.R";
         TalkToR.runScript(command, false);
     }
