@@ -48,7 +48,7 @@ if(tolower(suffix_inputu) == "csv"){
 
 
 library(survival)
-# library(ggfortify) #plot KM
+library(ggfortify) #plot KM
 
 # poki co zakomentowujemy KM bo nie budujemy tego modelu bo model Coxa jest lepszy
 # Kaplan Meier plot
@@ -92,6 +92,20 @@ tabelka_cox <- as.data.frame(podsumowanie_cox[c("time", "n.risk", "n.event", "su
 # zamieniamy . na _ zeby sie nie mylilo z separatorem liczb potem
 colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival","lower","upper")
 
+# narysujemy teraz wykres za za pomoca domyslnej funkcji rysujacej
+
+# funkcja autoplot() nie przyjmuje bezposrednio obiektu cox
+# czyli obiektu, ktory zwraca funkcja coxph,
+# wiec trzeba go wpakowac po drodze w funkcje survfit()
+# otwarcie pliku do ktoego rysujemy wykres z regresji coxa
+# dodajemy do nazwy pliku "auto", czyli np. .//output_seq//cph_seq.jpg 
+# zostanie zmienione na .//output_seq//cph_seq_auto.jpg
+name_base <- substr(CPH_file_path,1,nchar(CPH_file_path)-4)
+name_suffix <- substr(CPH_file_path,nchar(CPH_file_path)-3,nchar(CPH_file_path))
+CPH_file_path_auto <- paste0(name_base, '_auto',name_suffix)
+jpeg(CPH_file_path_auto, width = 1698, height = 754)
+autoplot(survfit(cox)) 
+dev.off()
 
 
 # wypisanie statystyk - nie potrzebujemy tego, bo to wypisuje wspolczynniki,
@@ -108,6 +122,7 @@ colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival","lower","uppe
 library(ggplot2)
 library(utile.visuals)
 
+# narysujemy wykres funkcji survival uzywajac wartosci z tabeli
 # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
 jpeg(CPH_file_path, width = 1698, height = 754)
 
@@ -115,15 +130,8 @@ jpeg(CPH_file_path, width = 1698, height = 754)
 ggplot2::ggplot(tabelka_cox, aes(time,survival)) +
   ggplot2::geom_step() +
   utile.visuals::geom_stepconfint(aes(ymin = lower, ymax = upper), alpha = 0.3)
-  
-
 dev.off()
 
-
-# funkcja autoplot() nie przyjmuje bezposrednio obiektu cox
-# czyli obiektu, ktory zwraca funkcja coxph,
-# wiec trzeba go wpakowac po drodze w funkcje survfit()
-#autoplot(survfit(cox)) # nie rysujemy automatycznie tylko sami, zeby rysowac w taki sam sposob jak po polaczeniu ramek potem
 
 
 # end.time <- Sys.time()
