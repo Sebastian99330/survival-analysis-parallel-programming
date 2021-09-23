@@ -48,7 +48,7 @@ if(tolower(suffix_inputu) == "csv"){
 
 
 library(survival)
-library(ggfortify) #plot
+# library(ggfortify) #plot KM
 
 # poki co zakomentowujemy KM bo nie budujemy tego modelu bo model Coxa jest lepszy
 # Kaplan Meier plot
@@ -106,7 +106,6 @@ colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival","lower","uppe
 
 
 library(ggplot2)
-library(broom)
 library(utile.visuals)
 
 # otwarcie pliku do ktoego rysujemy wykres z regresji coxa

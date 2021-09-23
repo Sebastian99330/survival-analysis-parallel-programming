@@ -29,8 +29,8 @@ df_seq <- readRDS(".//output_seq//ramka_seq.rds")
 
 # 2. Tworzymy pusty data frame na wynikowy (polaczony) zbior
 # df_final - data frame finalne, wynikowe
-df_final <- data.frame(matrix(ncol = 5, nrow = 0))
-x <- c("time", "n_risk", "n_event", "survival_na_rm", "survival_na_next_row")
+df_final <- data.frame(matrix(ncol = 7, nrow = 0))
+x <- c("time", "n_risk", "n_event", "survival_na_rm", "survival_na_next_row", "lower", "upper")
 colnames(df_final) <- x
 
 library(dplyr)
@@ -232,7 +232,6 @@ df_final$survival_na_rm <- survival_polaczony$avg_survival
 
 # sprawdzamy roznice
 bledy_kazdy_wiersz$survival_na_rm_err <- abs(df_final$survival_na_rm  - df_seq$survival)
-bledy_kazdy_wiersz$survival_na_rm_err <- round(bledy_kazdy_wiersz$survival_na_rm_err,4)
 
 # sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
 proporcja_bledu_do_wyniku_seq <- sum(bledy_kazdy_wiersz$survival_na_rm_err) / sum(df_seq$survival)
@@ -262,6 +261,38 @@ for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
   }
 }
 
+# --------------- NA <- wartoœæ z nastêpnego wiersza dla kolumn lower i upper # --------------- #
+cols = c("lower")
+# zastepujemy wartosci NA wartosciami z wiersza ponizej
+# iterujemy po liscie z data frame czastkowych zbiorow
+for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
+  # jak juz jestesmy w pierwszej petli na pojedynczym data frame,
+  # to teraz iterujemy po wierszach tego data frame
+  # podajemy nazwe kolumny oraz nr wiersza z petli
+  # zastepujemy wybrany element - tym samym elementem jesli ma jakas wartosc (nie jest NA)
+  # a jesli jest NA, to wywolujemy funkcje ktora wpisuje wartosc z tej samej kolumny z nastepnego wiersza
+  # a jesli to jest ostatni wiersz to podaje wartosc 0
+  for(row in 1:nrow(lista_ramek_surv_na_to_next_wiersz[[i]])){
+    lista_ramek_surv_na_to_next_wiersz[[i]][row,cols] <- ifelse(is.na(lista_ramek_surv_na_to_next_wiersz[[i]][row,cols]), replace_with_next_row(df = lista_ramek_surv_na_to_next_wiersz[[i]], row_index = row, col_name = cols), lista_ramek_surv_na_to_next_wiersz[[i]][row,cols])
+  }
+}
+
+cols = c("upper")
+# zastepujemy wartosci NA wartosciami z wiersza ponizej
+# iterujemy po liscie z data frame czastkowych zbiorow
+for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
+  # jak juz jestesmy w pierwszej petli na pojedynczym data frame,
+  # to teraz iterujemy po wierszach tego data frame
+  # podajemy nazwe kolumny oraz nr wiersza z petli
+  # zastepujemy wybrany element - tym samym elementem jesli ma jakas wartosc (nie jest NA)
+  # a jesli jest NA, to wywolujemy funkcje ktora wpisuje wartosc z tej samej kolumny z nastepnego wiersza
+  # a jesli to jest ostatni wiersz to podaje wartosc 0
+  for(row in 1:nrow(lista_ramek_surv_na_to_next_wiersz[[i]])){
+    lista_ramek_surv_na_to_next_wiersz[[i]][row,cols] <- ifelse(is.na(lista_ramek_surv_na_to_next_wiersz[[i]][row,cols]), replace_with_next_row(df = lista_ramek_surv_na_to_next_wiersz[[i]], row_index = row, col_name = cols), lista_ramek_surv_na_to_next_wiersz[[i]][row,cols])
+  }
+}
+# --------------- Koniec: NA <- wartoœæ z nastêpnego wiersza dla kolumn lower i upper# --------------- #
+
 # ukladamy wartosci z ramek pod siebie
 # czyli zamiast miec kilka ramek w liscie "obok siebie",
 # bedziemy mieli jedna ramke w ktorej zawartosci data frame beda doklejone po prostu pod spodem jako kolejne wiersze
@@ -272,35 +303,38 @@ survival_polaczony <- lista_df_rbind %>%
   group_by(time) %>%
   # robie replace wartosci 0 na NA, zeby moc potem zaaplikowac na.rm = TRUE
   # bo nie chce wartosci 0 czyli braku wartosci (bo funkcja survival zawsze ma jakas wartosc) liczyc do sredniej
-  summarise(avg_survival = mean(replace(survival, survival == 0, NA), na.rm=TRUE)) %>%
+  summarise(avg_survival = mean(replace(survival, survival == 0, NA), na.rm=TRUE),
+            avg_lower = mean(lower, na.rm=TRUE),
+            avg_upper  = mean(upper , na.rm=TRUE)) %>%
   data.frame()
 
-#
-survival_polaczony$avg_survival <- round(survival_polaczony$avg_survival,4)
 df_final$survival_na_next_row <- survival_polaczony$avg_survival
+df_final$lower <- survival_polaczony$avg_lower
+df_final$upper <- survival_polaczony$avg_upper
 
 
 bledy_kazdy_wiersz$survival_na_next_row_err <- abs(df_final$survival_na_next_row - df_seq$survival)
-bledy_kazdy_wiersz$survival_na_next_row_err <- round(bledy_kazdy_wiersz$survival_na_next_row_err,4)
+bledy_kazdy_wiersz$lower_err <- abs(df_final$lower - df_seq$lower)
+bledy_kazdy_wiersz$upper_err <- abs(df_final$upper - df_seq$upper)
 
 
-
+# nie potrzebujemy tego, wiec nie obliczamy poki co. To jest raczej podgladowe, do debugowania
 # ramka dla ladnego porownania wszystkich wartosci (zlaczonych, seq i bledow)
-wszystkie_survivale <- left_join(x = df_final, y = df_seq, by = "time", copy = FALSE) %>%
-  left_join(y = bledy_kazdy_wiersz, by = "time", copy = FALSE) %>%
-  select(time, survival_na_rm, survival_na_rm_err, survival_na_next_row, survival_na_next_row_err, survival)
+# wszystkie_survivale <- left_join(x = df_final, y = df_seq, by = "time", copy = FALSE) %>%
+#   left_join(y = bledy_kazdy_wiersz, by = "time", copy = FALSE) %>%
+#   select(time, survival_na_rm, survival_na_rm_err, survival_na_next_row, survival_na_next_row_err, survival)
 
-nazwy_kolumn_surv <- c("time", "survival_na_rm", "survival_na_rm_err", "survival_na_next_row", "survival_na_next_row_err", "survival_seq")
-colnames(wszystkie_survivale) <- nazwy_kolumn_surv
+# nazwy_kolumn_surv <- c("time", "survival_na_rm", "survival_na_rm_err", "survival_na_next_row", "survival_na_next_row_err", "survival_seq")
+# colnames(wszystkie_survivale) <- nazwy_kolumn_surv
 
 # dorzucamy jeszcze czastkowe survivale
-for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
-  wszystkie_survivale <-
-    wszystkie_survivale %>%
-    left_join(y=select(lista_ramek_surv_na_to_next_wiersz[[i]], time, survival), by = "time", copy = FALSE)
-  nazwy_kolumn_surv <- c(nazwy_kolumn_surv, paste0("survival_", i))
-  colnames(wszystkie_survivale) <- nazwy_kolumn_surv
-}
+# for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
+#   wszystkie_survivale <-
+#     wszystkie_survivale %>%
+#     left_join(y=select(lista_ramek_surv_na_to_next_wiersz[[i]], time, survival), by = "time", copy = FALSE)
+#   nazwy_kolumn_surv <- c(nazwy_kolumn_surv, paste0("survival_", i))
+#   colnames(wszystkie_survivale) <- nazwy_kolumn_surv
+# }
 
 
 
@@ -308,14 +342,25 @@ for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
 # sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
 proporcja_bledu_do_wyniku_seq_dwa <- sum(bledy_kazdy_wiersz$survival_na_next_row_err) / sum(df_seq$survival)
 procent_blad_survival_dwa <- paste(round((proporcja_bledu_do_wyniku_seq_dwa * 100),2),"%")
-
-
 bledy[nrow(bledy) + 1,] <- c("n_survival_na_to_wiersz_ponizej",procent_blad_survival_dwa)
+
+# sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
+proporcja_bledu_do_wyniku_seq_dwa <- sum(bledy_kazdy_wiersz$lower_err) / sum(df_seq$lower)
+procent_blad_lower <- paste(round((proporcja_bledu_do_wyniku_seq_dwa * 100),2),"%")
+bledy[nrow(bledy) + 1,] <- c("n_lower",procent_blad_lower)
+
+# sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
+proporcja_bledu_do_wyniku_seq_dwa <- sum(bledy_kazdy_wiersz$upper_err) / sum(df_seq$upper)
+procent_blad_upper <- paste(round((proporcja_bledu_do_wyniku_seq_dwa * 100),2),"%")
+bledy[nrow(bledy) + 1,] <- c("n_upper",procent_blad_upper)
+
+
 
 
 
 # -------------- Koniec: Laczenie kolumny survival za pomoca wypelniania NA wierszami ponizej (tak jak n_risk) ------- #
 # --------------- Koniec: laczenie kolumny survival# --------------- #
+
 
 
 # Usuniecie katalogu na output jesli istnieje
@@ -342,7 +387,7 @@ rownames(potrzebne_staty_df) <- NULL #niepotrzebnie 1 wiersz ma niby nazwe wiers
 potrzebne_staty_df <- potrzebne_staty_df[,-2] # usuwam kolumne "n_event" bo ona i tak zawsze jest identyczna
 
 # lacze pierwszy wiersz we wpis string
-wpis <- paste0(potrzebne_staty_df[1,1],",",potrzebne_staty_df[1,2],",",potrzebne_staty_df[1,3],",")
+wpis <- paste0(potrzebne_staty_df[1,1],",",potrzebne_staty_df[1,2],",",potrzebne_staty_df[1,3],",",potrzebne_staty_df[1,4],",",potrzebne_staty_df[1,5],",")
 # wpis prawie gotowy ale trzeba jeszcze usunac ' %', zeby zostaly same liczby, a nie np. 0.18 %
 library("stringr")
 wpis <- str_replace_all(wpis, " %", "")
@@ -355,9 +400,9 @@ if(!file.exists(".//statystyki.csv")){
 }
 cat(wpis, file = ".//statystyki.csv", append = T)
 
-# wygenerowanie grafu z polaczonej ramki danych i zapisanie jej do pliku
-source(file.path("./narysuj_graf.R"))
-narysuj_graf(df_final$time, df_final$survival_na_next_row)
+# wygenerowanie wykresu z polaczonej ramki danych i zapisanie jej do pliku
+# source(file.path("./narysuj_graf.R"))
+# narysuj_graf(df_final$time, df_final$survival_na_next_row)
 
 # Usuniecie katalogu na output jesli istnieje
 unlink(".//output_polaczone", recursive = TRUE)
@@ -368,7 +413,16 @@ dir.create(file.path(".//output_polaczone"), showWarnings = FALSE)
 # wypisanie wszystkich waznych danych - wyniku skryptu do folderu na output
 write.csv(df_final, ".//output_polaczone//survival.csv", row.names = F)
 
-png(filename=".//output_polaczone/cph_merged.png")
-plot(df_final$time, df_final$survival_na_next_row, type="l")
+library(ggplot2)
+library(utile.visuals)
+
+# otwarcie pliku do ktoego rysujemy wykres z regresji coxa
+jpeg(".//output_polaczone/cph_merged.jpg", width = 1698, height = 754)
+
+ggplot2::ggplot(df_final, aes(time,survival_na_next_row)) +
+  ggplot2::geom_step() +
+  utile.visuals::geom_stepconfint(aes(ymin = lower, ymax = upper), alpha = 0.3)
+
 
 dev.off()
+# koniec rysowania wykresu polaczonej ramki
