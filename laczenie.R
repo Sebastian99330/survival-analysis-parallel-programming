@@ -395,7 +395,7 @@ wpis <- str_replace_all(wpis, " %", "")
 # write(string, file = ".//statystyki.csv", append = TRUE) # inna opcja, dokleja new line na koniec linii
 # bedziemy pisali do pliku statystyki.csv, ale jak go nie ma to tworzymy jego i pierwsza linijke z header'ami
 if(!file.exists(".//statystyki.csv")){
-  headers <- "n_risk,n_survival_bez_na,n_survival_na_to_wiersz_ponizej, liczba_wierszy, liczba_watkow, czas_seq, czas_par, par_lepsze_niz_seq, nazwa_inputu\n"
+  headers <- "n_risk,n_survival_bez_na,n_survival_na_to_wiersz_ponizej, lower, upper, liczba_wierszy, liczba_watkow, czas_seq, czas_par, par_lepsze_niz_seq, nazwa_inputu\n"
   cat(headers, file = ".//statystyki.csv", append = T)
 }
 cat(wpis, file = ".//statystyki.csv", append = T)
