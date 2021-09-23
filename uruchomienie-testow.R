@@ -1,7 +1,7 @@
 odpalenie_java <- 'java -jar mgrmaven.jar '
 
 work1 <- '"turnover.csv" "exp, event" "branch" "branch + pipeline" "'
-work2 <- '"turnover-mln-0,8.csv" "exp, event" "branch" "branch + pipeline" "'
+work2 <- '"turnover-mln-0-8.csv" "exp, event" "branch" "branch + pipeline" "'
 work3 <- '"turnover-turnover-mln-3.csv" "exp, event" "branch" "branch + pipeline" "'
 prost1 <- '"prostate_cancer.csv" "time, status" "treatment" "treatment + age + sh + size + index" "'
 prost2 <- '"prost_cancer_gen_mln.csv" "time, status" "treatment" "treatment + age + sh + size + index" "'
@@ -15,7 +15,7 @@ for(slowo in parametry){ # petla z zestawem parametrow wywolujacych
       polecenie <- paste0(odpalenie_java, slowo,liczba_watkow,'"')
       print(polecenie)
       javaOutput <- system(polecenie, intern = TRUE)
-      print(paste0("Iteracja: ",i,", liczba watkow: ",j,", godzina: ",format(Sys.time(), "%S")))
+      print(paste0("Iteracja: ",i,", liczba watkow: ",j,", godzina: ",format(Sys.time())))
     }
   }
 }
