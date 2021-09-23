@@ -1,6 +1,5 @@
 args <- commandArgs(trailingOnly = TRUE)
-# wiersz ponizej - dac w cudzyslowia
-# args <- array(c(prost_cancer_mln.csv 3 Split-data\\zbior_))
+# args <- array(c("synthetic.csv", "4", "Split-data\\zbior_"))
 
 # ten skrypt przyjmuje argumenty:
 # 1 sciezka do pliku z danymi wejsciowymi
