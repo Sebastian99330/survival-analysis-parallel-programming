@@ -1,8 +1,7 @@
 args = commandArgs(trailingOnly=TRUE)
 # args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment", "treatment + age + sh + size + index")) # dla parallel
 # args = array(c("Split-data\\zbior_2.rds", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.rds", "exp, event", "branch", "branch + pipeline")) # dla parallel
-#args = array(c("turnover.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "exp, event", "branch", "branch + pipeline")) # dla parallel
-
+# args = array(c("turnover.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "exp, event", "branch", "branch + pipeline")) # dla parallel
 
 
 if (length(args)==0) {
@@ -40,7 +39,8 @@ if(tolower(suffix_inputu) == "csv"){
   my_data <- readRDS(sciezka_do_input)
 }
 
-start.time <- Sys.time()
+# zakomentowuje, bo czas mierzymy w javie
+# start.time <- Sys.time()
 
 
 # zapis danych do pliku - nie jest potrzebny poki co
@@ -85,6 +85,14 @@ instrukcja <- sprintf("coxph(Surv(%s) ~ %s, data = my_data)", time_status, zmien
 # za pomoca eval(parse(...) uruchamiamy instrukcje, ktora jest zapisana w zmiennej
 cox <- eval(parse(text=instrukcja))
 
+podsumowanie_cox <- summary(survfit(cox)) 
+# obiekt 'podsumowanie_cox' ma teraz duzo niepotrzebnych wartosci, dlatego wyciagniemy tylko to co potrzebujemy
+# czyli kolumny tworzace tabelke ktora laczymy
+tabelka_cox <- as.data.frame(podsumowanie_cox[c("time", "n.risk", "n.event", "surv","lower","upper")])
+# zamieniamy . na _ zeby sie nie mylilo z separatorem liczb potem
+colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival","lower","upper")
+
+
 
 # wypisanie statystyk - nie potrzebujemy tego, bo to wypisuje wspolczynniki,
 # a nas interesuja dokladne momenty w czasie (po nich bedziemy laczyc)
@@ -97,20 +105,31 @@ cox <- eval(parse(text=instrukcja))
 # write.csv(tabelka, "ramka.csv", row.names = F)
 
 
+library(ggplot2)
+library(broom)
+library(utile.visuals)
 
 # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
 jpeg(CPH_file_path, width = 1698, height = 754)
 
-# funkcja autoplot() nie przyjmuje bezposrednio obiektu cox
-# czyli obiektu, ktory zwraca funkcja coxph,
-# wiec trzeba go wpakowac po drodze w funkcje survfit()
-autoplot(survfit(cox))
+
+ggplot2::ggplot(tabelka_cox, aes(time,survival)) +
+  ggplot2::geom_step() +
+  utile.visuals::geom_stepconfint(aes(ymin = lower, ymax = upper), alpha = 0.3)
+  
 
 dev.off()
 
-end.time <- Sys.time()
-time.taken <- as.numeric(end.time - start.time)
-time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch miejsc po przecinku
+
+# funkcja autoplot() nie przyjmuje bezposrednio obiektu cox
+# czyli obiektu, ktory zwraca funkcja coxph,
+# wiec trzeba go wpakowac po drodze w funkcje survfit()
+#autoplot(survfit(cox)) # nie rysujemy automatycznie tylko sami, zeby rysowac w taki sam sposob jak po polaczeniu ramek potem
+
+
+# end.time <- Sys.time()
+# time.taken <- as.numeric(end.time - start.time)
+# time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch miejsc po przecinku
 
 # zapisze do pliku dane tekstowe - statystyki z log-rank oraz z regresji coxa
 # ustawiam plik do ktoego bedziemy pisac
@@ -124,18 +143,6 @@ time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch m
 # 
 # 
 
-
-
-# zapisanie samej ramki i nadanie innych nazw kolumn
-
-# wypisanie tabelki z obliczonymi wartosciami dla konkretnych momentow w czasie
-# tabelka <- 
-
-podsumowanie_cox <- summary(survfit(cox)) 
-# obiekt 'wyniki' ma teraz duzo niepotrzebnych wartosci, dlatego wyciagniemy tylko to co potrzebujemy
-# czyli kolumny tworzace tabelke ktora laczymy
-tabelka_cox <- as.data.frame(podsumowanie_cox[c("time", "n.risk", "n.event", "surv")])
-colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival")
 
 lokalizacja_output_ramki = paste0(".//",nazwa_folderu_output,"//",df_file)
 

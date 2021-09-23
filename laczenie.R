@@ -365,6 +365,9 @@ unlink(".//output_polaczone", recursive = TRUE)
 # utworzenie katalogu na nowe pliki z danymi wejsciowymi
 dir.create(file.path(".//output_polaczone"), showWarnings = FALSE)
 
+# wypisanie wszystkich waznych danych - wyniku skryptu do folderu na output
+write.csv(df_final, ".//output_polaczone//survival.csv", row.names = F)
+
 png(filename=".//output_polaczone/cph_merged.png")
 plot(df_final$time, df_final$survival_na_next_row, type="l")
 

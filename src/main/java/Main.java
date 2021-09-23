@@ -1,6 +1,4 @@
-import com.google.common.base.Stopwatch;
-
-import java.util.ArrayList;
+import com.google.common.base.Stopwatch;;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
@@ -8,9 +6,9 @@ public class Main {
         String[] newArgs = new String[5];
         if(args.length != 5){
             newArgs[0] = "turnover.csv"; // input file name
-            newArgs[1] = "exp, event"; // variables: time, status // exp, event / time, status
+            newArgs[1] = "\"exp, event\""; // variables: time, status // exp, event / time, status
             newArgs[2] = "branch";     // treatment / branch
-            newArgs[3] = "branch + pipeline"; // treatment + age + sh + size + index / branch + pipeline
+            newArgs[3] = "\"branch + pipeline\""; // treatment + age + sh + size + index / branch + pipeline
             newArgs[4] = "3";  // number of threads
         }
         else {
