@@ -21,6 +21,7 @@ public class ParallelAlgorithm implements Runnable {
     String timeStatus;
     String groupingVariablesKm;
     String groupingVariablesCox;
+    String savePlot;
     String [] parArgs; // trzeba zapisac array w tej klasie, bo musimy go podac jako argument w metodzie runScriptParallel
 
     int currentThreadNumber;
@@ -47,6 +48,7 @@ public class ParallelAlgorithm implements Runnable {
         this.timeStatus = args[12];
         this.groupingVariablesKm = args[13];
         this.groupingVariablesCox = args[14];
+        this.savePlot = args[15];
     }
 
     // metoda odpala skrypt ktory dzieli plik z danymi wejsciowymi na odpowiednia ilosc czesci
@@ -75,7 +77,7 @@ public class ParallelAlgorithm implements Runnable {
 
             String command = "rscript --vanilla script.r " + inputFullName + " " +
                     outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator + " " +
-                    dfFullName + " " + timeStatus + " " + groupingVariablesKm + " " + groupingVariablesCox;
+                    dfFullName + " \"" + timeStatus + "\" \"" + groupingVariablesKm + "\" \"" + groupingVariablesCox + "\" " + savePlot;
 
 
             Thread t = new Thread(new ParallelAlgorithm(i, numberOfThreads, command, parArgs));

@@ -1,7 +1,7 @@
 args = commandArgs(trailingOnly=TRUE)
-# args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment", "treatment + age + sh + size + index")) # dla parallel
-# args = array(c("Split-data\\zbior_2.rds", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.rds", "exp, event", "branch", "branch + pipeline")) # dla parallel
-# args = array(c("turnover.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "exp, event", "branch", "branch + pipeline")) # dla parallel
+# args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment", "treatment + age + sh + size + index", "T")) # dla parallel
+# args = array(c("Split-data\\zbior_2.rds", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.rds", "exp, event", "branch", "branch + pipeline", "T")) # dla parallel
+# args = array(c("turnover.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "exp, event", "branch", "branch + pipeline", "T")) # dla parallel
 
 
 if (length(args)==0) {
@@ -27,6 +27,7 @@ time_status <- args[8]
 time_status <- noquote(time_status) # usuwam cudzyslowia ze zmiennej
 zmienne_grupowanie_km <- noquote(args[9]) # usuwam cudzyslowia ze zmiennej
 zmienne_grupowanie_cox <- noquote(args[10]) 
+czy_rysowac_wykres <- as.logical(args[11])
 
 
 # wczytanie danych
@@ -103,31 +104,27 @@ colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival","lower","uppe
 # tabelka <- data.frame(summary(survfit(cox)))
 # write.csv(tabelka, "ramka.csv", row.names = F)
 
-
-# narysujemy teraz wykres za za pomoca domyslnej funkcji rysujacej
-
-# funkcja autoplot() nie przyjmuje bezposrednio obiektu cox
-# czyli obiektu, ktory zwraca funkcja coxph,
-# wiec trzeba go wpakowac po drodze w funkcje survfit()
-# otwarcie pliku do ktoego rysujemy wykres z regresji coxa
-# dodajemy do nazwy pliku "auto", czyli np. .//output_seq//cph_seq.jpg 
-# zostanie zmienione na .//output_seq//cph_seq_auto.jpg
-
-
-
-
 library(dplyr)
 # wykres zapisujemy do pliku na dysk tylko dla sekwencyjnego zbioru. 
 # Nie chcemy rysowac dla czastkowych zbiorow, narysujemy dla polaczonego wynikowego w innym skrypcie
-if(grepl("seq",CPH_file_path)) {
-    name_base <- substr(CPH_file_path,1,nchar(CPH_file_path)-4)
-    name_suffix <- substr(CPH_file_path,nchar(CPH_file_path)-3,nchar(CPH_file_path))
-    CPH_file_path_auto <- paste0(name_base, '_auto',name_suffix)
+if(czy_rysowac_wykres) {
+    # narysujemy teraz wykres za za pomoca domyslnej funkcji rysujacej
     
-    jpeg(CPH_file_path_auto, width = 1698, height = 754)
-    autoplot(survfit(cox)) %>%
-      print()
-    dev.off()
+    # funkcja autoplot() nie przyjmuje bezposrednio obiektu cox
+    # czyli obiektu, ktory zwraca funkcja coxph,
+    # wiec trzeba go wpakowac po drodze w funkcje survfit()
+    # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
+    # dodajemy do nazwy pliku "auto", czyli np. .//output_seq//cph_seq.jpg 
+    # zostanie zmienione na .//output_seq//cph_seq_auto.jpg
+    
+    #name_base <- substr(CPH_file_path,1,nchar(CPH_file_path)-4)
+    #name_suffix <- substr(CPH_file_path,nchar(CPH_file_path)-3,nchar(CPH_file_path))
+    #CPH_file_path_auto <- paste0(name_base, '_auto',name_suffix)
+    
+    #jpeg(CPH_file_path_auto, width = 1698, height = 754)
+    #autoplot(survfit(cox)) %>%
+    #  print()
+    #dev.off()
     
     
     library(ggplot2)
@@ -138,9 +135,12 @@ if(grepl("seq",CPH_file_path)) {
     #jpeg(CPH_file_path, width = 1698, height = 754)
     p <- ggplot2::ggplot(tabelka_cox, aes(time,survival)) +
       ggplot2::geom_step() +
-      utile.visuals::geom_stepconfint(aes(ymin = lower, ymax = upper), alpha = 0.3)
-    p
+      utile.visuals::geom_stepconfint(aes(ymin = lower, ymax = upper), alpha = 0.3) +
+      labs(title = "Survival function",
+           x = "time",
+           y = "survival")
     ggsave(filename = CPH_file_path, plot=p)
+    
     #dev.off()
 }
 

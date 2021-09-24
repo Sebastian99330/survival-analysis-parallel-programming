@@ -10,6 +10,7 @@ public class SequentialAlgorithm {
     String timeStatus;
     String groupingVariablesKm;
     String groupingVariablesCox;
+    String savePlot;
 
     public SequentialAlgorithm(String[] args) {
         this.input = args[0];
@@ -22,13 +23,14 @@ public class SequentialAlgorithm {
         this.timeStatus = args[7];
         this.groupingVariablesKm = args[8];
         this.groupingVariablesCox = args[9];
+        this.savePlot = args[10];
     }
 
     public void callRScript(){
 
         String command = "rscript --vanilla script.r " + this.input + " " +
                 this.outputTxtFile + " " + this.kphPlotPath + " " + this.cphPlotPath + " " + this.outputFolderName + " " + this.rSeparator + " " +
-                this.dfName + " " + this.timeStatus + " " + this.groupingVariablesKm + " " + this.groupingVariablesCox;
+                this.dfName + " \"" + this.timeStatus + "\" \"" + this.groupingVariablesKm + "\" \"" + this.groupingVariablesCox + "\" " + this.savePlot;
 
         TalkToR.runScript(command, false);
     }
