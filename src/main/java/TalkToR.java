@@ -20,6 +20,11 @@ public class TalkToR {
             command = "Rscript --vanilla utworz-output.r output_" + i;
             TalkToR.runScript(command, false); // nie mierzymy czasu wykonania bo to tylko usuniecie i utworzenie katalogu
         }
+
+        // tworzymy foldery na output dla polaczonych danych
+        command = "Rscript --vanilla utworz-output.r output_polaczone";
+        TalkToR.runScript(command, false); // nie mierzymy czasu wykonania bo to tylko usuniecie i utworzenie katalogu
+
     }
 
     public static void runScript(String command, boolean measureTime) {

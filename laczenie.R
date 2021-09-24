@@ -404,14 +404,11 @@ cat(wpis, file = ".//statystyki.csv", append = T)
 # source(file.path("./narysuj_graf.R"))
 # narysuj_graf(df_final$time, df_final$survival_na_next_row)
 
-# Usuniecie katalogu na output jesli istnieje
-unlink(".//output_polaczone", recursive = TRUE)
+# wypisanie wyniku skryptu do folderu na output 
+# w formie rds - bo sekwencyjne dane sa wypisane tak samo, wiec zeby nie bylo roznicy w czasie przez to
+# write.csv(df_final, ".//output_polaczone//survival.csv", row.names = F)
+saveRDS(df_final, ".//output_polaczone//survival.csv")
 
-# utworzenie katalogu na nowe pliki z danymi wejsciowymi
-dir.create(file.path(".//output_polaczone"), showWarnings = FALSE)
-
-# wypisanie wszystkich waznych danych - wyniku skryptu do folderu na output
-write.csv(df_final, ".//output_polaczone//survival.csv", row.names = F)
 
 library(ggplot2)
 library(utile.visuals)
