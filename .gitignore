@@ -5,6 +5,7 @@ KM_plot.jpg
 *.idea
 /target/
 *.csv
+!statystyki.csv
 *.rds
 *.txt
 *.jpg

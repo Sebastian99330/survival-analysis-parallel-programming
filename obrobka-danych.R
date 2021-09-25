@@ -1,5 +1,7 @@
 df <- read.table("covid.csv",sep=",",header = T)
 
+
+
 head(df2)
 names(df2)
 sapply(df2, class)
@@ -15,7 +17,7 @@ df <- df[,c("offset","sex","age","finding", "survival","intubated","intubation_p
 
 
 # zamiana 2 na 0 w kolumnie status
-df2$offset [df2$offset  =="NAs"] <- NA
+df$status [df$status  ==2 ] <- 1
 df2$extubated [df2$extubated  =="N"] <- 0
 head(df2)
 
@@ -32,11 +34,19 @@ df$untr_time <- as.numeric(gsub(",", ".", gsub("\\.", "", df$untr_time)))
 
 # wypisanie dwoch polaczonych df
 library(dplyr)
+library(survival)
 merge(df,df2, by="age") %>% 
   select(status.x, status.y) %>%
   head(40)
 nrow(df)
 
+lungs <- lung
+list <- data(package = "survival") # wypisanie wszystkich datasetow w pakiecie survival
+nrow(survival::pbc)
+df <- survival::pbc 
+nrow(df)
+head(df)
+tail(df)
+colnames(df) <- c("id","age","male","weight","height","bmi","case_id","futime","status")
 
-
-write.csv(df,"covid.csv",row.names = F)
+write.csv(df,"pbc.csv",row.names = F)
