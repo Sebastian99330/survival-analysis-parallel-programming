@@ -1,7 +1,7 @@
 args = commandArgs(trailingOnly=TRUE)
-# args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment", "treatment + age + sh + size + index", "T")) # dla parallel
-# args = array(c("Split-data\\zbior_2.rds", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.rds", "exp, event", "branch", "branch + pipeline", "T")) # dla parallel
-# args = array(c("turnover.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "exp, event", "branch", "branch + pipeline", "T")) # dla parallel
+# args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment + age + sh + size + index", "T")) # dla parallel
+# args = array(c("Split-data\\zbior_2.rds", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.rds", "exp, event", "branch + pipeline", "T")) # dla parallel
+# args = array(c("turnover.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "exp, event", "branch + pipeline", "T")) # dla parallel
 
 
 if (length(args)==0) {
@@ -25,9 +25,9 @@ my_separator = args[6]
 df_file <- args[7]
 time_status <- args[8]
 time_status <- noquote(time_status) # usuwam cudzyslowia ze zmiennej
-zmienne_grupowanie_km <- noquote(args[9]) # usuwam cudzyslowia ze zmiennej
-zmienne_grupowanie_cox <- noquote(args[10]) 
-czy_rysowac_wykres <- as.logical(args[11])
+# zmienne_grupowanie_km <- noquote(args[9]) # usuwam cudzyslowia ze zmiennej
+zmienne_grupowanie_cox <- noquote(args[9]) 
+czy_rysowac_wykres <- as.logical(args[10])
 
 
 # wczytanie danych
