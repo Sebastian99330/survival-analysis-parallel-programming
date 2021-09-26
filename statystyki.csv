@@ -298,3 +298,4 @@ n_risk,n_survival_bez_na,n_survival_na_to_wiersz_ponizej, lower, upper, liczba_w
 0,0,0,0.05,0.05,4350240,10,41.09,30.58,1.34x,nwtco-mln.csv
 5.8,26.52,15.15,7.67,8.14,418,10,1.56,4.52,0.35x,pbc.csv
 0,0,0,0.3,0.31,1580040,10,21.26,22.07,0.96x,pbc-mln.csv
+0,0,0,0.63,0.64,7878784,6,323.61,141.33,2.29x,turnover-edward-mln-2.csv

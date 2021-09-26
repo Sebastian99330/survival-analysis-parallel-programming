@@ -1,5 +1,7 @@
 odpalenie_java <- 'java -jar ./out/artifacts/mgrmaven_jar/mgrmaven.jar '
 
+# setwd("C:/Users/Seba/OneDrive/Dokumenty/Projekty/IntelliJ/mgrmaven")
+
 work1 <- '"turnover.csv" "exp, event" "branch" "branch + pipeline" "'
 work2 <- '"turnover-mln-0-8.csv" "exp, event" "branch" "branch + pipeline" "'
 work3 <- '"turnover-mln-3.csv" "exp, event" "branch" "branch + pipeline" "'
@@ -10,6 +12,7 @@ colorectal1 <- '"colorectal-cancer.csv" "dfs_in_months, dfs_event" "gender" "age
 colorectal2 <- '"colorectal-cancer-mln.csv" "dfs_in_months, dfs_event" "gender" "age_in_years + dukes_stage + gender + location + adj_radio + adj_chem" "' 
 work_edw <- '"turnover-edward.csv" "stag,event" "profession" "gender+age+industry+profession+traffic+coach+head_gender+greywage+way+extraversion+independ+selfcontrol+anxiety+novator" "'
 work_edw2 <- '"turnover-edward-mln.csv" "stag,event" "profession" "gender+age+industry+profession+traffic+coach+head_gender+greywage+way+extraversion+independ+selfcontrol+anxiety+novator" "' 
+work_edw3 <- '"turnover-edward-mln-2.csv" "stag,event" "profession" "gender+age+industry+profession+traffic+coach+head_gender+greywage+way+extraversion+independ+selfcontrol+anxiety+novator" "' 
 ret <- '"retinopatia.csv" "tr_time, tr_status" "laser_type" "laser_type + eye + age + type + tr_group" "'
 ret2 <- '"retinopatia-mln.csv" "tr_time, tr_status" "laser_type" "laser_type + eye + age + type + tr_group" "'
 lungs <- '"lungs.csv" "time, status" "ph_karno" "age + sex + ph_ecog + ph_karno + pat_karno + meal_cal + wt_loss" "'
@@ -39,12 +42,12 @@ pbc2 <- '"pbc-mln.csv" "time, status" "edema" "trt + age + sex + ascites + hepat
 
 # rscript --vanilla script.r covid.csv output-seq.txt km_seq.jpg cph_seq.jpg output_seq , ramka_seq.rds "offset, survival" "intubated" "sex + age + finding + survival + intubated + intubation_present + went_icu + in_icu + needed_supplemental_O2 + extubated + temperature + pO2_saturation + leukocyte_count + neutrophil_count + lymphocyte_count + view + modality" T
 
-watki <- c(10)
+watki <- c(6)
 
 #parametry <- c(work1, work2, work3, prost1, prost2, colorectal1, colorectal2, work_edw, work_edw2)
 # parametry <- c(work_edw, work_edw2, ret, ret2, lungs, lungs2, colon, colon2, flchain, flchain2, gbsg, gbsg2, kidney, kidney2, 
 #               mgus, mgus2, myeloid, myeloid2, nafld1, nafld1_2)
-parametry <- c(pbc)
+parametry <- c(work_edw3)
 iteracja <- 0
 suma_iteracji <- length(parametry) * length(watki) * 1
 
