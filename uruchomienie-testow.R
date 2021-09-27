@@ -47,7 +47,7 @@ watki <- c(8)
 #parametry <- c(work1, work2, work3, prost1, prost2, colorectal1, colorectal2, work_edw, work_edw2)
 # parametry <- c(work_edw, work_edw2, ret, ret2, lungs, lungs2, colon, colon2, flchain, flchain2, gbsg, gbsg2, kidney, kidney2, 
 #               mgus, mgus2, myeloid, myeloid2, nafld1, nafld1_2)
-parametry <- c(work2)
+parametry <- c(work2, prost2, prost3)
 iteracja <- 0
 suma_iteracji <- length(parametry) * length(watki) * 1
 

@@ -68,8 +68,8 @@ public class Main {
         // WriteToFile.appendStatsToFile(seqTimeFormatted, parallelTimeFormatted);
         // wypisanie do zbiorczego programu ze statystykami wykonania programu (dopisanie na jego koniec z kazdym wykonaniem programu, nie tworzenie od nowa)
 
-        WriteToFile.writeRowsNumber(numberOfThreads, seqTimeFormatted, parallelTimeFormatted, argsSeq[0]);
         WriteToFile.savePlotAndCsv(); // narysowanie wykresow do plikow png
+        WriteToFile.writeRowsNumber(numberOfThreads, seqTimeFormatted, parallelTimeFormatted, argsSeq[0]);
         parallelAlgorithm.writeGroupedOutputToFile();
 
 

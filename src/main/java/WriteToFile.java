@@ -106,6 +106,9 @@ public class WriteToFile {
         command = "rscript --vanilla prezentacja.R \"output_seq\\ramka_seq.rds\" \"output_seq\\cox_seq_jpg.jpg\" "
                 + "\"output_seq\\ramka-seq.csv\" survival";
         TalkToR.runScript(command, false);
+
+        command = "rscript --vanilla zapisz-statystyki.R \"output_polaczone\\bledy.rds\" \"output_polaczone\\bledy_csv.csv\"";
+        TalkToR.runScript(command, false);
     }
 
     public static String getMillisAsFormattedSeconds(long millis) {

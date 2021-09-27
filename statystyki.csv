@@ -327,3 +327,7 @@ n_risk,n_survival_bez_na,n_survival_na_to_wiersz_ponizej, lower, upper, liczba_w
 0,0.01,0.01,1.95,2.06,848640,8,8.67,7.15,1.21x,turnover-mln-0-8.csv
 0,0.01,0.01,1.95,2.05,848640,8,8.65,7.17,1.21x,turnover-mln-0-8.csv
 0,0.01,0.01,1.95,2.06,848640,8,8.67,7.14,1.21x,turnover-mln-0-8.csv
+0.33,6.84,1.92,15.27,23.96,1785,3,1.36,2.51,0.54x,turnover.csv
+0,0.03,0.03,1.93,2.07,848640,8,8.66,7.27,1.19x,turnover-mln-0-8.csv
+0,0,0,0.25,0.26,1000000,8,11.09,10.70,1.04x,prost_cancer_gen_mln.csv
+0,0,0,0.13,0.13,2120580,8,18.09,16.02,1.13x,prostate_cancer_mln.csv
