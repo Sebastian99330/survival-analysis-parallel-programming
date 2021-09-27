@@ -407,7 +407,7 @@ cat(wpis, file = ".//statystyki.csv", append = T)
 # wypisanie wyniku skryptu do folderu na output 
 # w formie rds - bo sekwencyjne dane sa wypisane tak samo, wiec zeby nie bylo roznicy w czasie przez to
 # write.csv(df_final, ".//output_polaczone//survival.csv", row.names = F)
-saveRDS(df_final, ".//output_polaczone//survival.csv")
+saveRDS(df_final, ".//output_polaczone//survival.rds")
 
 
 library(ggplot2)
