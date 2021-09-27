@@ -64,6 +64,8 @@ public class WriteToFile {
      * @param numberOfThreads Liczba watkow dla ktorych obliczenia sa wykonywane rownolegle
      */
     public static void writeRowsNumber(Integer numberOfThreads, String timeSeq, String timePar, String inputFileName){
+        String inputFileNameNoFolder = inputFileName.replace("input//",""); // nazwa pliku bez foleru, czyli np. "turnover.csv" zamiast "input//turnover.csv" bo to niepotrzebny przedrostek
+        inputFileNameNoFolder = inputFileNameNoFolder.replace("input\\",""); // usuwamy takze backslash w druga strone czyli jak bylo input\turnover.csv
         try {
             // obiekt niepotrzebny ale dla czytelnosci. -1 bo pierwsza linia to header
             String numberOfLinesStr = Integer.toString(checkNumberOfLinesInAFile(inputFileName)-1);
@@ -76,7 +78,7 @@ public class WriteToFile {
             // str moze miec wartosc np. "1785,2," czyli poczatek linijki ze statystykami - wpis do pliku csv
             // potem skrypt R dokonczy ta linijke i zrobi znak new line. Na kazde wykonanie programu bedzie 1 taka linijka
             String str = numberOfLinesStr + "," + numberOfThreads.toString() + "," + timeSeq + "," + timePar  + "," + strParTimePercentageOfSeq +
-                    "," + inputFileName  + "," +  currentDate + "\n";
+                    "," + inputFileNameNoFolder  + "," +  currentDate + "\n";
             // wstawia znak nowej linii zanim doklei zawartosc stringa str
 //            Files.write(Paths.get("statystyki.csv"), str.getBytes(), StandardOpenOption.APPEND);
             // nie wstawia nowej linii, tylko od razu dopisuje na koncu ostatniej linijki

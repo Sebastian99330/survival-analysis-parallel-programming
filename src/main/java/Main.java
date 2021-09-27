@@ -5,8 +5,9 @@ public class Main {
     public static void main(String[] args) {
         String[] newArgs = new String[5];
         if(args.length != 4){
-            newArgs[0] = "turnover.csv"; // input file name
-//            newArgs[0] = "turnover-mln-3.csv"; // input file name
+//            newArgs[0] = "input//turnover.csv"; // input file name
+            newArgs[0] = "input\\turnover.csv"; // input file name
+//            newArgs[0] = "input//turnover-mln-3.csv"; // input file name
             newArgs[1] = "exp, event"; // variables: time, status // exp, event / time, status
             newArgs[2] = "branch + pipeline"; // treatment + age + sh + size + index / branch + pipeline
             newArgs[3] = "10";  // number of threads
