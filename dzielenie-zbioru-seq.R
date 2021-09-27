@@ -1,5 +1,5 @@
 args <- commandArgs(trailingOnly = TRUE)
-# args <- array(c("turnover-edward-mln.csv", "10", "Split-data\\zbior_"))
+# args <- array(c("turnover-edward-mln.csv", "10", "split-data\\zbior_"))
 
 # ten skrypt przyjmuje argumenty:
 # 1 sciezka do pliku z danymi wejsciowymi
@@ -26,10 +26,10 @@ numery_zbiorow <- sample(1:liczba_zbiorow, size = licza_wierszy,
 
 
 # Usuniecie katalogu jesli istnieje
-unlink("Split-data", recursive = TRUE)
+unlink("output//split-data", recursive = TRUE)
 
 # utworzenie katalogu na nowe pliki z danymi wejsciowymi
-dir.create(file.path("Split-data"), showWarnings = FALSE)
+dir.create(file.path("output//split-data"), showWarnings = FALSE)
 
 # tworzy pusta liste - konstruktor utworzenia pustej listy
 lista_zbiorow <- list()

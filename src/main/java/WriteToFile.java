@@ -103,16 +103,16 @@ public class WriteToFile {
     }
 
     public static void savePlotAndCsv(){
-        String command = "rscript --vanilla prezentacja.R \"output_polaczone\\survival.rds\" \"output_polaczone\\cox_polaczony_jpg.jpg\" "
-                + "\"output_polaczone\\ramka-polaczona.csv\" survival_na_next_row";
+        String command = "rscript --vanilla prezentacja.R \"output\\output_polaczone\\survival.rds\" \"output\\output_polaczone\\cox_polaczony_jpg.jpg\" "
+                + "\"output\\output_polaczone\\ramka-polaczona.csv\" survival_na_next_row";
         // "\"output_seq\\cph_seq.jpg
         TalkToR.runScript(command, false);
 
-        command = "rscript --vanilla prezentacja.R \"output_seq\\ramka_seq.rds\" \"output_seq\\cox_seq_jpg.jpg\" "
-                + "\"output_seq\\ramka-seq.csv\" survival";
+        command = "rscript --vanilla prezentacja.R \"output\\output_seq\\ramka_seq.rds\" \"output\\output_seq\\cox_seq_jpg.jpg\" "
+                + "\"output\\output_seq\\ramka-seq.csv\" survival";
         TalkToR.runScript(command, false);
 
-        command = "rscript --vanilla zapisz-statystyki.R \"output_polaczone\\bledy.rds\" \"output_polaczone\\bledy_csv.csv\"";
+        command = "rscript --vanilla zapisz-statystyki.R \"output\\output_polaczone\\bledy.rds\" \"output\\output_polaczone\\bledy_csv.csv\"";
         TalkToR.runScript(command, false);
     }
 

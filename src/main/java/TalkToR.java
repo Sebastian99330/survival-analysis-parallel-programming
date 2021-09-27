@@ -11,18 +11,22 @@ public class TalkToR {
      * (i sekwencyjnych, i rownoleglych)
       */
     public static void clearWorkspace(int numberOfThreads) {
+        // tworzymy glowny folder na output
+        String command = "Rscript --vanilla utworz-output.r output";
+        TalkToR.runScript(command, false); // nie mierzymy czasu wykonania bo to tylko usuniecie i utworzenie katalogu
+
         // tworzymy fodlery na output dla algorytmu sekwencyjnego
-        String command = "Rscript --vanilla utworz-output.r output_seq";
+        command = "Rscript --vanilla utworz-output.r output//output_seq";
         TalkToR.runScript(command, false); // nie mierzymy czasu wykonania bo to tylko usuniecie i utworzenie katalogu
 
         // tworzymy foldery na output dla algorytmu odpalanego rownolegle
         for (int i = 1; i <= numberOfThreads; i++) {
-            command = "Rscript --vanilla utworz-output.r output_" + i;
+            command = "Rscript --vanilla utworz-output.r output//output_" + i;
             TalkToR.runScript(command, false); // nie mierzymy czasu wykonania bo to tylko usuniecie i utworzenie katalogu
         }
 
         // tworzymy foldery na output dla polaczonych danych
-        command = "Rscript --vanilla utworz-output.r output_polaczone";
+        command = "Rscript --vanilla utworz-output.r output//output_polaczone";
         TalkToR.runScript(command, false); // nie mierzymy czasu wykonania bo to tylko usuniecie i utworzenie katalogu
 
     }

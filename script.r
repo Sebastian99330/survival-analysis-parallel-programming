@@ -1,8 +1,8 @@
 args = commandArgs(trailingOnly=TRUE)
-# args = array(c("Split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment + age + sh + size + index", "T")) # dla parallel
-# args = array(c("Split-data\\zbior_2.rds", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.rds", "exp, event", "branch + pipeline", "T")) # dla parallel
+# args = array(c("split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment + age + sh + size + index", "T")) # dla parallel
+# args = array(c("split-data\\zbior_2.rds", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.rds", "exp, event", "branch + pipeline", "T")) # dla parallel
 # args = array(c("turnover.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "exp, event", "branch + pipeline", "T")) # dla parallel
-
+#args <- c("output//split-data//zbior_1.rds", "output//output_1.txt", "km_1.jpg", "cph_1.jpg", "output_1", ",", "ramka_1.rds", "\"exp, event\"", "\"branch + pipeline\"", "F")
 
 if (length(args)==0) {
   stop("Sciezka do pliku wejsciowego jest wymagana.", call.=FALSE)
@@ -14,13 +14,13 @@ if (length(args)==0) {
   args[6] = ","
 }
 
-nazwa_folderu_output = args[5]
+nazwa_folderu_output = args[5] # to jest nazwa outputu na konkretny model, np. output_seq dla wypisania modelu sekwencyjnego, albo output_1 dla czastkowego 1 zbioru
 
 # wrzucenie nazw plikow w do foleru output
 sciezka_do_input <- args[1]
-output_txt = paste0(".//",nazwa_folderu_output,"//",args[2])
-KM_file_path = paste0(".//",nazwa_folderu_output,"//",args[3])
-CPH_file_path = paste0(".//",nazwa_folderu_output,"//",args[4])
+output_txt = paste0(nazwa_folderu_output,"//",args[2])
+KM_file_path = paste0(nazwa_folderu_output,"//",args[3])
+CPH_file_path = paste0(nazwa_folderu_output,"//",args[4])
 my_separator = args[6]
 df_file <- args[7]
 time_status <- args[8]
@@ -49,7 +49,7 @@ if(tolower(suffix_inputu) == "csv"){
 
 
 library(survival)
-library(ggfortify) #plot KM
+# library(ggfortify) #funkcja autoplot
 
 # poki co zakomentowujemy KM bo nie budujemy tego modelu bo model Coxa jest lepszy
 # Kaplan Meier plot

@@ -18,14 +18,14 @@ liczba_watkow <- as.numeric(args[1])
 
 #wektor z nazwami plikow input zeby moc wczytac kilka(nascie) plikow z danymi wejsciowymi w petli
 # my_files = paste0("output_", 1:liczba_watkow, ".txt")
-my_files = paste0(".//output_", 1:liczba_watkow, "//", "ramka_", 1:liczba_watkow, ".rds")
+my_files = paste0("output//output_", 1:liczba_watkow, "//", "ramka_", 1:liczba_watkow, ".rds")
 # zaladowanie kilku ramek danych (data frame) do listy
 lista_ramek <- lapply(my_files, readRDS)
 # nazywamy tak elementy listy (czyli pojedyncze data frame'y), aby ich nazwy pasowaly do nazw plikow
 names(lista_ramek) <- stringr::str_replace(my_files, pattern = ".rds", replacement = "")
 
 # data frame sekwencyjny, tzn. na zbior danych otrzymanych metoda sekwencyjna, bez dzielenia zbioru wejsciowego
-df_seq <- readRDS(".//output_seq//ramka_seq.rds")
+df_seq <- readRDS("output//output_seq//ramka_seq.rds")
 
 # 2. Tworzymy pusty data frame na wynikowy (polaczony) zbior
 # df_final - data frame finalne, wynikowe
@@ -374,7 +374,7 @@ bledy[nrow(bledy) + 1,] <- c("n_upper",procent_blad_upper)
 # write.csv(wszystkie_survivale, ".//output_laczenie//wszystkie_survivale.csv", row.names = F)
 # write.csv(bledy_kazdy_wiersz, ".//output_laczenie//bledy-cale-wiersze.csv", row.names = F)
 # write.csv(bledy, ".//output_laczenie//bledy_podsumowanie.csv", row.names=F)
-saveRDS(bledy, "output_polaczone//bledy.rds")
+saveRDS(bledy, "output//output_polaczone//bledy.rds")
 
 
 # wygenerowanie wykresu z polaczonej ramki danych i zapisanie jej do pliku
@@ -384,7 +384,7 @@ saveRDS(bledy, "output_polaczone//bledy.rds")
 # wypisanie wyniku skryptu do folderu na output 
 # w formie rds - bo sekwencyjne dane sa wypisane tak samo, wiec zeby nie bylo roznicy w czasie przez to
 # write.csv(df_final, ".//output_polaczone//survival.csv", row.names = F)
-saveRDS(df_final, ".//output_polaczone//survival.rds")
+saveRDS(df_final, "output//output_polaczone//survival.rds")
 
 
 # library(ggplot2)

@@ -5,8 +5,7 @@ public class Main {
     public static void main(String[] args) {
         String[] newArgs = new String[5];
         if(args.length != 4){
-//            newArgs[0] = "input//turnover.csv"; // input file name
-            newArgs[0] = "input\\turnover.csv"; // input file name
+            newArgs[0] = "input//turnover.csv"; // input file name
 //            newArgs[0] = "input//turnover-mln-3.csv"; // input file name
             newArgs[1] = "exp, event"; // variables: time, status // exp, event / time, status
             newArgs[2] = "branch + pipeline"; // treatment + age + sh + size + index / branch + pipeline
@@ -25,11 +24,11 @@ public class Main {
         final Integer numberOfThreads = Integer.parseInt(newArgs[3]);
         final int numberOfFirstThread = 1;
 
-        String argsSeq [] = {inputFileName,"output-seq.txt","km_seq.jpg","cph_seq.jpg","output_seq",
+        String argsSeq [] = {inputFileName,"output-seq.txt","km_seq.jpg","cph_seq.jpg","output//output_seq",
                 ",","ramka_seq.rds",timeStatus,groupingCPH,"T"};
 
-        String argsPar [] = {inputFileName,"Split-data\\\\zbior_",".rds","output_",".txt","km_","cph_",".jpg",
-                "output_", ",","ramka_",".rds", timeStatus,groupingCPH,"F"};
+        String argsPar [] = {inputFileName,"output//split-data//zbior_",".rds","output//output_",".txt","km_","cph_",".jpg",
+                "output//output_", ",","ramka_",".rds", timeStatus,groupingCPH,"F"};
 
         TalkToR.clearWorkspace(numberOfThreads); // tworzy puste foldery na output (i ewentualnie usuwa istniejace)
 
