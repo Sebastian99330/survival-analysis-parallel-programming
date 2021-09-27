@@ -103,46 +103,46 @@ colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival","lower","uppe
 # summary(survfit(cox))
 # tabelka <- data.frame(summary(survfit(cox)))
 # write.csv(tabelka, "ramka.csv", row.names = F)
-
-library(dplyr)
-# wykres zapisujemy do pliku na dysk tylko dla sekwencyjnego zbioru. 
-# Nie chcemy rysowac dla czastkowych zbiorow, narysujemy dla polaczonego wynikowego w innym skrypcie
-if(czy_rysowac_wykres) {
-    # narysujemy teraz wykres za za pomoca domyslnej funkcji rysujacej
-    
-    # funkcja autoplot() nie przyjmuje bezposrednio obiektu cox
-    # czyli obiektu, ktory zwraca funkcja coxph,
-    # wiec trzeba go wpakowac po drodze w funkcje survfit()
-    # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
-    # dodajemy do nazwy pliku "auto", czyli np. .//output_seq//cph_seq.jpg 
-    # zostanie zmienione na .//output_seq//cph_seq_auto.jpg
-    
-    #name_base <- substr(CPH_file_path,1,nchar(CPH_file_path)-4)
-    #name_suffix <- substr(CPH_file_path,nchar(CPH_file_path)-3,nchar(CPH_file_path))
-    #CPH_file_path_auto <- paste0(name_base, '_auto',name_suffix)
-    
-    #jpeg(CPH_file_path_auto, width = 1698, height = 754)
-    #autoplot(survfit(cox)) %>%
-    #  print()
-    #dev.off()
-    
-    
-    library(ggplot2)
-    library(utile.visuals)
-    
-    # narysujemy wykres funkcji survival uzywajac wartosci z tabeli
-    # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
-    #jpeg(CPH_file_path, width = 1698, height = 754)
-    p <- ggplot2::ggplot(tabelka_cox, aes(time,survival)) +
-      ggplot2::geom_step() +
-      utile.visuals::geom_stepconfint(aes(ymin = lower, ymax = upper), alpha = 0.3) +
-      labs(title = "Survival function",
-           x = "time",
-           y = "survival")
-    ggsave(filename = CPH_file_path, plot=p)
-    
-    #dev.off()
-}
+# 
+# library(dplyr)
+# # wykres zapisujemy do pliku na dysk tylko dla sekwencyjnego zbioru. 
+# # Nie chcemy rysowac dla czastkowych zbiorow, narysujemy dla polaczonego wynikowego w innym skrypcie
+# if(czy_rysowac_wykres) {
+#     # narysujemy teraz wykres za za pomoca domyslnej funkcji rysujacej
+#     
+#     # funkcja autoplot() nie przyjmuje bezposrednio obiektu cox
+#     # czyli obiektu, ktory zwraca funkcja coxph,
+#     # wiec trzeba go wpakowac po drodze w funkcje survfit()
+#     # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
+#     # dodajemy do nazwy pliku "auto", czyli np. .//output_seq//cph_seq.jpg 
+#     # zostanie zmienione na .//output_seq//cph_seq_auto.jpg
+#     
+#     #name_base <- substr(CPH_file_path,1,nchar(CPH_file_path)-4)
+#     #name_suffix <- substr(CPH_file_path,nchar(CPH_file_path)-3,nchar(CPH_file_path))
+#     #CPH_file_path_auto <- paste0(name_base, '_auto',name_suffix)
+#     
+#     #jpeg(CPH_file_path_auto, width = 1698, height = 754)
+#     #autoplot(survfit(cox)) %>%
+#     #  print()
+#     #dev.off()
+#     
+#     
+#     library(ggplot2)
+#     library(utile.visuals)
+#     
+#     # narysujemy wykres funkcji survival uzywajac wartosci z tabeli
+#     # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
+#     #jpeg(CPH_file_path, width = 1698, height = 754)
+#     p <- ggplot2::ggplot(tabelka_cox, aes(time,survival)) +
+#       ggplot2::geom_step() +
+#       utile.visuals::geom_stepconfint(aes(ymin = lower, ymax = upper), alpha = 0.3) +
+#       labs(title = "Survival function",
+#            x = "time",
+#            y = "survival")
+#     ggsave(filename = CPH_file_path, plot=p)
+#     
+#     #dev.off()
+# }
 
 # end.time <- Sys.time()
 # time.taken <- as.numeric(end.time - start.time)

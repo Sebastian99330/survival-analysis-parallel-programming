@@ -42,12 +42,12 @@ pbc2 <- '"pbc-mln.csv" "time, status" "trt + age + sex + ascites + hepato + spid
 
 # rscript --vanilla script.r covid.csv output-seq.txt km_seq.jpg cph_seq.jpg output_seq , ramka_seq.rds "offset, survival" "intubated" "sex + age + finding + survival + intubated + intubation_present + went_icu + in_icu + needed_supplemental_O2 + extubated + temperature + pO2_saturation + leukocyte_count + neutrophil_count + lymphocyte_count + view + modality" T
 
-watki <- c(4)
+watki <- c(8)
 
 #parametry <- c(work1, work2, work3, prost1, prost2, colorectal1, colorectal2, work_edw, work_edw2)
 # parametry <- c(work_edw, work_edw2, ret, ret2, lungs, lungs2, colon, colon2, flchain, flchain2, gbsg, gbsg2, kidney, kidney2, 
 #               mgus, mgus2, myeloid, myeloid2, nafld1, nafld1_2)
-parametry <- c(work_edw2)
+parametry <- c(work2)
 iteracja <- 0
 suma_iteracji <- length(parametry) * length(watki) * 1
 
@@ -70,3 +70,5 @@ for(slowo in parametry){ # petla z zestawem parametrow wywolujacych
     }
   }
 }
+
+cat(tail(javaOutput))

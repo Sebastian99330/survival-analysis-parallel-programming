@@ -410,20 +410,20 @@ cat(wpis, file = ".//statystyki.csv", append = T)
 saveRDS(df_final, ".//output_polaczone//survival.rds")
 
 
-library(ggplot2)
-library(utile.visuals)
+# library(ggplot2)
+# library(utile.visuals)
 
 # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
 #jpeg(".//output_polaczone/cph_merged.jpg", width = 1698, height = 754)
-
-p <- ggplot2::ggplot(df_final, aes(time,survival_na_next_row)) +
-  ggplot2::geom_step() +
-  utile.visuals::geom_stepconfint(aes(ymin = lower, ymax = upper), alpha = 0.3) +
-  labs(title = "Survival function",
-       x = "time",
-       y = "survival")
-
-ggsave(filename = ".//output_polaczone/cph_merged.jpg", plot=p)
+# 
+# p <- ggplot2::ggplot(df_final, aes(time,survival_na_next_row)) +
+#   ggplot2::geom_step() +
+#   utile.visuals::geom_stepconfint(aes(ymin = lower, ymax = upper), alpha = 0.3) +
+#   labs(title = "Survival function",
+#        x = "time",
+#        y = "survival")
+# 
+# ggsave(filename = ".//output_polaczone/cph_merged.jpg", plot=p)
 
 
 #dev.off()

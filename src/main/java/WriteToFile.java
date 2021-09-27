@@ -97,6 +97,17 @@ public class WriteToFile {
         return lines;
     }
 
+    public static void savePlotAndCsv(){
+        String command = "rscript --vanilla prezentacja.R \"output_polaczone\\survival.rds\" \"output_polaczone\\cox_polaczony_jpg.jpg\" "
+                + "\"output_polaczone\\ramka-polaczona.csv\" survival_na_next_row";
+        // "\"output_seq\\cph_seq.jpg
+        TalkToR.runScript(command, false);
+
+        command = "rscript --vanilla prezentacja.R \"output_seq\\ramka_seq.rds\" \"output_seq\\cox_seq_jpg.jpg\" "
+                + "\"output_seq\\ramka-seq.csv\" survival";
+        TalkToR.runScript(command, false);
+    }
+
     public static String getMillisAsFormattedSeconds(long millis) {
         long secs = millis / 1000;
         long tenths = (millis - (secs * 1000)) / 100;
