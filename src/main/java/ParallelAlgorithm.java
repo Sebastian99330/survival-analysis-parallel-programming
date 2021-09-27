@@ -53,7 +53,7 @@ public class ParallelAlgorithm implements Runnable {
     // (tworzy kilka plikow z czesciami danych) zeby moc je potem rownolegle obliczyc
     public void splitInputData() {
         String command = "rscript --vanilla dzielenie-zbioru-seq.R " + input + " " + numberOfThreads + " " + splitInput;
-        TalkToR.runScript(command, false);
+        TalkToR.runScript(command, true);
     }
 
     // metoda wywoluje odpalenie algorytmu analizy przezycia dla kazdego pliku z podzielonymi danymi wejsciowymi
@@ -102,7 +102,7 @@ public class ParallelAlgorithm implements Runnable {
         // komenda R, ktora odpala skrypt laczenie.R, ktory laczy wyniki skryptu script.R
          String command = "rscript --vanilla laczenie.R " + numberOfThreads;
 //        String command = "rscript --vanilla sciezka.R";
-        TalkToR.runScript(command, false);
+        TalkToR.runScript(command, true);
     }
 
     /**
@@ -110,13 +110,13 @@ public class ParallelAlgorithm implements Runnable {
      */
     public void writeGroupedOutputToFile(){
         String command = "rscript --vanilla odczyt-testow.R";
-        TalkToR.runScript(command, false);
+        TalkToR.runScript(command, true);
     }
 
     @Override
     public void run() {
         //System.out.println("Thread name (ParallelAlgorithm.run): " + Thread.currentThread().getName());
         //System.out.println("Thread " + currentThreadNumber + " out of " + numberOfThreads);
-        TalkToR.runScript(threadCommand, false);
+        TalkToR.runScript(threadCommand, true);
     }
 }

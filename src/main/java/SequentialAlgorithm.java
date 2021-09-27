@@ -30,6 +30,6 @@ public class SequentialAlgorithm {
                 this.outputTxtFile + " " + this.kphPlotPath + " " + this.cphPlotPath + " " + this.outputFolderName + " " + this.rSeparator + " " +
                 this.dfName + " \"" + this.timeStatus + "\" \"" + this.groupingVariablesCox + "\" " + this.savePlot;
 
-        TalkToR.runScript(command, false);
+        TalkToR.runScript(command, true);
     }
 }

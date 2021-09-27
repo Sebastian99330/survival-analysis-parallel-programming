@@ -70,10 +70,13 @@ public class WriteToFile {
             // otrzymujemy przyspieszenie - ile razy jest szybciej?
             Double parTimePercentageOfSeq = (double)(Math.round((Double.parseDouble(timeSeq) / Double.parseDouble(timePar))*100))/100;
             String strParTimePercentageOfSeq = Double.toString(parTimePercentageOfSeq) + "x";
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date date = new Date();
+            String currentDate = "\"" + formatter.format(date) + "\"";
             // str moze miec wartosc np. "1785,2," czyli poczatek linijki ze statystykami - wpis do pliku csv
             // potem skrypt R dokonczy ta linijke i zrobi znak new line. Na kazde wykonanie programu bedzie 1 taka linijka
             String str = numberOfLinesStr + "," + numberOfThreads.toString() + "," + timeSeq + "," + timePar  + "," + strParTimePercentageOfSeq +
-                    "," + inputFileName + "\n";
+                    "," + inputFileName  + "," +  currentDate + "\n";
             // wstawia znak nowej linii zanim doklei zawartosc stringa str
 //            Files.write(Paths.get("statystyki.csv"), str.getBytes(), StandardOpenOption.APPEND);
             // nie wstawia nowej linii, tylko od razu dopisuje na koncu ostatniej linijki
