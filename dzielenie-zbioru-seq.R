@@ -1,5 +1,5 @@
 args <- commandArgs(trailingOnly = TRUE)
-# args <- array(c("turnover-edward-mln.csv", "10", "split-data\\zbior_"))
+# args <- array(c("input//turnover.csv", "3", "output//split-data\\zbior_"))
 
 # ten skrypt przyjmuje argumenty:
 # 1 sciezka do pliku z danymi wejsciowymi
