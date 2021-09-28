@@ -173,7 +173,7 @@ for (i in 1:length(lista_ramek)){
 # ukladamy wartosci z ramek pod siebie
 # czyli zamiast miec kilka ramek w liscie "obok siebie",
 # bedziemy mieli jedna ramke w ktorej zawartosci data frame beda doklejone po prostu pod spodem jako kolejne wiersze
-lista_df_rbind <- bind_rows(lista_ramek_surv_na_to_next_wiersz)
+lista_df_rbind <- bind_rows(lista_ramek)
 
 # liczymy srednia z wierszy
 survival_polaczony <- lista_df_rbind %>%
