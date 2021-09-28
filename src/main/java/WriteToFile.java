@@ -116,6 +116,11 @@ public class WriteToFile {
         TalkToR.runScript(command, false);
     }
 
+    public static void writeErrors(){
+        String command = "rscript --vanilla liczenie-bledow.R";
+        TalkToR.runScript(command, false);
+    }
+
     public static String getMillisAsFormattedSeconds(long millis) {
         long secs = millis / 1000;
         long tenths = (millis - (secs * 1000)) / 100;

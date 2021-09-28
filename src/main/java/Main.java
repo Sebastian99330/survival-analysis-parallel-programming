@@ -9,7 +9,7 @@ public class Main {
 //            newArgs[0] = "input//turnover-mln-3.csv"; // input file name
             newArgs[1] = "exp, event"; // variables: time, status // exp, event / time, status
             newArgs[2] = "branch + pipeline"; // treatment + age + sh + size + index / branch + pipeline
-            newArgs[3] = "10";  // number of threads
+            newArgs[3] = "3";  // number of threads
         }
         else {
             newArgs[0] = args[0];
@@ -68,7 +68,7 @@ public class Main {
         // jednak statystyki zapisujemy do innych plikow, w inny sposob wiec zakomentowuje
         // WriteToFile.appendStatsToFile(seqTimeFormatted, parallelTimeFormatted);
         // wypisanie do zbiorczego programu ze statystykami wykonania programu (dopisanie na jego koniec z kazdym wykonaniem programu, nie tworzenie od nowa)
-
+        WriteToFile.writeErrors();
         WriteToFile.savePlotAndCsv(); // narysowanie wykresow do plikow png
         WriteToFile.writeRowsNumber(numberOfThreads, seqTimeFormatted, parallelTimeFormatted, argsSeq[0]);
         parallelAlgorithm.writeGroupedOutputToFile();

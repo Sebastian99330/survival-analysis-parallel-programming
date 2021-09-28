@@ -16,8 +16,6 @@ lista_ramek <- lapply(my_files, readRDS)
 # nazywamy tak elementy listy (czyli pojedyncze data frame'y), aby ich nazwy pasowaly do nazw plikow
 names(lista_ramek) <- stringr::str_replace(my_files, pattern = ".rds", replacement = "")
 
-# data frame sekwencyjny, tzn. na zbior danych otrzymanych metoda sekwencyjna, bez dzielenia zbioru wejsciowego
-df_seq <- readRDS("output//output_seq//ramka_seq.rds")
 
 # 2. Tworzymy pusty data frame na wynikowy (polaczony) zbior
 # df_final - data frame finalne, wynikowe
@@ -91,7 +89,6 @@ for (i in 1:length(lista_ramek)){
   }
 }
 
-
 # trzeba teraz posumowac wartosci miedzy wierszami z roznych kolumn
 # zeby otrzymac wyniki bliskie sekwencyjnym
 
@@ -109,36 +106,10 @@ for (i in 1:length(lista_ramek)){
   df_final[, cols] = df_final[, cols] + lista_ramek[[i]][,cols]
 }
 
+# df_final <- lapply(lista_ramek,function(x) rowSums(x[,cols])) # to szybciej posumuje ale nie dziala
+
+
 # --------- Koniec: Laczenie kolumny n_risks --------------- #
-
-
-# --------- Porownanie wynikow - liczenie bledu n_risk --------------- #
-
-
-# patrze, na ile sie rozni zlaczony wynik od sekwencyjnego
-# tworze nowa ramke na wyniki
-# beda w niej kolumny odpowiadajace kolumnom w zbiorach wejsciowych
-# i wiersze beda reprezentowaly blad kazdego wiersza
-# miedzy poskladanym wynikiem df_final a sekwencyjnym df_seq
-# nazywam "bledy kazdy wiersz" zeby odroznic od ramki, ktora bedzie miala bledy
-# ale procentowo juz posumowane dla calej kolumny np. "kolumna n_risk rozni sie 1% od sekwencyjnego
-# tutaj mamy roznice w kazdym wierszu kolumny a nie calosciowo dla kolumny
-bledy_kazdy_wiersz <- select(df_final,time)
-bledy_kazdy_wiersz$n_risk_errors <- c(abs(df_final$n_risk - df_seq$n_risk))
-
-# sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
-proporcja_bledu_do_wyniku_seq <- sum(bledy_kazdy_wiersz$n_risk_errors) / sum(df_seq$n_risk)
-procent_blad_n_risk <- paste(round((proporcja_bledu_do_wyniku_seq * 100),2),"%") #bierzemy procent
-
-
-# tworze ramke na wyniki bledu
-# bedzie miala nazwe kolumny oraz wartosc o ile % rozni sie zlozona kolumna od sekwencyjnej
-bledy <- data.frame(c("n_risk"),c(procent_blad_n_risk))
-colnames(bledy) <- c("nazwa_polaczonej_kolumny","procent_bledu_wzgledem_seq")
-
-
-
-# --------- Koniec Porownanie wynikow - liczenie bledu n_risk --------------- #
 
 
 
@@ -159,26 +130,11 @@ df_final[, cols] <- 0
 # iterujemy po liscie z data frame czastkowych zbiorow
 for (i in 1:length(lista_ramek)){
   # sumujemy / kumulujemy kolejne warosci z kolejnych data frame
+  # chcemy typ interger po 1. bo to sa liczby calkowite
+  # a po 2. bo kolumna n_event w data frame sekwencyjnym df_seq ma taki typ
   df_final[, cols] = df_final[, cols] + lista_ramek[[i]][,cols]
 }
 
-# mamy juz polaczone poprawnie ale musimy zmienic typ kolumn zeby nam funkcja zwrocila true
-# sprawdzamy typy kolumn - moze sie potem ta instrukcja przydac przy porownywaniu jakby nie pokazywalo ze jest identyczne mimo ze wartosci bylyby takie same
-# sapply(df_final, class)
-# sapply(df_seq, class)
-
-# chcemy typ interger po 1. bo to sa liczby calkowite
-# a po 2. bo kolumna n_event w data frame sekwencyjnym df_seq ma taki typ
-df_final$n_event <- as.integer(df_final$n_event)
-
-# badam czy kolumny sa identyczne
-# identical(df_final[['n_event']],df_seq[['n_event']]) # zwraca TRUE
-# wpis o tym ze polaczona kolumna jest identyczna
-bledy[nrow(bledy) + 1,] = c("n_event","identyczna")
-
-
-# wyswietlenie tych kolumn w stylu left join
-# head(merge(x = select(df_final, time, n_event), y = select(df_seq, time, n_event), by = "time", all.x = TRUE))
 
 # --------------- Laczenie kolumny survival # --------------- #
 
@@ -202,16 +158,8 @@ survival_polaczony <- lista_df_rbind %>%
   summarise(avg_survival = mean(survival, na.rm=TRUE)) %>%
   data.frame()
 
-survival_polaczony$avg_survival <- round(survival_polaczony$avg_survival,4)
 df_final$survival_na_rm <- survival_polaczony$avg_survival
 
-# sprawdzamy roznice
-bledy_kazdy_wiersz$survival_na_rm_err <- abs(df_final$survival_na_rm  - df_seq$survival)
-
-# sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
-proporcja_bledu_do_wyniku_seq <- sum(bledy_kazdy_wiersz$survival_na_rm_err) / sum(df_seq$survival)
-procent_blad_survival <- paste(round((proporcja_bledu_do_wyniku_seq * 100),2),"%")
-bledy[nrow(bledy) + 1,] = c("n_survival_srednia_bez_na",procent_blad_survival)
 
 # -------------- Koniec: Laczenie kolumny survival za pomoca srednia z wartosci (pomijajac wartosci NA) ------- #
 
@@ -288,95 +236,9 @@ df_final$lower <- survival_polaczony$avg_lower
 df_final$upper <- survival_polaczony$avg_upper
 
 
-bledy_kazdy_wiersz$survival_na_next_row_err <- abs(df_final$survival_na_next_row - df_seq$survival)
-bledy_kazdy_wiersz$lower_err <- abs(df_final$lower - df_seq$lower)
-bledy_kazdy_wiersz$upper_err <- abs(df_final$upper - df_seq$upper)
-
-
-# nie potrzebujemy tego, wiec nie obliczamy poki co. To jest raczej podgladowe, do debugowania
-# ramka dla ladnego porownania wszystkich wartosci (zlaczonych, seq i bledow)
-# wszystkie_survivale <- left_join(x = df_final, y = df_seq, by = "time", copy = FALSE) %>%
-#   left_join(y = bledy_kazdy_wiersz, by = "time", copy = FALSE) %>%
-#   select(time, survival_na_rm, survival_na_rm_err, survival_na_next_row, survival_na_next_row_err, survival)
-
-# nazwy_kolumn_surv <- c("time", "survival_na_rm", "survival_na_rm_err", "survival_na_next_row", "survival_na_next_row_err", "survival_seq")
-# colnames(wszystkie_survivale) <- nazwy_kolumn_surv
-
-# dorzucamy jeszcze czastkowe survivale
-# for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
-#   wszystkie_survivale <-
-#     wszystkie_survivale %>%
-#     left_join(y=select(lista_ramek_surv_na_to_next_wiersz[[i]], time, survival), by = "time", copy = FALSE)
-#   nazwy_kolumn_surv <- c(nazwy_kolumn_surv, paste0("survival_", i))
-#   colnames(wszystkie_survivale) <- nazwy_kolumn_surv
-# }
-
-
-
-
-# sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
-proporcja_bledu_do_wyniku_seq_dwa <- sum(bledy_kazdy_wiersz$survival_na_next_row_err) / sum(df_seq$survival)
-procent_blad_survival_dwa <- paste(round((proporcja_bledu_do_wyniku_seq_dwa * 100),2),"%")
-bledy[nrow(bledy) + 1,] <- c("n_survival_na_to_wiersz_ponizej",procent_blad_survival_dwa)
-
-# sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
-proporcja_bledu_do_wyniku_seq_dwa <- sum(bledy_kazdy_wiersz$lower_err) / sum(df_seq$lower)
-procent_blad_lower <- paste(round((proporcja_bledu_do_wyniku_seq_dwa * 100),2),"%")
-bledy[nrow(bledy) + 1,] <- c("n_lower",procent_blad_lower)
-
-# sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
-proporcja_bledu_do_wyniku_seq_dwa <- sum(bledy_kazdy_wiersz$upper_err) / sum(df_seq$upper)
-procent_blad_upper <- paste(round((proporcja_bledu_do_wyniku_seq_dwa * 100),2),"%")
-bledy[nrow(bledy) + 1,] <- c("n_upper",procent_blad_upper)
-
-
-
-
-
 # -------------- Koniec: Laczenie kolumny survival za pomoca wypelniania NA wierszami ponizej (tak jak n_risk) ------- #
 # --------------- Koniec: laczenie kolumny survival# --------------- #
 
 
-
-# Usuniecie katalogu na output jesli istnieje
-# unlink(".//output_laczenie", recursive = TRUE)
-
-# utworzenie katalogu na nowe pliki z danymi wejsciowymi
-# dir.create(file.path(".//output_laczenie"), showWarnings = FALSE)
-
-# wypisanie wszystkich waznych danych - wyniku skryptu do folderu na output
-# write.csv(df_final, ".//output_laczenie//output-polaczone.csv", row.names = F)
-# write.csv(wszystkie_survivale, ".//output_laczenie//wszystkie_survivale.csv", row.names = F)
-# write.csv(bledy_kazdy_wiersz, ".//output_laczenie//bledy-cale-wiersze.csv", row.names = F)
-# write.csv(bledy, ".//output_laczenie//bledy_podsumowanie.csv", row.names=F)
-saveRDS(bledy, "output//output_polaczone//bledy.rds")
-
-
-# wygenerowanie wykresu z polaczonej ramki danych i zapisanie jej do pliku
-# source(file.path("./narysuj_graf.R"))
-# narysuj_graf(df_final$time, df_final$survival_na_next_row)
-
-# wypisanie wyniku skryptu do folderu na output 
-# w formie rds - bo sekwencyjne dane sa wypisane tak samo, wiec zeby nie bylo roznicy w czasie przez to
-# write.csv(df_final, ".//output_polaczone//survival.csv", row.names = F)
 saveRDS(df_final, "output//output_polaczone//survival.rds")
 
-
-# library(ggplot2)
-# library(utile.visuals)
-
-# otwarcie pliku do ktoego rysujemy wykres z regresji coxa
-#jpeg(".//output_polaczone/cph_merged.jpg", width = 1698, height = 754)
-# 
-# p <- ggplot2::ggplot(df_final, aes(time,survival_na_next_row)) +
-#   ggplot2::geom_step() +
-#   utile.visuals::geom_stepconfint(aes(ymin = lower, ymax = upper), alpha = 0.3) +
-#   labs(title = "Survival function",
-#        x = "time",
-#        y = "survival")
-# 
-# ggsave(filename = ".//output_polaczone/cph_merged.jpg", plot=p)
-
-
-#dev.off()
-# koniec rysowania wykresu polaczonej ramki
