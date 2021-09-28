@@ -41,12 +41,12 @@ pbc2 <- '"input\\pbc-mln.csv" "time, status" "trt + age + sex + ascites + hepato
 
 # rscript --vanilla script.r covid.csv output-seq.txt km_seq.jpg cph_seq.jpg output_seq , ramka_seq.rds "offset, survival" "intubated" "sex + age + finding + survival + intubated + intubation_present + went_icu + in_icu + needed_supplemental_O2 + extubated + temperature + pO2_saturation + leukocyte_count + neutrophil_count + lymphocyte_count + view + modality" T
 
-watki <- c(7)
+watki <- c(10)
 
 #parametry <- c(work1, work2, work3, prost1, prost2, colorectal1, colorectal2, work_edw, work_edw2)
 # parametry <- c(work_edw, work_edw2, ret, ret2, lungs, lungs2, colon, colon2, flchain, flchain2, gbsg, gbsg2, kidney, kidney2, 
 #               mgus, mgus2, myeloid, myeloid2, nafld1, nafld1_2)
-parametry <- c(prost2)
+parametry <- c(prost3)
 suma_iteracji <- length(parametry) * length(watki) * 1
 iteracja <- 0
 
@@ -58,14 +58,8 @@ for(slowo in parametry){ # petla z zestawem parametrow wywolujacych
       polecenie <- paste0(odpalenie_java, slowo,liczba_watkow,'"')
       print(polecenie)
       print(paste0("Iteracja: ",iteracja," / ", suma_iteracji, ", liczba watkow: ",j,", godzina: ",format(Sys.time())))
-      start.time <- Sys.time() 
-      
       javaOutput <- system(polecenie, intern = TRUE)
       
-      end.time <- Sys.time()
-      time.taken <- as.numeric(end.time - start.time)
-      time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch miejsc po przecinku
-      print(paste0("Czas wykonania powyzszej instrukcji: ",time.taken, " sekund(y)"))
     }
   }
 }

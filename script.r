@@ -40,44 +40,8 @@ if(tolower(suffix_inputu) == "csv"){
   my_data <- readRDS(sciezka_do_input)
 }
 
-# zakomentowuje, bo czas mierzymy w javie
-# start.time <- Sys.time()
-
-
-# zapis danych do pliku - nie jest potrzebny poki co
-# write.table(data, file = output_txt, sep = " ", row.names = TRUE)
-
-
 library(survival)
 # library(ggfortify) #funkcja autoplot
-
-# poki co zakomentowujemy KM bo nie budujemy tego modelu bo model Coxa jest lepszy
-# Kaplan Meier plot
-# wszystko to co ponizej robimy po to, zeby sparametryzowac wywolanie funkcji, ktora buduje model coxa
-# potrzebujemy miec instrukcje, w ktorej podajemy zmienne po ktorej grupujemy jako parametr, ale po prostu podanie zmiennej
-# w miejscu zmiennych grupujacych rzuca blad 
-# interpreter wtedy nie patrzy co mamy zapisane w zmiennej zmienne_grupowanie, tylko probuje od razu po niej grupowac dane wejsciowe
-# tworze jedna instrukcje wsadzajac za parametr zmienne, po ktorych grupujemy (one zostaly podane jako argument odpalenia tego skryptu)
-# instrukcja <- sprintf("survfit(Surv(%s) ~ %s, data = my_data)", time_status, zmienne_grupowanie_km)
-# za pomoca eval(parse(...) uruchamiamy instrukcje, ktora jest zapisana w zmiennej
-# mykm <- eval(parse(text=instrukcja))
-
-
-# otwarcie pliku do ktorego rysujemy wykres KM
-# jpeg(KM_file_path, width = 1698, height = 754)
-
-# Wykres zawiera dwie linie, po jednej dla kazdej wartosci zmiennej "treatment" czyli 1 i 2
-# Sa takze zaznaczone przedzialy ufnosci wokol kazdej linii
-# autoplot(mykm)
-
-# zamkniecie pliku do ktoego rysujemy wykres
-# dev.off()
-
-
-
-
-# Log-rank test
-#survdiff(Surv(my_data$time, my_data$status) ~ my_data$treatment)
 
 # Cox Proportional Hazards Model
 #cox <- coxph(Surv(time, status) ~ treatment + age + sh + size + index, data = my_data) # przed zmiana
@@ -93,83 +57,6 @@ tabelka_cox <- as.data.frame(podsumowanie_cox[c("time", "n.risk", "n.event", "su
 # zamieniamy . na _ zeby sie nie mylilo z separatorem liczb potem
 colnames(tabelka_cox) <- c("time", "n_risk", "n_event", "survival","lower","upper")
 
-
-# wypisanie statystyk - nie potrzebujemy tego, bo to wypisuje wspolczynniki,
-# a nas interesuja dokladne momenty w czasie (po nich bedziemy laczyc)
-# print("Summary(cox)")
-# summary(cox)
-
-# wypisanie tabelki z obliczonymi wartosciami dla konkretnych momentow w czasie
-# summary(survfit(cox))
-# tabelka <- data.frame(summary(survfit(cox)))
-# write.csv(tabelka, "ramka.csv", row.names = F)
-# 
-# library(dplyr)
-# # wykres zapisujemy do pliku na dysk tylko dla sekwencyjnego zbioru. 
-# # Nie chcemy rysowac dla czastkowych zbiorow, narysujemy dla polaczonego wynikowego w innym skrypcie
-# if(czy_rysowac_wykres) {
-#     # narysujemy teraz wykres za za pomoca domyslnej funkcji rysujacej
-#     
-#     # funkcja autoplot() nie przyjmuje bezposrednio obiektu cox
-#     # czyli obiektu, ktory zwraca funkcja coxph,
-#     # wiec trzeba go wpakowac po drodze w funkcje survfit()
-#     # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
-#     # dodajemy do nazwy pliku "auto", czyli np. .//output_seq//cph_seq.jpg 
-#     # zostanie zmienione na .//output_seq//cph_seq_auto.jpg
-#     
-#     #name_base <- substr(CPH_file_path,1,nchar(CPH_file_path)-4)
-#     #name_suffix <- substr(CPH_file_path,nchar(CPH_file_path)-3,nchar(CPH_file_path))
-#     #CPH_file_path_auto <- paste0(name_base, '_auto',name_suffix)
-#     
-#     #jpeg(CPH_file_path_auto, width = 1698, height = 754)
-#     #autoplot(survfit(cox)) %>%
-#     #  print()
-#     #dev.off()
-#     
-#     
-#     library(ggplot2)
-#     library(utile.visuals)
-#     
-#     # narysujemy wykres funkcji survival uzywajac wartosci z tabeli
-#     # otwarcie pliku do ktoego rysujemy wykres z regresji coxa
-#     #jpeg(CPH_file_path, width = 1698, height = 754)
-#     p <- ggplot2::ggplot(tabelka_cox, aes(time,survival)) +
-#       ggplot2::geom_step() +
-#       utile.visuals::geom_stepconfint(aes(ymin = lower, ymax = upper), alpha = 0.3) +
-#       labs(title = "Survival function",
-#            x = "time",
-#            y = "survival")
-#     ggsave(filename = CPH_file_path, plot=p)
-#     
-#     #dev.off()
-# }
-
-# end.time <- Sys.time()
-# time.taken <- as.numeric(end.time - start.time)
-# time.taken <- format(round(time.taken, 2), nsmall = 2) # formatowanie do dwoch miejsc po przecinku
-
-# zapisze do pliku dane tekstowe - statystyki z log-rank oraz z regresji coxa
-# ustawiam plik do ktoego bedziemy pisac
-# sink(output_txt)
-# print(paste0("Wykonywanie skryptu generujacego wykres KM, obliczajacego test log-rank oraz przetwarzajacy model regresji coxa: ",time.taken, " sekund(y)"))
-# print(paste0("Start wykonania skryptu: ",start.time))
-# print(paste0("Koniec wykonania skryptu: ",end.time))
-# 
-# #zamkniecie pliku output
-# sink()
-# 
-# 
-
-
 lokalizacja_output_ramki = paste0(".//",nazwa_folderu_output,"//",df_file)
 
-# zapis outputu do pliku
-# jak obliczalismy plik sekwencyjny, to output jest juz 'ostateczny' i ma byc zapisany do pliku csv
-# jak obliczalismy rownolegle, to output z tego jest jedynie przejsciowy i zapisujemy to rds
-# dlatego tu sprawdzimy czy 3 ostatnie znaki inputu to csv i czy rds i zapiszemy w odpowiedni sposob
-# if(tolower(suffix_inputu) == "csv"){
-#   write.csv(tabelka_cox, lokalizacja_output_ramki, row.names = F)
-# } else if (tolower(suffix_inputu) == "rds"){
-#   saveRDS(tabelka_cox, lokalizacja_output_ramki)
-# }
 saveRDS(tabelka_cox, lokalizacja_output_ramki)

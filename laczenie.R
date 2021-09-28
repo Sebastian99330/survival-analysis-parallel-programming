@@ -1,13 +1,6 @@
 args = commandArgs(trailingOnly=TRUE)
 # args = as.vector(c(3)) # ewentualnie array(c(10))
 
-# Ten skrypt laczy output czesciowych zbiorow danych. Bierze np. 3 czesciowe outputy i laczy je w jeden.
-# Dzieki temu otrzymujemy polaczony zbior danych (liczonych sekwencyjnie),
-# Algorytm tego skryptu:
-# 1. Wczytujemy zbiory (czesciowe oraz sekwencyjny) z plikow wejsciowych csv do data frame 
-# 2. Tworzymy pusty data frame na wynikowy (polaczony) zbior
-# 3. Ze zbiorow czesciowych robimy join/merge kolumny "time" i wrzucamy je do ramki wynikowej. Reszta kolumn narazie dostaje wartosc NA
-# 4. Obliczamy wynikowa kolumne n_risks (liczbe pacjentow), zlozona ze zbiorow czesciowych
 #current_path = dirname(rstudioapi::getSourceEditorContext()$path)
 #current_path
 #setwd(current_path)
@@ -17,7 +10,6 @@ liczba_watkow <- as.numeric(args[1])
 # ------------------ Wczytanie danych z plikow input ------------------ #
 
 #wektor z nazwami plikow input zeby moc wczytac kilka(nascie) plikow z danymi wejsciowymi w petli
-# my_files = paste0("output_", 1:liczba_watkow, ".txt")
 my_files = paste0("output//output_", 1:liczba_watkow, "//", "ramka_", 1:liczba_watkow, ".rds")
 # zaladowanie kilku ramek danych (data frame) do listy
 lista_ramek <- lapply(my_files, readRDS)
@@ -44,13 +36,6 @@ library(dplyr)
 df_final <- merge(df_final, select(Reduce(function(...) merge(..., by = "time", all=T), lista_ramek), time), by = "time", all = TRUE)
 
 
-
-
-# teraz zbiory czastkowe uzupelnimy o brakujace wiersze
-# tzn. zrobimy join kazdej czastkowej ramki z wynikowa kolumna time
-# po to zeby moc puste wiersze jakos zastapic w dalszych krokach
-# i potem polaczyc ze soba odpowiadajace sobie kolumny w ramkach
-
 # iterujemy po liscie z data frame czastkowych zbiorow
 for (i in 1:length(lista_ramek)){
   lista_ramek[[i]] <- merge(lista_ramek[[i]], select(df_final, time), by = "time", all = TRUE)
@@ -60,15 +45,6 @@ for (i in 1:length(lista_ramek)){
 
 
 # ------------------ przygotowanie funkcji pomocniczej ------------------ #
-
-
-# do polaczenia niektorych kolumn (najpewniej n_risks oraz survival) miedzy zbiorami
-# bedzie przydatne zastapienie wartosci NA wartosciami z nastepnych wierszy
-# Czyli jak np wartosci w kolumnie (w kolejnych wierszach) sa: NA NA 513 510 itp,
-# to na miejsce pierwszych dwoch NA dajemy 513.
-# przygotujemy taka funkcje, ktora to zrobi niezaleznie od tego jakie argumenty (ramke i kolumne) jej podamy
-
-
 
 # funkcja, ktora zastepuje wartosc NA w dataframe wartoscia w wierszu ponizej
 replace_with_next_row <- function(df, row_index, col_name) {
@@ -132,7 +108,6 @@ for (i in 1:length(lista_ramek)){
   # sumujemy / kumulujemy kolejne warosci z kolejnych data frame
   df_final[, cols] = df_final[, cols] + lista_ramek[[i]][,cols]
 }
-
 
 # --------- Koniec: Laczenie kolumny n_risks --------------- #
 
