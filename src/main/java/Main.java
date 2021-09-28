@@ -3,19 +3,12 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        String[] newArgs = new String[5];
+        String[] newArgs = new String[4];
         if(args.length != 4){
-            newArgs[0] = "input//turnover.csv"; // input file name
-//            newArgs[0] = "input//turnover-mln-0-8.csv"; // input file name
-//            newArgs[0] = "input//prostate_cancer_mln.csv"; // input file name
-            newArgs[1] = "exp, event"; // variables: time, status // exp, event / time, status
-//            newArgs[1] = "time, status"; // variables: time, status // exp, event / time, status
-//            newArgs[1] = "stag,event"; // variables: time, status // exp, event / time, status
-            newArgs[2] = "branch + pipeline"; // treatment + age + sh + size + index / branch + pipeline
-//            newArgs[2] = "age + sex + ph_ecog + ph_karno + pat_karno + meal_cal + wt_loss"; // treatment + age + sh + size + index / branch + pipeline
-//            newArgs[2] = "treatment + age + sh + size + index"; // treatment + age + sh + size + index / branch + pipeline
-//            newArgs[2] = "gender+age+industry+profession+traffic+coach+head_gender+greywage+way+extraversion+independ+selfcontrol+anxiety+novator"; // treatment + age + sh + size + index / branch + pipeline
-            newArgs[3] = "3";  // number of threads
+//            newArgs = new String[]{"input//turnover.csv", "exp, event", "branch + pipeline", "8"};
+            newArgs = new String[]{"input//turnover-mln-0-8.csv", "exp, event", "branch + pipeline", "8"};
+//            newArgs = new String[]{"input//prostate_cancer_mln.csv", "time, status", "treatment + age + sh + size + index", "8"};
+//            newArgs = new String[]{"input//turnover-edward.csv", "stag,event", "gender+age+industry+profession+traffic+coach+head_gender+greywage+way+extraversion+independ+selfcontrol+anxiety+novator", "8"};
         }
         else {
             newArgs[0] = args[0];

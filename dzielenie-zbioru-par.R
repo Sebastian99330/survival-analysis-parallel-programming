@@ -8,15 +8,18 @@ podziel_zbior <- function (input_sciezka, liczba_watkow){
   # tworzy pusta liste - konstruktor utworzenia pustej listy
   lista_df <- list()
   
+  # https://stackoverflow.com/questions/19791609/saving-multiple-outputs-of-foreach-dopar-loop
   
   for(numer in 1:liczba_watkow){
   # foreach(numer=1:liczba_watkow) %dopar% {
     wybrane_idx <- which(numery_zbiorow == numer)
     lista_df[[numer]] <- df[wybrane_idx, ]
-    
+    # zapisuje do pliku, ale nie zostaje zmienna po petli
+    # zamiast tego wypisuje na ekran to co obliczy
     #write.csv(df[wybrane_idx, ], paste0("output//split-data\\zbior_", numer,".csv"), row.names = F)
   }
-  # lista_df
+  # lista_df # po normalnej petli for to ma wartosc, po foreach nie ma
+  head(lista_df[[2]])
   return (lista_df)
 }
 
