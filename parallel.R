@@ -7,5 +7,5 @@ dzielenie_zbioru_plik <- args[3] #np. zbior_ , co bedzie oznaczalo ze podzielone
 
 source("dzielenie-zbioru-par.R")
 
-podziel_zbior(input_sciezka, liczba_zbiorow, dzielenie_zbioru_plik)
+lista_df <- podziel_zbior(input_sciezka, liczba_zbiorow, dzielenie_zbioru_plik)
 
