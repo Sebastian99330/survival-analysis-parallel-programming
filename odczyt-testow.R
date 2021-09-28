@@ -1,5 +1,6 @@
 df <- read.table("statystyki.csv", sep = "," , header = T)
-df <- df[,c("liczba_wierszy","liczba_watkow","czas_seq","czas_par","par_lepsze_niz_seq","nazwa_inputu","n_risk","n_survival_bez_na","n_survival_na_to_wiersz_ponizej","lower","upper")] #zamieniam kolejnosc kolumn
+#df <- df[,c("liczba_wierszy","liczba_watkow","czas_seq","czas_par","par_lepsze_niz_seq","nazwa_inputu","n_risk","n_survival_bez_na","n_survival_na_to_wiersz_ponizej","lower","upper")] #zamieniam kolejnosc kolumn # tu jest n_survival_bez_na ale nie ma poki co
+df <- df[,c("liczba_wierszy","liczba_watkow","czas_seq","czas_par","par_lepsze_niz_seq","nazwa_inputu","n_risk","n_survival_na_to_wiersz_ponizej","lower","upper")] #zamieniam kolejnosc kolumn
 
 library(dplyr)
 df_wyniki <- df %>%
@@ -19,6 +20,7 @@ par_jest_jaka_czescia_seq <- round((df_wyniki$czas_seq / df_wyniki$czas_par),2)
 df_wyniki$par_better_seq <- paste0(as.character(par_jest_jaka_czescia_seq),"x")
 
 #zamieniam kolejnosc kolumn
-df_wyniki <- df_wyniki[,c("nazwa_inputu","liczba_wierszy","liczba_watkow","liczba_testow","czas_seq","czas_par","par_better_seq","n_risk","n_survival_bez_na","n_survival_na_to_wiersz_ponizej","lower","upper")]
+#df_wyniki <- df_wyniki[,c("nazwa_inputu","liczba_wierszy","liczba_watkow","liczba_testow","czas_seq","czas_par","par_better_seq","n_risk","n_survival_bez_na","n_survival_na_to_wiersz_ponizej","lower","upper")]
+df_wyniki <- df_wyniki[,c("nazwa_inputu","liczba_wierszy","liczba_watkow","liczba_testow","czas_seq","czas_par","par_better_seq","n_risk","n_survival_na_to_wiersz_ponizej","lower","upper")]
 
 write.csv(df_wyniki, ".//pogrupowany-wynik-testow.csv", row.names = F)

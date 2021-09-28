@@ -98,8 +98,8 @@ df_final <- lista_df_rbind %>%
   # robie replace wartosci 0 na NA, zeby moc potem zaaplikowac na.rm = TRUE
   # bo nie chce wartosci 0 czyli braku wartosci (bo funkcja survival zawsze ma jakas wartosc) liczyc do sredniej
   summarise(time = mean(time, na.rm=TRUE),
-            risk = sum(n_risk, na.rm=TRUE),
-            event = sum(n_event, na.rm=TRUE),
+            n_risk = sum(n_risk, na.rm=TRUE),
+            n_event = sum(n_event, na.rm=TRUE),
             survival_na_next_row = mean(replace(survival, survival == 0, NA), na.rm=TRUE),
             lower = mean(lower, na.rm=TRUE),
             upper  = mean(upper , na.rm=TRUE)) %>%

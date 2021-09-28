@@ -47,14 +47,14 @@ if(as.logical(czy_event_identycznie) == T) {
 # --------- koniec liczenie bledu n_event --------------- #
 
 # --------- blad survival na rm --------------- #
-
+# nie liczymy ta metoda wiec tego nie liczymy poki co
 # sprawdzamy roznice
-bledy_kazdy_wiersz$survival_na_rm_err <- abs(df_polaczone$survival_na_rm  - df_seq$survival)
+# bledy_kazdy_wiersz$survival_na_rm_err <- abs(df_polaczone$survival_na_rm  - df_seq$survival)
 
 # sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
-proporcja_bledu_do_wyniku_seq <- sum(bledy_kazdy_wiersz$survival_na_rm_err) / sum(df_seq$survival)
-procent_blad_survival <- paste(round((proporcja_bledu_do_wyniku_seq * 100),2),"%")
-bledy[nrow(bledy) + 1,] = c("n_survival_srednia_bez_na",procent_blad_survival)
+# proporcja_bledu_do_wyniku_seq <- sum(bledy_kazdy_wiersz$survival_na_rm_err) / sum(df_seq$survival)
+# procent_blad_survival <- paste(round((proporcja_bledu_do_wyniku_seq * 100),2),"%")
+# bledy[nrow(bledy) + 1,] = c("n_survival_srednia_bez_na",procent_blad_survival)
 
 # --------- koniec blad survival na rm --------------- #
 
