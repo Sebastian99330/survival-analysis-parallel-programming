@@ -11,11 +11,11 @@ public class Main {
 //            newArgs[1] = "exp, event"; // variables: time, status // exp, event / time, status
             newArgs[1] = "time, status"; // variables: time, status // exp, event / time, status
 //            newArgs[1] = "stag,event"; // variables: time, status // exp, event / time, status
-            //newArgs[2] = "branch + pipeline"; // treatment + age + sh + size + index / branch + pipeline
+//            newArgs[2] = "branch + pipeline"; // treatment + age + sh + size + index / branch + pipeline
 //            newArgs[2] = "age + sex + ph_ecog + ph_karno + pat_karno + meal_cal + wt_loss"; // treatment + age + sh + size + index / branch + pipeline
             newArgs[2] = "treatment + age + sh + size + index"; // treatment + age + sh + size + index / branch + pipeline
 //            newArgs[2] = "gender+age+industry+profession+traffic+coach+head_gender+greywage+way+extraversion+independ+selfcontrol+anxiety+novator"; // treatment + age + sh + size + index / branch + pipeline
-            newArgs[3] = "9";  // number of threads
+            newArgs[3] = "3";  // number of threads
         }
         else {
             newArgs[0] = args[0];
@@ -50,16 +50,14 @@ public class Main {
         ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(numberOfFirstThread, numberOfThreads, null, argsPar);
         System.out.println("2 Po ParallelAlgorithm parallelAlgorithm");
 
-
-        parallelAlgorithm.splitInputData();
+        /*parallelAlgorithm.splitInputData();
         System.out.println("3 Po parallelAlgorithm.splitInputData();");
-
         parallelAlgorithm.runScriptParallel();
         System.out.println("4 Po parallelAlgorithm.runScriptParallel();");
-
-
         parallelAlgorithm.mergePartialOutputs();
-        System.out.println("5 Po parallelAlgorithm.mergePartialOutputs();");
+        System.out.println("5 Po parallelAlgorithm.mergePartialOutputs();");*/
+        parallelAlgorithm.runOneParallelScript();
+        System.out.println("3 Po runOneParallelScript();");
 
         timeParallel.stop();
 

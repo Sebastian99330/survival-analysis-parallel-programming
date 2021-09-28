@@ -93,6 +93,10 @@ public class ParallelAlgorithm implements Runnable {
 
     }
 
+    public void runOneParallelScript(){
+        String command = "rscript --vanilla parallel.R " + input + " " + numberOfThreads + " \"" + timeStatus + "\" \"" + groupingVariablesCox + "\" ";
+        TalkToR.runScript(command, true);
+    }
     /**
      * Metoda odpala skrypt R, ktory laczy wyniki skryptu R
      * Wczesniej podzielilismy zbior danych wejsciowych, wykonalismy obliczenia analizy przezycia i zbudowalismy modele

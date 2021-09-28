@@ -1,9 +1,10 @@
 args <- commandArgs(trailingOnly = TRUE)
-# args <- array(c("input//turnover.csv", "3", "output\\split-data\\zbior_"))
+# args <- array(c("input//turnover.csv", "3", "exp, event", "branch + pipeline"))
 
 input_sciezka <- args[1]
 liczba_watkow <- as.numeric(args[2]) # wczesniej byl string i rzucalo blad przy tworzeniu klastra do obliczen rownoleglych
-dzielenie_zbioru_plik <- args[3] #np. zbior_ , co bedzie oznaczalo ze podzielone zbiory beda mialy nazwy zbior_1, zbior_2 itd
+time_status <- paste0("\"",args[3],"\"")
+zmienne_grupowanie_cox <- paste0("\"",args[4],"\"")
 
 # library(snow)
 # z=vector('list',4)
@@ -19,7 +20,13 @@ source("dzielenie-zbioru-par.R")
 
 lista_df <- podziel_zbior(input_sciezka, liczba_watkow)
 
+
 source("script-par.R")
 
-lista_ramek_modeli <- lapply(lista_df, oblicz_cox, "exp, event", "branch + pipeline")
+instrukcja <- sprintf("lapply(lista_df, oblicz_cox, %s, %s)", time_status, zmienne_grupowanie_cox)
+print(instrukcja)
+lista_ramek_modeli <- eval(parse(text=instrukcja)) # uruchomienie instrukcji zapisanej w zmiennej "instrukcja"
 
+source("laczenie-par.R")
+
+polacz_ramki(lista_ramek_modeli)

@@ -1,5 +1,6 @@
 
 podziel_zbior <- function (input_sciezka, liczba_zbiorow){
+  
   df <- read.table(input_sciezka, sep = "," , header = T)
   licza_wierszy <- nrow(df)
   numery_zbiorow <- sample(1:liczba_zbiorow, size = licza_wierszy,
