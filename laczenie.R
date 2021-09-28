@@ -72,9 +72,30 @@ replace_with_next_row <- function(df, row_index, col_name) {
 
 # ------------------ Koniec: przygotowanie funkcji pomocniczej ------------------ #
 
-# ------------------ Laczenie kolumny n_risks ------------------ #
+# -------------- Laczenie kolumny survival za pomoca srednia z wartosci (pomijajac wartosci NA) ------- #
+# UWAGA: ta sekcja musi byc przed kolejna sekcja "Zastepuje wartosci NA wartosciami z nast. wiersza dla wielu kolumn"
 
-# teraz zastapimy wartosci NA wartosciami z wiersza ponizej
+# # robimy kopie ramki na wypadek jakiejs zmiany
+# lista_ramek_surv_na_rm <- lista_ramek
+# 
+# # bind_rows przyjmuje liste data frame jako argument
+# # i zwraca jeden data frame, ktory ma zawartosc data frame'ow z listy
+# # jedne pod drugimi. Czyli nie mamy liste ramek w liscie "obok siebie",
+# # tylko jeden data frame z wieloma wierszami
+# lista_df_rbind = bind_rows(lista_ramek_surv_na_rm)
+# 
+# survival_polaczony <- lista_df_rbind %>%
+#   group_by(time) %>%
+#   summarise(avg_survival = mean(survival, na.rm=TRUE)) %>%
+#   data.frame()
+# 
+# df_final$survival_na_rm <- survival_polaczony$avg_survival
+
+
+# -------------- Koniec: Laczenie kolumny survival za pomoca srednia z wartosci (pomijajac wartosci NA) ------- #
+
+
+# ------------------ Zastepuje wartosci NA wartosciami z nast. wiersza dla wielu kolumn ------------------ #
 
 # iterujemy po liscie z data frame czastkowych zbiorow
 for (i in 1:length(lista_ramek)){
@@ -86,12 +107,21 @@ for (i in 1:length(lista_ramek)){
   # a jesli to jest ostatni wiersz to podaje wartosc 0
   for(row in 1:nrow(lista_ramek[[i]])){
     lista_ramek[[i]][row,"n_risk"] <- ifelse(is.na(lista_ramek[[i]][row,"n_risk"]), replace_with_next_row(df = lista_ramek[[i]], row_index = row, col_name = "n_risk"), lista_ramek[[i]][row,"n_risk"])
+    lista_ramek[[i]][row,"survival"] <- ifelse(is.na(lista_ramek[[i]][row,"survival"]), replace_with_next_row(df = lista_ramek[[i]], row_index = row, col_name = "survival"), lista_ramek[[i]][row,"survival"])
+    lista_ramek[[i]][row,"lower"] <- ifelse(is.na(lista_ramek[[i]][row,"lower"]), replace_with_next_row(df = lista_ramek[[i]], row_index = row, col_name = "lower"), lista_ramek[[i]][row,"lower"])
+    lista_ramek[[i]][row,"upper"] <- ifelse(is.na(lista_ramek[[i]][row,"upper"]), replace_with_next_row(df = lista_ramek[[i]], row_index = row, col_name = "upper"), lista_ramek[[i]][row,"upper"])
   }
 }
 
-# trzeba teraz posumowac wartosci miedzy wierszami z roznych kolumn
-# zeby otrzymac wyniki bliskie sekwencyjnym
+# ------------------ Koniec: Zastepuje wartosci NA wartosciami z nast. wiersza dla wielu kolumn ------------------ #
 
+
+
+# ------------------ Laczenie kolumny n_risks ------------------ #
+
+
+
+# trzeba teraz posumowac wartosci miedzy wierszami z odpowiadajacych sobie kolumn miedzy czastkowymi ramkami
 
 # nazwy kolumn ktore sumujemy (narazie jedna)
 cols = c("n_risk")
@@ -136,85 +166,9 @@ for (i in 1:length(lista_ramek)){
 }
 
 
-# --------------- Laczenie kolumny survival # --------------- #
 
-# porownamy dwie metody laczenia kolumny survival
-# 1 wyciagajac srednia z wartosci, ktore nie sa NA,
-# 2 za pomoca wypelniania NA wierszami ponizej (tak jak n_risk)
+# -------------- Laczenie kolumny survival, upper i lower za pomoca wypelniania NA wierszami ponizej (tak jak n_risk) ------- #
 
-
-# -------------- Laczenie kolumny survival za pomoca srednia z wartosci (pomijajac wartosci NA) ------- #
-# robimy kopie ramki na wypadek jakiejs zmiany
-lista_ramek_surv_na_rm <- lista_ramek
-
-# bind_rows przyjmuje liste data frame jako argument
-# i zwraca jeden data frame, ktory ma zawartosc data frame'ow z listy
-# jedne pod drugimi. Czyli nie mamy liste ramek w liscie "obok siebie",
-# tylko jeden data frame z wieloma wierszami
-lista_df_rbind = bind_rows(lista_ramek_surv_na_rm)
-
-survival_polaczony <- lista_df_rbind %>%
-  group_by(time) %>%
-  summarise(avg_survival = mean(survival, na.rm=TRUE)) %>%
-  data.frame()
-
-df_final$survival_na_rm <- survival_polaczony$avg_survival
-
-
-# -------------- Koniec: Laczenie kolumny survival za pomoca srednia z wartosci (pomijajac wartosci NA) ------- #
-
-# -------------- Laczenie kolumny survival za pomoca wypelniania NA wierszami ponizej (tak jak n_risk) ------- #
-# robimy kopie ramki i bedziemy pracowac na niej, bo musimy ja edytowac
-lista_ramek_surv_na_to_next_wiersz <- lista_ramek
-# teraz zastapimy wartosci NA wartosciami z wiersza ponizej
-
-cols = c("survival")
-
-# zastepujemy wartosci NA wartosciami z wiersza ponizej
-# iterujemy po liscie z data frame czastkowych zbiorow
-for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
-  # jak juz jestesmy w pierwszej petli na pojedynczym data frame,
-  # to teraz iterujemy po wierszach tego data frame
-  # podajemy nazwe kolumny oraz nr wiersza z petli
-  # zastepujemy wybrany element - tym samym elementem jesli ma jakas wartosc (nie jest NA)
-  # a jesli jest NA, to wywolujemy funkcje ktora wpisuje wartosc z tej samej kolumny z nastepnego wiersza
-  # a jesli to jest ostatni wiersz to podaje wartosc 0
-  for(row in 1:nrow(lista_ramek_surv_na_to_next_wiersz[[i]])){
-    lista_ramek_surv_na_to_next_wiersz[[i]][row,cols] <- ifelse(is.na(lista_ramek_surv_na_to_next_wiersz[[i]][row,cols]), replace_with_next_row(df = lista_ramek_surv_na_to_next_wiersz[[i]], row_index = row, col_name = cols), lista_ramek_surv_na_to_next_wiersz[[i]][row,cols])
-  }
-}
-
-# --------------- NA <- wartoœæ z nastêpnego wiersza dla kolumn lower i upper # --------------- #
-cols = c("lower")
-# zastepujemy wartosci NA wartosciami z wiersza ponizej
-# iterujemy po liscie z data frame czastkowych zbiorow
-for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
-  # jak juz jestesmy w pierwszej petli na pojedynczym data frame,
-  # to teraz iterujemy po wierszach tego data frame
-  # podajemy nazwe kolumny oraz nr wiersza z petli
-  # zastepujemy wybrany element - tym samym elementem jesli ma jakas wartosc (nie jest NA)
-  # a jesli jest NA, to wywolujemy funkcje ktora wpisuje wartosc z tej samej kolumny z nastepnego wiersza
-  # a jesli to jest ostatni wiersz to podaje wartosc 0
-  for(row in 1:nrow(lista_ramek_surv_na_to_next_wiersz[[i]])){
-    lista_ramek_surv_na_to_next_wiersz[[i]][row,cols] <- ifelse(is.na(lista_ramek_surv_na_to_next_wiersz[[i]][row,cols]), replace_with_next_row(df = lista_ramek_surv_na_to_next_wiersz[[i]], row_index = row, col_name = cols), lista_ramek_surv_na_to_next_wiersz[[i]][row,cols])
-  }
-}
-
-cols = c("upper")
-# zastepujemy wartosci NA wartosciami z wiersza ponizej
-# iterujemy po liscie z data frame czastkowych zbiorow
-for (i in 1:length(lista_ramek_surv_na_to_next_wiersz)){
-  # jak juz jestesmy w pierwszej petli na pojedynczym data frame,
-  # to teraz iterujemy po wierszach tego data frame
-  # podajemy nazwe kolumny oraz nr wiersza z petli
-  # zastepujemy wybrany element - tym samym elementem jesli ma jakas wartosc (nie jest NA)
-  # a jesli jest NA, to wywolujemy funkcje ktora wpisuje wartosc z tej samej kolumny z nastepnego wiersza
-  # a jesli to jest ostatni wiersz to podaje wartosc 0
-  for(row in 1:nrow(lista_ramek_surv_na_to_next_wiersz[[i]])){
-    lista_ramek_surv_na_to_next_wiersz[[i]][row,cols] <- ifelse(is.na(lista_ramek_surv_na_to_next_wiersz[[i]][row,cols]), replace_with_next_row(df = lista_ramek_surv_na_to_next_wiersz[[i]], row_index = row, col_name = cols), lista_ramek_surv_na_to_next_wiersz[[i]][row,cols])
-  }
-}
-# --------------- Koniec: NA <- wartoœæ z nastêpnego wiersza dla kolumn lower i upper# --------------- #
 
 # ukladamy wartosci z ramek pod siebie
 # czyli zamiast miec kilka ramek w liscie "obok siebie",
