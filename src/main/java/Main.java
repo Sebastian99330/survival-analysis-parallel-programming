@@ -6,9 +6,10 @@ public class Main {
         String[] newArgs = new String[4];
         if(args.length != 4){
 //            newArgs = new String[]{"input//turnover.csv", "exp, event", "branch + pipeline", "3"};
-            newArgs = new String[]{"input//turnover-mln-7.csv", "exp, event", "branch + pipeline", "11"};
+            newArgs = new String[]{"input//turnover-mln-7.csv", "exp, event", "branch + pipeline", "10"};
 //            newArgs = new String[]{"input//prostate_cancer_mln.csv", "time, status", "treatment + age + sh + size + index", "8"};
 //            newArgs = new String[]{"input//turnover-edward.csv", "stag,event", "gender+age+industry+profession+traffic+coach+head_gender+greywage+way+extraversion+independ+selfcontrol+anxiety+novator", "8"};
+//            newArgs = new String[]{"input//nwtco-mln.csv", "edrel, rel", "instit + histol + stage + study + age + in_subcohort", "10"};
         }
         else {
             newArgs[0] = args[0];
@@ -49,8 +50,8 @@ public class Main {
         System.out.println("4 Po parallelAlgorithm.runScriptParallel();");
         parallelAlgorithm.mergePartialOutputs();
         System.out.println("5 Po parallelAlgorithm.mergePartialOutputs();");
-        /*parallelAlgorithm.runOneParallelScript();
-        System.out.println("3 Po runOneParallelScript();");*/
+//        parallelAlgorithm.runOneParallelScript();
+//        System.out.println("3 Po runOneParallelScript();");
 
         timeParallel.stop();
 

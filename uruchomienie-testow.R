@@ -4,7 +4,7 @@ odpalenie_java <- 'java -jar ./out/artifacts/mgrmaven_jar/mgrmaven.jar '
 
 work1 <- '"input\\turnover.csv" "exp, event" "branch + pipeline" "'
 work2 <- '"input\\turnover-mln-0-8.csv" "exp, event" "branch + pipeline" "'
-work3 <- '"input\\turnover-mln-3.csv" "exp, event"  "branch + pipeline" "'
+work3 <- '"input\\turnover-mln-7.csv" "exp, event"  "branch + pipeline" "'
 prost1 <- '"input\\prostate_cancer.csv" "time, status" "treatment + age + sh + size + index" "'
 prost2 <- '"input\\prost_cancer_gen_mln.csv" "time, status" "treatment + age + sh + size + index" "'
 prost3 <- '"input\\prostate_cancer_mln.csv" "time, status" "treatment + age + sh + size + index" "'
@@ -47,7 +47,7 @@ watki <- c(10)
 #               mgus, mgus2, myeloid, myeloid2, nafld1, nafld1_2)
 # parametry <- c(work1, work2, work3, prost1, prost2, prost3, work_edw, work_edw2)
 # parametry <- c(colon, colon2, flchain, flchain2, gbsg, gbsg2, kidney, kidney2)
-parametry <- c(lungs)
+parametry <- c(work_edw2)
 suma_iteracji <- length(parametry) * length(watki) * 1
 iteracja <- 0
 
@@ -59,10 +59,14 @@ for(slowo in parametry){ # petla z zestawem parametrow wywolujacych
       polecenie <- paste0(odpalenie_java, slowo,liczba_watkow,'"')
       print(polecenie)
       print(paste0("Iteracja: ",iteracja," / ", suma_iteracji, ", liczba watkow: ",j,", godzina: ",format(Sys.time())))
-      # javaOutput <- system(polecenie, intern = TRUE)
+      javaOutput <- system(polecenie, intern = TRUE)
       
     }
   }
 }
 
 cat(polecenie)
+
+# dzielenie zbioru:
+polecenie <- "rscript --vanilla dzielenie-zbioru-seq.R input//nwtco-mln.csv 10 output//split-data//zbior_"
+system.time(system(polecenie, intern = TRUE))

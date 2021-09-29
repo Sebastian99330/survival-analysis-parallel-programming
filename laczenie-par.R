@@ -50,8 +50,8 @@ polacz_ramki <- function (lista_ramek, liczba_watkow){
   
   # iterujemy po liscie z data frame czastkowych zbiorow
   # laczymy czastkowe data frame miedzy soba po to, zeby byly NA w czastkowych zbiorach tam, gdzie nie ma warosci
-  lista_ramek <- foreach(i=1:length(lista_ramek)) %dopar% {
-  #for (i in 1:length(lista_ramek)){
+  #lista_ramek <- foreach(i=1:length(lista_ramek)) %dopar% {
+  for (i in 1:length(lista_ramek)){
   # lista_ramek <- foreach(i=1:length(lista_ramek) %dopar% {
     lista_ramek[[i]] <- merge(lista_ramek[[i]], select(df_time, time), by = "time", all = TRUE)
   }
@@ -63,8 +63,7 @@ polacz_ramki <- function (lista_ramek, liczba_watkow){
   
   # iterujemy po liscie z data frame czastkowych zbiorow
   lista_ramek <- foreach(i=1:length(lista_ramek)) %dopar% {
-  # for (i in 1:length(lista_ramek)){
-  # lista_ramek <- foreach(i=1:length(lista_ramek) %dopar% {
+  #for (i in 1:length(lista_ramek)){
     # zastepujemy wybrany element - tym samym elementem jesli ma jakas wartosc (nie jest NA)
     # a jesli jest NA, to wywolujemy funkcje ktora wpisuje wartosc z tej samej kolumny z nastepnego wiersza
     # a jesli to jest ostatni wiersz to podaje wartosc 0

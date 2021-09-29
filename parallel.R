@@ -5,7 +5,9 @@ args <- commandArgs(trailingOnly = TRUE)
 input_sciezka <- args[1]
 liczba_watkow <- as.numeric(args[2]) # wczesniej byl string i rzucalo blad przy tworzeniu klastra do obliczen rownoleglych
 time_status <- paste0("\"",args[3],"\"")
+# time_status <- args[3]
 zmienne_grupowanie_cox <- paste0("\"",args[4],"\"")
+# zmienne_grupowanie_cox <- args[4]
 
 # cat(paste("time_status: ",time_status))
 # cat(paste0("zmienne_grupowanie_cox: ",zmienne_grupowanie_cox))
@@ -24,7 +26,7 @@ library(foreach)
 # library(snow)
 
 # register a parallel backend (clusters)
-cl <- parallel::makeCluster(liczba_watkow)
+cl <- parallel::makeCluster(liczba_watkow,type="SOCK")
 ### cl<-makeCluster(liczba_watkow,type="SOCK") # lub PSOCK
 doParallel::registerDoParallel(cl)
 
