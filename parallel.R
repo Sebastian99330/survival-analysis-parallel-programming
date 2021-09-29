@@ -19,14 +19,14 @@ zmienne_grupowanie_cox <- paste0("\"",args[4],"\"")
 # system.time(clusterApply(cl, z,function(x) Sys.sleep(1)))
 # stopCluster(cl)
 
-library(doParallel)
-library(foreach)
+#library(doParallel)
+#library(foreach)
 # library(snow)
 
 # register a parallel backend (clusters)
-cl <- parallel::makeCluster(liczba_watkow)
+#cl <- parallel::makeCluster(liczba_watkow)
 ### cl<-makeCluster(liczba_watkow,type="SOCK") # lub PSOCK
-doParallel::registerDoParallel(cl)
+#doParallel::registerDoParallel(cl)
 
 source("dzielenie-zbioru-par.R")
 
@@ -39,7 +39,7 @@ lista_ramek_modeli <- eval(parse(text=instrukcja)) # uruchomienie instrukcji zap
 
 source("laczenie-par.R")
 
-polacz_ramki(lista_ramek_modeli)
+polacz_ramki(lista_ramek_modeli, liczba_watkow)
 
 
-parallel::stopCluster(cl)
+#parallel::stopCluster(cl)

@@ -5,8 +5,8 @@ public class Main {
     public static void main(String[] args) {
         String[] newArgs = new String[4];
         if(args.length != 4){
-//            newArgs = new String[]{"input//turnover.csv", "exp, event", "branch + pipeline", "8"};
-            newArgs = new String[]{"input//turnover-mln-0-8.csv", "exp, event", "branch + pipeline", "8"};
+            newArgs = new String[]{"input//turnover.csv", "exp, event", "branch + pipeline", "3"};
+//            newArgs = new String[]{"input//turnover-mln-0-8.csv", "exp, event", "branch + pipeline", "8"};
 //            newArgs = new String[]{"input//prostate_cancer_mln.csv", "time, status", "treatment + age + sh + size + index", "8"};
 //            newArgs = new String[]{"input//turnover-edward.csv", "stag,event", "gender+age+industry+profession+traffic+coach+head_gender+greywage+way+extraversion+independ+selfcontrol+anxiety+novator", "8"};
         }
@@ -43,14 +43,14 @@ public class Main {
         ParallelAlgorithm parallelAlgorithm = new ParallelAlgorithm(numberOfFirstThread, numberOfThreads, null, argsPar);
         System.out.println("2 Po ParallelAlgorithm parallelAlgorithm");
 
-        /*parallelAlgorithm.splitInputData();
+        parallelAlgorithm.splitInputData();
         System.out.println("3 Po parallelAlgorithm.splitInputData();");
         parallelAlgorithm.runScriptParallel();
         System.out.println("4 Po parallelAlgorithm.runScriptParallel();");
         parallelAlgorithm.mergePartialOutputs();
-        System.out.println("5 Po parallelAlgorithm.mergePartialOutputs();");*/
-        parallelAlgorithm.runOneParallelScript();
-        System.out.println("3 Po runOneParallelScript();");
+        System.out.println("5 Po parallelAlgorithm.mergePartialOutputs();");
+        /*parallelAlgorithm.runOneParallelScript();
+        System.out.println("3 Po runOneParallelScript();");*/
 
         timeParallel.stop();
 

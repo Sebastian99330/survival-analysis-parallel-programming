@@ -35,7 +35,7 @@ replace_with_next_row <- function(df, row_index, col_name) {
 
 
 
-polacz_ramki <- function (lista_ramek){
+polacz_ramki <- function (lista_ramek, liczba_watkow){
   
   # ------------------ Laczenie kolumny time ------------------ #
   
@@ -51,18 +51,18 @@ polacz_ramki <- function (lista_ramek){
   # iterujemy po liscie z data frame czastkowych zbiorow
   # laczymy czastkowe data frame miedzy soba po to, zeby byly NA w czastkowych zbiorach tam, gdzie nie ma warosci
   for (i in 1:length(lista_ramek)){
+  # lista_ramek <- foreach(i=1:length(lista_ramek) %dopar% {
     lista_ramek[[i]] <- merge(lista_ramek[[i]], select(df_time, time), by = "time", all = TRUE)
   }
   
+  # head(lista_ramek[[1]])
   # ------------------ koniec: Laczenie kolumny time ------------------ #
   
   # ------------------ Wypelniamy NA wartosciami z nast. wierszy ------------------ #
   
   # iterujemy po liscie z data frame czastkowych zbiorow
   for (i in 1:length(lista_ramek)){
-    # jak juz jestesmy w pierwszej petli na pojedynczym data frame,
-    # to teraz iterujemy po wierszach tego data frame
-    # podajemy nazwe kolumny oraz nr wiersza z petli
+  # lista_ramek <- foreach(i=1:length(lista_ramek) %dopar% {
     # zastepujemy wybrany element - tym samym elementem jesli ma jakas wartosc (nie jest NA)
     # a jesli jest NA, to wywolujemy funkcje ktora wpisuje wartosc z tej samej kolumny z nastepnego wiersza
     # a jesli to jest ostatni wiersz to podaje wartosc 0
