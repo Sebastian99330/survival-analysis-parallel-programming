@@ -1,0 +1,128 @@
+Rownolegle w R, slabe wyniki:
+0,0,1.96,2.05,848640,8,9.34,7.51,1.24x,turnover-mln-0-8.csv,"29/09/2021 23:07:12"
+0,0,0.71,0.72,6718342,8,58.94,32.59,1.81x,turnover-mln-7.csv,"29/09/2021 23:11:00"
+0,0,0.89,0.91,6718342,11,58.86,31.17,1.89x,turnover-mln-7.csv,"29/09/2021 23:18:27"
+0,0,0.89,0.91,6718342,11,58.84,31.82,1.85x,turnover-mln-7.csv,"29/09/2021 23:20:15"
+0,0,0.89,0.91,6718342,11,58.97,80.41,0.73x,turnover-mln-7.csv,"29/09/2021 23:37:16"
+0,0,0.89,0.91,6718342,11,59.12,79.05,0.75x,turnover-mln-7.csv,"29/09/2021 23:43:06"
+
+Tam gdzie wynik jest 1.8x to wynik jest zrownoleglany w Javie.
+Tam gdzie wynik jest 0.7x to wynik jest "zrownoleglany" w R.
+
+
+Wyniki dla zrownoleglania w Javie - z dzieleniem calkowicie sekwencyjny, normalny for:
+0,0,0.05,0.05,4350240,10,40.28,28.67,1.4x,nwtco-mln.csv,"30/09/2021 00:03:05"
+0,0,0.04,0.04,8700480,10,81.54,58.68,1.39x,nwtco-mln.csv,"30/09/2021 00:08:27"
+dla 2 wykonania czas dzielenia zbioru to 35 sek, liczenie modeli 20 sek, laczenie 1 sek.
+
+Wyniki dla zrownoleglania w Javie - z dzieleniem rownoleglym:
+0,0,0.04,0.04,8700480,10,77.21,48.09,1.61x,nwtco-mln.csv,"30/09/2021 00:13:40"
+dzielenie zbioru w sek: 26
+Czyli lepiej o 10 sek.
+
+Jeszcze wiecej danych - 11 mln rekordów. To samo ogolnie robione w javie, ale dzielenie jest zrownoleglone. (? na pewno wtedy było?)
+0,0,0.03,0.03,11144569,10,107.63,60.45,1.78x,nwtco-mln.csv,"30/09/2021 00:19:02"
+Czas trwania dzielenia: 33 sek. Liczenie modeli 25 sek.
+
+
+Test samego dzielenia tego zbioru z 11 mln danych.
+polecenie <- "rscript --vanilla dzielenie-zbioru-seq.R input//nwtco-mln.csv 10 output//split-data//zbior_"
+system.time(system(polecenie, intern = TRUE))
+time elapsed: 32.27 ---- to dla rownoleglych
+46.53 - dla sekwencyjnej metody
+
+Wniosek - należy w R zrownoleglic dzielenie danych.
+
+
+-----
+Czy odpalanie testów w Intellij i Rstudio daje takie same rezultaty?
+Odpalone w Intellij:
+0,0,0.83,0.85,6718342,10,58.56,32.01,1.83x,turnover-mln-7.csv,"30/09/2021 00:34:59"
+
+Odpalone w Rstudio z polecenia ze skryptu uruchomienie-testow.
+0,0,0.83,0.85,6718342,10,59.23,31.97,1.85x,turnover-mln-7.csv,"30/09/2021 00:39:09"
+
+Jak byl odpalony intellij to rstudio nie było włączone, analogicznie odwrotnie. Działał tylko ten program który odpalał testy.
+P.S. to było dla sekwencyjnego dzielenia zbioru.
+Teraz ten sam test dla rownoległego.
+
+0,0,0.83,0.85,6718342,10,58.93,38.55,1.53x,turnover-mln-7.csv,"30/09/2021 00:43:20"
+X D.
+..............
+Dobra, kolejny test to samo:
+0,0,0.83,0.85,6718342,10,59.12,41.39,1.43x,turnover-mln-7.csv,"30/09/2021 00:48:25"
+żal
+
+
+Dobra, w javie obliczenia, dzielenie sekwencyjne.
+0,0,0.83,0.85,6718342,10,58.98,31.75,1.86x,turnover-mln-7.csv,"30/09/2021 00:52:56"
+
+ok, wyżej było mało danych (6 mln a nie 11), więc może dlatego dzielenie seq było szybsze niż par. Teraz test dla 12 mln:
+0,0,0.59,0.6,13436684,10,120.84,63.52,1.9x,turnover-mln-7.csv,"30/09/2021 01:01:18"
+Dzielenie jest seq.
+Teraz ten sam test dla dzielenia par (a obliczenia w java)
+0,0,0.59,0.6,13436684,10,116.58,72.87,1.6x,turnover-mln-7.csv,"30/09/2021 01:06:06"
+
+ok, czyli dla turnover-mln-7.csv szybsze jest dzielenie seq, a dla nwtco-mln.csv szybsze jest par. wtf.
+
+
+
+Teraz o 30.09.2021 o 01:12 odpalam testy dla 
+dzielenie seq, java. z 8 testów. Wszystkie te wyniki są dla tego ustawienia.
+0,0,0.31,0.31,1560720,10,20.68,17.64,1.17x,colon-mln.csv,"30/09/2021 01:12:48"
+0,0.02,6.39,7.97,1889760,10,14.87,17.13,0.87x,flchain-mln.csv,"30/09/2021 01:13:43"
+0,0,0.25,0.25,2218524,10,23.70,19.09,1.24x,gbsg-mln.csv,"30/09/2021 01:14:41"
+0,0,0.55,0.56,811546,10,7.86,6.70,1.17x,kidney-mln.csv,"30/09/2021 01:15:10"
+
+
+
+teraz o 11:18 odpalam wielki test, dzielenie seq, reszta w javie. Dla wielu mln ale i wielu kolumn. turnover edward mln chyba.
+0,0,0.95,0.98,8684617,11,357.77,140.70,2.54x,turnover-edward-mln.csv,"30/09/2021 01:27:27"
+357 sekund seq!! dlugo.
+to bylo dzielenie seq. Next to samo ale dzielenie par.
+Par: 210 sek. Czyli dłużej. Dzielenie zbioru nawet dużego wychodzi dłużej parallel foreach.
+
+
+
+
+Dzielenie par moglo miec sens dla calosci obliczen rownoleglych.
+Ponizej testy - czesc parallel zrobiona w calosci w R. Dzielenie par i dzielenie seq sobie porownamy.
+1. Parallel w RAM w R - dzielenie par na klastrach:
+8684617,11,357.71,464.17,0.77x,turnover-edward-mln.csv,"30/09/2021 19:32:53" - nie udalo sie to wykonanie. W sumie ten czas 464 jest realny, wywalilo dopiero przy laczeniu. Wiec dzielenie i liczenie jest mozliwe z taki czas.
+Wyłączam seq i licze only par.
+469.87 - tyle sie przetworzyło paralell przy rozbiciu zbiorów parallel.
+2. Parallel w RAM w R - dzielenie seq:
+365
+czyli seq jest lepsze zawsze. I tyle. eot.
+
+
+
+Teraz porównuję jeszcze raz R-RAM vs Java. Teraz odpalenie w rownoleglosci R calosci dla edward mln:
+1. R-RAM edw milion:
+0,0.01,0.96,0.98,8684617,11,356.50,365.67,0.97x,turnover-edward-mln.csv,"30/09/2021 20:19:51"
+
+2. Java (w javie sa wywolywane watki), edw milion - dzielenie par:
+0,0,0.95,0.98,8684617,11,358.07,204.71,1.75x,turnover-edward-mln.csv,"30/09/2021 20:34:38"
+Samo dzielenie par zajęło 129 sek
+budowanie modelu 70 sek
+łączenie modeli 1 sek
+
+3. Java (w javie sa wywolywane watki), edw milion - dzielenie seq:
+0,0,0.95,0.98,8684617,11,356.72,142.47,2.5x,turnover-edward-mln.csv,"30/09/2021 21:09:15"
+Samo dzielenie seq zajęło 70 sek
+budowanie modelu 70 sek
+łączenie modeli 1 sek
+
+
+Czyli ostatecznie, najlepsza jest java (mimo zapisu do dysku), z sekwencyjnym dzieleniem plików.
+
+
+Teraz odpalam to samo, ale zakomentowalem liczenie seq, zeby nie czekac tych 6 minut bo chcę porównywać samo dzielenie plików.
+Ok, good, jak się zakomentuje wykonywanie seq, to reszta wykonuje sie tak samo jak wyżej:
+Samo dzielenie seq zajęło 70 sek
+budowanie modelu 70 sek
+łączenie modeli 1 sek
+
+Teraz zostawiam only dzielenie plikow na mniejsze (ciagle metoda seq):
+tak, 70 sek, jest dobrze jak sie zostawi only dzielenie. To teraz pora na upgrade dzielenia zbiorow.
+

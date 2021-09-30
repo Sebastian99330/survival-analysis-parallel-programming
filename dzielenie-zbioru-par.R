@@ -9,8 +9,8 @@ podziel_zbior <- function (input_sciezka, liczba_watkow){
   lista_df <- list()
   
   
-  # for(numer in 1:liczba_watkow){
-  lista_df <- foreach(numer=1:liczba_watkow) %dopar% {
+  for(numer in 1:liczba_watkow){
+  # lista_df <- foreach(numer=1:liczba_watkow) %dopar% {
     wybrane_idx <- which(numery_zbiorow == numer)
     lista_df[[numer]] <- df[wybrane_idx, ]
     # zapisuje do pliku, ale nie zostaje zmienna po petli

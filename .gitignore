@@ -6,6 +6,7 @@ KM_plot.jpg
 /target/
 *.csv
 !statystyki.csv
+!opis.csv
 *.rds
 *.txt
 *.jpg

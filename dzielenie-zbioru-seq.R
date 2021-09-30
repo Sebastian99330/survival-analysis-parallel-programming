@@ -35,13 +35,13 @@ dir.create(file.path("output//split-data"), showWarnings = FALSE)
 lista_zbiorow <- list()
 
 
-library(doParallel)
-library(foreach)
-cl <- parallel::makeCluster(liczba_zbiorow)
-doParallel::registerDoParallel(cl)
+# library(doParallel)
+# library(foreach)
+# cl <- parallel::makeCluster(liczba_zbiorow)
+# doParallel::registerDoParallel(cl)
 
-# for(numer in 1:liczba_zbiorow){
-foreach(numer=1:liczba_zbiorow) %dopar% {
+for(numer in 1:liczba_zbiorow){
+# foreach(numer=1:liczba_zbiorow) %dopar% {
   wybrane_idx <- which(numery_zbiorow == numer)
   
   lista_zbiorow[[numer]] <- df[wybrane_idx, ]
@@ -50,4 +50,4 @@ foreach(numer=1:liczba_zbiorow) %dopar% {
   saveRDS(df[wybrane_idx, ], paste0(plik_output, numer,".rds"))
 }
 
-parallel::stopCluster(cl)
+# parallel::stopCluster(cl)

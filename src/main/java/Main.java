@@ -6,9 +6,10 @@ public class Main {
         String[] newArgs = new String[4];
         if(args.length != 4){
 //            newArgs = new String[]{"input//turnover.csv", "exp, event", "branch + pipeline", "3"};
-            newArgs = new String[]{"input//turnover-mln-7.csv", "exp, event", "branch + pipeline", "10"};
+//            newArgs = new String[]{"input//turnover-mln-7.csv", "exp, event", "branch + pipeline", "10"};
 //            newArgs = new String[]{"input//prostate_cancer_mln.csv", "time, status", "treatment + age + sh + size + index", "8"};
 //            newArgs = new String[]{"input//turnover-edward.csv", "stag,event", "gender+age+industry+profession+traffic+coach+head_gender+greywage+way+extraversion+independ+selfcontrol+anxiety+novator", "8"};
+            newArgs = new String[]{"input//turnover-edward-mln.csv", "stag,event", "gender+age+industry+profession+traffic+coach+head_gender+greywage+way+extraversion+independ+selfcontrol+anxiety+novator", "11"};
 //            newArgs = new String[]{"input//nwtco-mln.csv", "edrel, rel", "instit + histol + stage + study + age + in_subcohort", "10"};
         }
         else {
@@ -34,8 +35,13 @@ public class Main {
 
         // sekwencyjnie
         Stopwatch timeSeq = Stopwatch.createStarted(); // pobranie czasu do mierzenia czasu wykonania algorytmu metoda sekwencyjna
-        SequentialAlgorithm sequentialAlgorithm = new SequentialAlgorithm(argsSeq);
-        sequentialAlgorithm.callRScript();
+//        SequentialAlgorithm sequentialAlgorithm = new SequentialAlgorithm(argsSeq);
+//        sequentialAlgorithm.callRScript();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         timeSeq.stop();
 
         //rownolegle
@@ -46,10 +52,10 @@ public class Main {
 
         parallelAlgorithm.splitInputData();
         System.out.println("3 Po parallelAlgorithm.splitInputData();");
-        parallelAlgorithm.runScriptParallel();
-        System.out.println("4 Po parallelAlgorithm.runScriptParallel();");
-        parallelAlgorithm.mergePartialOutputs();
-        System.out.println("5 Po parallelAlgorithm.mergePartialOutputs();");
+//        parallelAlgorithm.runScriptParallel();
+//        System.out.println("4 Po parallelAlgorithm.runScriptParallel();");
+//        parallelAlgorithm.mergePartialOutputs();
+//        System.out.println("5 Po parallelAlgorithm.mergePartialOutputs();");
 //        parallelAlgorithm.runOneParallelScript();
 //        System.out.println("3 Po runOneParallelScript();");
 
@@ -66,10 +72,10 @@ public class Main {
         // jednak statystyki zapisujemy do innych plikow, w inny sposob wiec zakomentowuje
         // WriteToFile.appendStatsToFile(seqTimeFormatted, parallelTimeFormatted);
         // wypisanie do zbiorczego programu ze statystykami wykonania programu (dopisanie na jego koniec z kazdym wykonaniem programu, nie tworzenie od nowa)
-        WriteToFile.writeErrors();
+        /*WriteToFile.writeErrors();
         WriteToFile.savePlotAndCsv(); // narysowanie wykresow do plikow png
         WriteToFile.writeRowsNumber(numberOfThreads, seqTimeFormatted, parallelTimeFormatted, argsSeq[0]);
-        parallelAlgorithm.writeGroupedOutputToFile();
+        parallelAlgorithm.writeGroupedOutputToFile();*/
 
 
 //        System.out.println("\n" + "Liczba aktywnych watkow Thread.activeCount(): " + Thread.activeCount());
