@@ -126,3 +126,24 @@ budowanie modelu 70 sek
 Teraz zostawiam only dzielenie plikow na mniejsze (ciagle metoda seq):
 tak, 70 sek, jest dobrze jak sie zostawi only dzielenie. To teraz pora na upgrade dzielenia zbiorow.
 
+(dalej testy dla tego samego zbioru turnover-edward-mln.csv z 8.6 mln rekordów)
+Samo dzielenie zbioru w RAM, bez zapisu na dysk:
+11 sek
+kolejny test też 11 sek
+
+z zapisem na dysk (plików binarnych):
+28 sek
+kolejny test też 28 sek
+
+
+(to nadal dla input//turnover-mln-7.csv czyli 13 mln rekordów)
+Dzielenie zbioru seq:
+bez zapisu na dysk: 11 sek 
+z zapisem na dysk: 28 sek
+
+P.S. .csv vs rds: 28 sek vs 1.27 minuty (76 sekund)
+
+Dzielenie zbioru par foreach:
+bez zapisu na dysk: 40 sek
+z zapisem na dysk: 40 sek (?) i dodatkowo wszystkie pliki pojawiły się w folderze na końcu w sekundę. W seq się pojawiają stopniowo po kolei
+

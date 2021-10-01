@@ -1,5 +1,6 @@
 args <- commandArgs(trailingOnly = TRUE)
 # args <- array(c("input//turnover.csv", "3", "exp, event", "branch + pipeline"))
+# args <- array(c("input//turnover-mln-7.csv", "10", "exp, event", "branch + pipeline"))
 # args <- array(c("input//prostate_cancer.csv", "3", "time, status", "treatment + age + sh + size + index"))
 
 input_sciezka <- args[1]
@@ -31,8 +32,13 @@ zmienne_grupowanie_cox <- paste0("\"",args[4],"\"")
 # doParallel::registerDoParallel(cl)
 
 source("dzielenie-zbioru-par.R")
-
+# start.time <- Sys.time()
 lista_df <- podziel_zbior(input_sciezka, liczba_watkow)
+# end.time <- Sys.time()
+# time.taken <- end.time - start.time
+#time.taken
+
+
 
 source("script-par.R")
 
@@ -44,4 +50,3 @@ source("laczenie-par.R")
 polacz_ramki(lista_ramek_modeli, liczba_watkow)
 
 
-# parallel::stopCluster(cl)

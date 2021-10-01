@@ -32,8 +32,7 @@ unlink("output//split-data", recursive = TRUE)
 dir.create(file.path("output//split-data"), showWarnings = FALSE)
 
 # tworzy pusta liste - konstruktor utworzenia pustej listy
-lista_zbiorow <- list()
-
+# lista_zbiorow <- list()
 
 # library(doParallel)
 # library(foreach)
@@ -44,7 +43,7 @@ for(numer in 1:liczba_zbiorow){
 # foreach(numer=1:liczba_zbiorow) %dopar% {
   wybrane_idx <- which(numery_zbiorow == numer)
   
-  lista_zbiorow[[numer]] <- df[wybrane_idx, ]
+  # lista_zbiorow[[numer]] <- df[wybrane_idx, ]
   
   # write.csv(df[wybrane_idx, ], paste0(plik_output, numer,".csv"), row.names = F)
   saveRDS(df[wybrane_idx, ], paste0(plik_output, numer,".rds"))
