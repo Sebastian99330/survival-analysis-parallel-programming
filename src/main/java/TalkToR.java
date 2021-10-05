@@ -29,6 +29,10 @@ public class TalkToR {
         command = "Rscript --vanilla utworz-output.r output//output_polaczone";
         TalkToR.runScript(command, false); // nie mierzymy czasu wykonania bo to tylko usuniecie i utworzenie katalogu
 
+        // tworzymy foldery na podzielone dane czastkowe
+        command = "Rscript --vanilla utworz-output.r output//split-data";
+        TalkToR.runScript(command, false); // nie mierzymy czasu wykonania bo to tylko usuniecie i utworzenie katalogu
+
     }
 
     public static void runScript(String command, boolean measureTime) {

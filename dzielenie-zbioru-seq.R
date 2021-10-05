@@ -1,6 +1,6 @@
 args <- commandArgs(trailingOnly = TRUE)
 # args <- array(c("input//turnover.csv", "3", "output//split-data\\zbior_"))
-
+# args <- array(c("input//turnover-mln-7.csv", "10", "output//split-data//zbior_"))
 # ten skrypt przyjmuje argumenty:
 # 1 sciezka do pliku z danymi wejsciowymi
 # 2 ilosc watkow (na ile czesci podzielic zbior danych wejsciowych)

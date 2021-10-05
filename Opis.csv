@@ -147,3 +147,26 @@ Dzielenie zbioru par foreach:
 bez zapisu na dysk: 40 sek
 z zapisem na dysk: 40 sek (?) i dodatkowo wszystkie pliki pojawiły się w folderze na końcu w sekundę. W seq się pojawiają stopniowo po kolei
 
+
+
+-- testy 01.10.2021
+Java, dzielenie seq - dla zbioru turnover-mln-7.csv klasycznie wynik:
+parallelTimeFormatted: 31.77
+
+Teraz przetestuje zapis do pliku asynchroniczny, promises
+
+
+
+-- testy 03.10.2021
+
+Badam czas zapisywania do pliku - sync vs async
+Dla pliku turnover-mln-7.csv, w którym jest 13 mln rekordów, 4 kolumny, 227 mb danych, dzielony na 10 zbiorów (czyli zapis do 10 plików)
+Zapis synchroniczny: 29.41 sek, 30.28 sek itp 
+
+
+-- testy 06.10.2021
+Badam czas zapisywania do pliku - dzielenie pliku w R oraz w Javie (oba synchroniczny zapis)
+Dla pliku turnover-mln-7.csv, w którym jest 13 mln rekordów, 4 kolumny, 227 mb danych, dzielony na 10 zbiorów (czyli zapis do 10 plików)
+Zapis w R do rds: 29.41 sek, 30.28 sek itp 
+Zapis w Javie do csv: 6.14 sek
+
