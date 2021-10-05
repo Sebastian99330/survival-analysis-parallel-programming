@@ -170,3 +170,28 @@ Dla pliku turnover-mln-7.csv, w którym jest 13 mln rekordów, 4 kolumny, 227 mb
 Zapis w R do rds: 29.41 sek, 30.28 sek itp 
 Zapis w Javie do csv: 6.14 sek
 
+Wykonanie całego programu dla zapisu w Javie do CSV:
+seq: 118.70  , 117.39
+par: 34,   34.55
+przyspieszenie 3.4x
+
+
+Ten sam test tylko dla pliku turnover-edward-mln.csv - 16 kolumn, 8 mln rekordów, 609 mb. Dzielony na 11 zbiorów.
+(06/10/2021 00:57:13)
+seq: 370.76
+par: 343.75
+przyspieszenie: 1.08x
+
+Ten sam test tylko dla pliku nwtco-mln.csv - 9 kolumn, 11 mln rekordów, 310 mb. Dzielony na 10 zbiorów.
+0,0,0.03,0.03,11144569,10,104.73,30.77,3.4x,nwtco-mln.csv,"06/10/2021 01:13:11"
+0,0,0.03,0.03,11144569,10,104.34,31.09,3.36x,nwtco-mln.csv,"06/10/2021 01:23:55"
+seq: 104.73
+par: 30.77
+przyspieszenie: 3.4x
+
+Kolejne testy poniżej:
+prostate_cancer_mln.csv, 8 kol, 12 mln wierszy, 283 mb
+0,0,0.05,0.05,12723480,8,99.11,32.98,3.01x,prostate_cancer_mln.csv,"06/10/2021 01:29:04" (8 watkow)
+0,0,0.03,0.03,12723480,4,98.34,41.75,2.36x,prostate_cancer_mln.csv,"06/10/2021 01:36:47" (4 watki)
+0,0,0.06,0.06,12723480,10,97.91,31.78,3.08x,prostate_cancer_mln.csv,"06/10/2021 01:40:14" (10 watkow)
+

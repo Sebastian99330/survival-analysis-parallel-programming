@@ -17,7 +17,7 @@ public class ParallelAlgorithm implements Runnable {
     String outputFolderName;
     String rSeparator;
     String dfTxtFile;
-    String rdsSuffix;
+    String splitFileSuffix;
     String timeStatus;
     String groupingVariablesCox;
     String savePlot;
@@ -43,7 +43,7 @@ public class ParallelAlgorithm implements Runnable {
         this.outputFolderName = args[8];
         this.rSeparator = args[9];
         this.dfTxtFile = args[10];
-        this.rdsSuffix = args[11];
+        this.splitFileSuffix = args[11];
         this.timeStatus = args[12];
         this.groupingVariablesCox = args[13];
         this.savePlot = args[14];
@@ -71,7 +71,7 @@ public class ParallelAlgorithm implements Runnable {
             String KaplanMeierOutputPlotPath = kphPlotOutputPath + i + imgSuffix;
             String CoxPHOutputPlotPath = cphPlotOutputPath + i + imgSuffix;
             String outputFolderFullName = outputFolderName + i;
-            String dfFullName = dfTxtFile + i + rdsSuffix;
+            String dfFullName = dfTxtFile + i + splitFileSuffix;
 
             String command = "rscript --vanilla script.r " + inputFullName + " " +
                     outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator + " " +
