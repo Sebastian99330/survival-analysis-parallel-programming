@@ -41,25 +41,25 @@ pbc2 <- '"input\\pbc-mln.csv" "time, status" "trt + age + sex + ascites + hepato
 
 # rscript --vanilla script.r covid.csv output-seq.txt km_seq.jpg cph_seq.jpg output_seq , ramka_seq.rds "offset, survival" "intubated" "sex + age + finding + survival + intubated + intubation_present + went_icu + in_icu + needed_supplemental_O2 + extubated + temperature + pO2_saturation + leukocyte_count + neutrophil_count + lymphocyte_count + view + modality" T
 
-watki <- c(10)
+watki <- c(4, 7, 9, 10, 11)
 
-# parametry <- c(work_edw, work_edw2, ret, ret2, lungs, lungs2, colon, colon2, flchain, flchain2, gbsg, gbsg2, kidney, kidney2, 
-#               mgus, mgus2, myeloid, myeloid2, nafld1, nafld1_2)
-# parametry <- c(work1, work2, work3, prost1, prost2, prost3, work_edw, work_edw2)
-# parametry <- c(colon, colon2, flchain, flchain2, gbsg, gbsg2, kidney, kidney2)
-parametry <- c(colon2)
-suma_iteracji <- length(parametry) * length(watki) * 1
+
+# parametry <- c(kidney2)
+# parametry <- c(work1, work2, work3, prost2, prost3, colorectal2, work_edw2, ret2, lungs2, colon2, flchain2, gbsg2, kidney2,
+#                mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
+parametry <- c(kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
+suma_iteracji <- length(parametry) * length(watki) * 2
 iteracja <- 0
 
 for(slowo in parametry){ # petla z zestawem parametrow wywolujacych
   for(j in watki){ # testowac bedziemy od x do y watkow
-    for(i in 1:1){ # liczba testow dla tej samej liczby watkow
+    for(i in 1:2){ # liczba testow dla tej samej liczby watkow
       iteracja <- iteracja + 1
       liczba_watkow <- j
       polecenie <- paste0(odpalenie_java, slowo,liczba_watkow,'"')
       print(polecenie)
       print(paste0("Iteracja: ",iteracja," / ", suma_iteracji, ", liczba watkow: ",j,", godzina: ",format(Sys.time())))
-      # javaOutput <- system(polecenie, intern = TRUE)
+      javaOutput <- system(polecenie, intern = TRUE)
       
     }
   }
