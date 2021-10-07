@@ -18,14 +18,10 @@ public class SplitFile {
         // dzielimy jedna duza "ramke danych" na liste kilku mniejszych "ramek danych"
         List[] dividedRecords = SplitFile.splitLists(records, numberOfThreads);
 
-
-//        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-//        System.out.println("Przed zapisem list do plikow"  + " " + formatter.format(System.currentTimeMillis()));
         // zapisujemy czastkowe ramki do pliku
         int i = 0;
         for(List<String> oneList : dividedRecords){
             String fileName = outputFileNameBase + ++i + ".csv";
-//            System.out.println("Przed zapisem do pliku: " + fileName + " " + formatter.format(System.currentTimeMillis()));
             oneList.add(0, headers);
             SplitFile.writeToFileSync(oneList, fileName);
         }
