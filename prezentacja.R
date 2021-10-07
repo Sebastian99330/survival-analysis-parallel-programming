@@ -17,9 +17,6 @@ library(utile.visuals)
 df <- readRDS(input)
 
 # narysujemy wykres funkcji survival uzywajac wartosci z tabeli
-# otwarcie pliku do ktoego rysujemy wykres z regresji coxa
-# jpeg(output_jpg_path, width = 1698, height = 754)
-
 
 # teraz bede rysowal wykres, ale musze podac kolumne survival (os Y na wykresie), a ona moze miec rozne nazwy w ramkach
 # dlatego jest podana jako parametr w tym skrypcie i ponizej tworze instrukcje, w ktorej podam ta kolumne
@@ -33,8 +30,6 @@ instrukcja <- paste0(instrukcja, "ggplot2::geom_step() + \n",
 p <- eval(parse(text=instrukcja))
 
 ggsave(filename = output_jpg_path, plot=p)
-
-# dev.off()
 
 write.csv(df, file = output_csv)
 

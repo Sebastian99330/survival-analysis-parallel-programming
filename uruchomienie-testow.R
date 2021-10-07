@@ -65,8 +65,8 @@ for(slowo in parametry){ # petla z zestawem parametrow wywolujacych
   }
 }
 
-cat(polecenie)
+# cat(polecenie)
 
 # dzielenie zbioru:
-polecenie <- "rscript --vanilla dzielenie-zbioru-seq.R input//nwtco-mln.csv 10 output//split-data//zbior_"
-system.time(system(polecenie, intern = TRUE))
+# polecenie <- "rscript --vanilla dzielenie-zbioru-seq.R input//nwtco-mln.csv 10 output//split-data//zbior_"
+# system.time(system(polecenie, intern = TRUE))
