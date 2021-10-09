@@ -91,7 +91,7 @@ polacz_ramki <- function (lista_ramek, liczba_watkow){
     summarise(time = mean(time, na.rm=TRUE),
               n_risk = sum(n_risk, na.rm=TRUE),
               n_event = sum(n_event, na.rm=TRUE),
-              survival_na_next_row = mean(replace(survival, survival == 0, NA), na.rm=TRUE),
+              survival = mean(replace(survival, survival == 0, NA), na.rm=TRUE),
               lower = mean(lower, na.rm=TRUE),
               upper  = mean(upper , na.rm=TRUE)) %>%
     data.frame()

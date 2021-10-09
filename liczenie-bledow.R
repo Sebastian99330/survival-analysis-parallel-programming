@@ -61,16 +61,16 @@ if(as.logical(czy_event_identycznie) == T) {
 # --------- blad survival na to next wiersz, lower, upper --------------- #
 
 
-bledy_kazdy_wiersz$survival_na_next_row_err <- abs(df_polaczone$survival_na_next_row - df_seq$survival)
+bledy_kazdy_wiersz$survival_err <- abs(df_polaczone$survival - df_seq$survival)
 bledy_kazdy_wiersz$lower_err <- abs(df_polaczone$lower - df_seq$lower)
 bledy_kazdy_wiersz$upper_err <- abs(df_polaczone$upper - df_seq$upper)
 
 
 
 # sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
-proporcja_bledu_do_wyniku_seq_dwa <- sum(bledy_kazdy_wiersz$survival_na_next_row_err) / sum(df_seq$survival)
+proporcja_bledu_do_wyniku_seq_dwa <- sum(bledy_kazdy_wiersz$survival_err) / sum(df_seq$survival)
 procent_blad_survival_dwa <- paste(round((proporcja_bledu_do_wyniku_seq_dwa * 100),2),"%")
-bledy[nrow(bledy) + 1,] <- c("n_survival_na_to_wiersz_ponizej",procent_blad_survival_dwa)
+bledy[nrow(bledy) + 1,] <- c("survival",procent_blad_survival_dwa)
 
 # sumujemy wartosci w obu kolumnach i patrzymy jaki jest stounek miedzy nimi
 proporcja_bledu_do_wyniku_seq_dwa <- sum(bledy_kazdy_wiersz$lower_err) / sum(df_seq$lower)

@@ -53,8 +53,6 @@ replace_with_next_row <- function(df, row_index, col_name) {
 df_time <- data.frame(matrix(ncol = 1, nrow = 0))
 colnames(df_time) <- c("time")
 
-library(dplyr)
-
 df_time <- merge(df_time, select(Reduce(function(...) merge(..., by = "time", all=T), lista_ramek), time), by = "time", all = TRUE)
 
 
@@ -100,7 +98,7 @@ df_final <- lista_df_rbind %>%
   summarise(time = mean(time, na.rm=TRUE),
             n_risk = sum(n_risk, na.rm=TRUE),
             n_event = sum(n_event, na.rm=TRUE),
-            survival_na_next_row = mean(replace(survival, survival == 0, NA), na.rm=TRUE),
+            survival = mean(replace(survival, survival == 0, NA), na.rm=TRUE),
             lower = mean(lower, na.rm=TRUE),
             upper  = mean(upper , na.rm=TRUE)) %>%
   data.frame()

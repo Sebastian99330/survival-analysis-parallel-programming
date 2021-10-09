@@ -29,7 +29,7 @@ wpis <- str_replace_all(wpis, " %", "")
 # bedziemy pisali do pliku statystyki.csv, ale jak go nie ma to tworzymy jego i pierwsza linijke z header'ami
 if(!file.exists(".//statystyki.csv")){
   #headers <- "n_risk,n_survival_bez_na,n_survival_na_to_wiersz_ponizej, lower, upper, liczba_wierszy, liczba_watkow, czas_seq, czas_par, par_lepsze_niz_seq, nazwa_inputu, data\n" # bez survival na rm
-  headers <- "n_risk,n_survival_na_to_wiersz_ponizej, lower, upper, liczba_wierszy, liczba_watkow, czas_seq, czas_par, par_lepsze_niz_seq, nazwa_inputu, data\n"
+  headers <- "n_risk,survival, lower, upper, liczba_wierszy, liczba_watkow, czas_seq, czas_par, par_lepsze_niz_seq, nazwa_inputu, data\n"
   cat(headers, file = ".//statystyki.csv", append = T)
 }
 cat(wpis, file = ".//statystyki.csv", append = T)

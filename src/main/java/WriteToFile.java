@@ -58,7 +58,7 @@ public class WriteToFile {
 
     public static void savePlotAndCsv(){
         String command = "rscript --vanilla prezentacja.R \"output\\output_polaczone\\survival.rds\" \"output\\output_polaczone\\cox_polaczony_jpg.jpg\" "
-                + "\"output\\output_polaczone\\ramka-polaczona.csv\" survival_na_next_row";
+                + "\"output\\output_polaczone\\ramka-polaczona.csv\" survival";
         // "\"output_seq\\cph_seq.jpg
         TalkToR.runScript(command, false);
 
