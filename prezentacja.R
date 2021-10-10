@@ -1,5 +1,5 @@
 args <- commandArgs(trailingOnly=TRUE)
-# args <- c("output_polaczone/survival.rds", "output_polaczone/cox_polaczony_jpg.jpg", "output_polaczone/ramka-polaczona.csv",
+# args <- c("output_polaczone/survival.rds", "output_polaczone/cox_polaczony.jpg", "output_polaczone/ramka-polaczona.csv",
           # "survival" )
 
 # ten skrypt wczytuje ramke z polaczenia czastkowych modeli, rysuje wykres funkcji przezycia i zapisuje go do pliku,

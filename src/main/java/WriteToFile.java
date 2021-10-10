@@ -57,12 +57,12 @@ public class WriteToFile {
     }
 
     public static void savePlotAndCsv(){
-        String command = "rscript --vanilla prezentacja.R \"output\\output_polaczone\\survival.rds\" \"output\\output_polaczone\\cox_polaczony_jpg.jpg\" "
+        String command = "rscript --vanilla prezentacja.R \"output\\output_polaczone\\survival.rds\" \"output\\output_polaczone\\cox_polaczony.jpg\" "
                 + "\"output\\output_polaczone\\ramka-polaczona.csv\" survival";
         // "\"output_seq\\cph_seq.jpg
         TalkToR.runScript(command, false);
 
-        command = "rscript --vanilla prezentacja.R \"output\\output_seq\\ramka_seq.rds\" \"output\\output_seq\\cox_seq_jpg.jpg\" "
+        command = "rscript --vanilla prezentacja.R \"output\\output_seq\\ramka_seq.rds\" \"output\\output_seq\\cox_seq.jpg\" "
                 + "\"output\\output_seq\\ramka-seq.csv\" survival";
         TalkToR.runScript(command, false);
 

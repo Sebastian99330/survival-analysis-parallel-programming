@@ -73,7 +73,7 @@ public class ParallelAlgorithm implements Runnable {
             String outputFolderFullName = outputFolderName + i;
             String dfFullName = dfTxtFile + i + splitFileSuffix;
 
-            String command = "rscript --vanilla script.r " + inputFullName + " " +
+            String command = "rscript --vanilla script.R " + inputFullName + " " +
                     outputFullName + " " + KaplanMeierOutputPlotPath + " " + CoxPHOutputPlotPath + " " + outputFolderFullName + " " + rSeparator + " " +
                     dfFullName + " \"" + timeStatus + "\" \"" + groupingVariablesCox + "\" " + savePlot;
 
@@ -90,7 +90,6 @@ public class ParallelAlgorithm implements Runnable {
                 e.printStackTrace();
             }
         }
-
     }
 
     public void runOneParallelScript(){

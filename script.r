@@ -2,6 +2,7 @@ args = commandArgs(trailingOnly=TRUE)
 # args = array(c("split-data\\zbior_2.csv", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.csv", "time, status", "treatment + age + sh + size + index", "T")) # dla parallel
 # args = array(c("split-data\\zbior_2.rds", "output_2.txt", "km_2.jpg", "cph_2.jpg", "output_2", ",", "ramka_2.rds", "exp, event", "branch + pipeline", "T")) # dla parallel
 # args = array(c("turnover.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "exp, event", "branch + pipeline", "T")) # dla parallel
+# args = array(c("input//gbsg-mln.csv", "output_seq.txt", "km_seq.jpg", "cph_seq.jpg", "output_seq", ",", "ramka_seq.rds", "rfstime, status", "age + meno + size + grade + nodes + pgr + er + hormon", "T"))
 #args <- c("output//split-data//zbior_1.rds", "output//output_1.txt", "km_1.jpg", "cph_1.jpg", "output_1", ",", "ramka_1.rds", "\"exp, event\"", "\"branch + pipeline\"", "F")
 
 if (length(args)==0) {

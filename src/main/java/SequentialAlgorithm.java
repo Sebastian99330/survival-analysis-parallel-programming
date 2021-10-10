@@ -26,7 +26,7 @@ public class SequentialAlgorithm {
 
     public void callRScript(){
 
-        String command = "rscript --vanilla script.r " + this.input + " " +
+        String command = "rscript --vanilla script.R " + this.input + " " +
                 this.outputTxtFile + " " + this.kphPlotPath + " " + this.cphPlotPath + " " + this.outputFolderName + " " + this.rSeparator + " " +
                 this.dfName + " \"" + this.timeStatus + "\" \"" + this.groupingVariablesCox + "\" " + this.savePlot;
 
