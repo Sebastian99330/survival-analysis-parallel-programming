@@ -1,6 +1,6 @@
 odpalenie_java <- 'java -jar ./out/artifacts/mgrmaven_jar/mgrmaven.jar '
 
-#setwd("C:/Users/Seba/OneDrive/Dokumenty/Projekty/IntelliJ/mgrmaven")
+setwd("C:/Users/Seba/OneDrive/Dokumenty/Projekty/IntelliJ/mgrmaven")
 
 work1 <- '"input\\turnover.csv" "exp, event" "branch + pipeline" "'
 work2 <- '"input\\turnover-mln-0-8.csv" "exp, event" "branch + pipeline" "'
@@ -36,18 +36,22 @@ pbc <- '"input\\pbc.csv" "time, status" "trt + age + sex + ascites + hepato + sp
 pbc2 <- '"input\\pbc-mln.csv" "time, status" "trt + age + sex + ascites + hepato + spiders + edema + bili + chol + albumin + copper + alk.phos + ast + trig + platelet + protime + stage" "'
 
 
+# same_male <- c(work1, prost1, colorectal1, work_edw, ret, lungs, colon, flchain, gbsg, kidney, mgus, myeloid,
+#                nafld1, nwtco, pbc)
+# same_mln <- c(work2, work3, prost2, prost3, colorectal2, work_edw2, ret2, lungs2, colon2, flchain2, gbsg2, 
+#               kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
 
-# java -jar ./out/artifacts/mgrmaven_jar/mgrmaven.jar "covid.csv" "offset, survival" "intubated" "sex + age + finding + survival + intubated + intubation_present + went_icu + in_icu + needed_supplemental_O2 + extubated + temperature + pO2_saturation + leukocyte_count + neutrophil_count + lymphocyte_count + view + modality" 8
+same_mln <- c(colon2, flchain2, gbsg2, 
+              kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
+
+# wszystkie_pliki <- c(same_male, same_mln)
+# length(wszystkie_pliki)
 
 # rscript --vanilla script.r covid.csv output-seq.txt km_seq.jpg cph_seq.jpg output_seq , ramka_seq.rds "offset, survival" "intubated" "sex + age + finding + survival + intubated + intubation_present + went_icu + in_icu + needed_supplemental_O2 + extubated + temperature + pO2_saturation + leukocyte_count + neutrophil_count + lymphocyte_count + view + modality" T
 
-watki <- c(4, 7, 9, 10, 11)
+watki <- c(3, 6)
 
-
-# parametry <- c(kidney2)
-# parametry <- c(work1, work2, work3, prost2, prost3, colorectal2, work_edw2, ret2, lungs2, colon2, flchain2, gbsg2, kidney2,
-#                mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
-parametry <- c(kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
+parametry <- same_mln
 suma_iteracji <- length(parametry) * length(watki) * 2
 iteracja <- 0
 

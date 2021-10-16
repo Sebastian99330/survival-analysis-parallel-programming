@@ -9,7 +9,7 @@ Rownolegle w R, slabe wyniki:
 Tam gdzie wynik jest 1.8x to wynik jest zrownoleglany w Javie.
 Tam gdzie wynik jest 0.7x to wynik jest "zrownoleglany" w R.
 
-
+``
 Wyniki dla zrownoleglania w Javie - z dzieleniem calkowicie sekwencyjny, normalny for:
 0,0,0.05,0.05,4350240,10,40.28,28.67,1.4x,nwtco-mln.csv,"30/09/2021 00:03:05"
 0,0,0.04,0.04,8700480,10,81.54,58.68,1.39x,nwtco-mln.csv,"30/09/2021 00:08:27"
@@ -195,3 +195,70 @@ prostate_cancer_mln.csv, 8 kol, 12 mln wierszy, 283 mb
 0,0,0.03,0.03,12723480,4,98.34,41.75,2.36x,prostate_cancer_mln.csv,"06/10/2021 01:36:47" (4 watki)
 0,0,0.06,0.06,12723480,10,97.91,31.78,3.08x,prostate_cancer_mln.csv,"06/10/2021 01:40:14" (10 watkow)
 
+
+
+
+
+16.10.2021
+Podsumowując, co było testowane:
+1. Brak zrównoleglania - wszystkie obliczenia równoległe wykonywane w R i przekazywane w pamięci RAM.
+2. Wszystkie obliczenia wykonywane w R ale wykonywane równolegle
+3. Obliczenia w Javie, 
+
+
+
+2. Java (w javie sa wywolywane watki), edw milion - dzielenie par:
+0,0,0.95,0.98,8684617,11,358.07,204.71,1.75x,turnover-edward-mln.csv,"30/09/2021 20:34:38"
+Samo dzielenie par zajęło 129 sek
+budowanie modelu 70 sek
+łączenie modeli 1 sek
+
+3. Java (w javie sa wywolywane watki), edw milion - dzielenie seq:
+0,0,0.95,0.98,8684617,11,356.72,142.47,2.5x,turnover-edward-mln.csv,"30/09/2021 21:09:15"
+Samo dzielenie seq zajęło 70 sek
+budowanie modelu 70 sek
+łączenie modeli 1 sek
+
+
+Czyli ostatecznie, najlepsza jest java (mimo zapisu do dysku), z sekwencyjnym dzieleniem plików.
+
+** ****************** notatki z pliki spotkania ************************ **
+Porównuję 2 rzeczy:
+1. Zrównoleglanie w Javie z zapisem do plików między krokami (wygrywa) vs wszystkie obliczenia w R w RAMie - bez zapisu na dysk.
+2. W obu z nich: dzielenie na pliki metodą sekwencyjną (wygrywa) oraz równoległą poprzez budowanie 'klastra' w R.
+
+Lepsze jest zrównoleglanie w Javie i dzielenie na pliki sekwencyjnie.
+
+Dokładne pomiary:
+
+1. Wszystkie obliczenia w RAM (nie ma rownoleglosci w Javie), dzielenie też równoległe (najgorszy scenariusz)
+Budowanie modelu sekwencyjnego: 357.71 sek 
+Budowanie modelu równoległego: 469.87 sek 
+0.77x
+
+
+2. Parallel w RAM w R - dzielenie seq:
+Budowanie modelu równoległego: 365 sek
+
+Te wyniki są zbliżone. Niewykluczone, że domyślnie R też zrównolegla trochę to w tle w ten sposób i dlatego wyniki są podobne. A może po prostu się zbiegają.
+
+3. Java - dzielenie równoległe:
+Budowanie modelu sekwencyjnego: 358.07
+Budowanie modelu równoległego: 204.71
+1.75x
+
+4. Java - dzielenie sekwencyjne:
+Model seq: 356.72
+Model par: 142.47
+2.5x
+
+
+z czego: 
+Samo dzielenie seq zajęło 70 sek
+budowanie modelu 70 sek
+łączenie modeli 1 sek
+
+Nast. krok: próba przyspieszenia dzielenia zbioru wejściowego na wiele danych.
+
+
+** ****************** end: notatki z pliki spotkania ************************ **
