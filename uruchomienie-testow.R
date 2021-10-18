@@ -38,26 +38,22 @@ pbc2 <- '"input\\pbc-mln.csv" "time, status" "trt + age + sex + ascites + hepato
 
 # same_male <- c(work1, prost1, colorectal1, work_edw, ret, lungs, colon, flchain, gbsg, kidney, mgus, myeloid,
 #                nafld1, nwtco, pbc)
-# same_mln <- c(work2, work3, prost2, prost3, colorectal2, work_edw2, ret2, lungs2, colon2, flchain2, gbsg2, 
-#               kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
+same_mln <- c(work2, work3, prost2, prost3, colorectal2, work_edw2, ret2, lungs2, colon2, flchain2, gbsg2,
+kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
 
-same_mln <- c(colon2, flchain2, gbsg2, 
-              kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
+# testy_uruchomione_dla_zbiorow <- c(kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2) # mniejsza wersja bo przerwalo testy w trakcie
 
-# wszystkie_pliki <- c(same_male, same_mln)
-# length(wszystkie_pliki)
+testy_uruchomione_dla_zbiorow <- same_mln
 
-# rscript --vanilla script.r covid.csv output-seq.txt km_seq.jpg cph_seq.jpg output_seq , ramka_seq.rds "offset, survival" "intubated" "sex + age + finding + survival + intubated + intubation_present + went_icu + in_icu + needed_supplemental_O2 + extubated + temperature + pO2_saturation + leukocyte_count + neutrophil_count + lymphocyte_count + view + modality" T
+watki <- c(11, 12)
 
-watki <- c(3, 6)
-
-parametry <- same_mln
-suma_iteracji <- length(parametry) * length(watki) * 2
+parametry <- testy_uruchomione_dla_zbiorow
+suma_iteracji <- length(parametry) * length(watki) * 3
 iteracja <- 0
 
 for(slowo in parametry){ # petla z zestawem parametrow wywolujacych
   for(j in watki){ # testowac bedziemy od x do y watkow
-    for(i in 1:2){ # liczba testow dla tej samej liczby watkow
+    for(i in 1:3){ # liczba testow dla tej samej liczby watkow
       iteracja <- iteracja + 1
       liczba_watkow <- j
       polecenie <- paste0(odpalenie_java, slowo,liczba_watkow,'"')
