@@ -36,16 +36,16 @@ pbc <- '"input\\pbc.csv" "time, status" "trt + age + sex + ascites + hepato + sp
 pbc2 <- '"input\\pbc-mln.csv" "time, status" "trt + age + sex + ascites + hepato + spiders + edema + bili + chol + albumin + copper + alk.phos + ast + trig + platelet + protime + stage" "'
 
 
-# same_male <- c(work1, prost1, colorectal1, work_edw, ret, lungs, colon, flchain, gbsg, kidney, mgus, myeloid,
-#                nafld1, nwtco, pbc)
+same_male <- c(work1, prost1, colorectal1, work_edw, ret, lungs, colon, flchain, gbsg, kidney, mgus, myeloid,
+               nafld1, nwtco, pbc)
 same_mln <- c(work2, work3, prost2, prost3, colorectal2, work_edw2, ret2, lungs2, colon2, flchain2, gbsg2,
 kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
 
 # testy_uruchomione_dla_zbiorow <- c(kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2) # mniejsza wersja bo przerwalo testy w trakcie
 
-testy_uruchomione_dla_zbiorow <- same_mln
+testy_uruchomione_dla_zbiorow <- same_male
 
-watki <- c(11, 12)
+watki <- c(3:10)
 
 parametry <- testy_uruchomione_dla_zbiorow
 suma_iteracji <- length(parametry) * length(watki) * 3
