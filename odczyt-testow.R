@@ -24,13 +24,26 @@ colnames(df_wyniki) <- c("input","wiersze","watki","seq","par","risk", "surv", "
 # zapis do pliku podstawowej wersji ramki
 write.csv(df_wyniki, ".//pogrupowany-wynik-testow.csv", row.names = F, quote = F)
 
+
+
 # dalej przerabiam dane zeby wrzucic je do tabeli latex
-nrow(df_wyniki)
+# nrow(df_wyniki)
+group_by(df_wyniki, input) %>% summarise(n = n())
+tail(df_wyniki,50)
 # wyrzucam niepotrzebne fragmenty inputu, zeby nie zajmowac miejsca w tabelce w latex
-df_wyniki$input <- gsub('-mln.csv','',df_wyniki$input)
-df_wyniki$input <- gsub('-cancer','',df_wyniki$input)
-df_wyniki$input <- gsub('\\_mln.csv','',df_wyniki$input)
-head(df_wyniki)
+df_wyniki$input <- gsub('-mln.csv','',df_wyniki$input) # zamiana w kazdym zbiorze np flchain-mln.csv na flchain
+df_wyniki$input <- gsub('_mln.csv','',df_wyniki$input) # zamiana w kazdym zbiorze np flchain-mln.csv na flchain
+df_wyniki$input <- gsub('turnover-mln-0-8.csv','turn1',df_wyniki$input) # zamiana turnover-mln-0-8.csv na turnover-1
+df_wyniki$input <- gsub('turnover-mln-7.csv','turn2',df_wyniki$input) # zamiana turnover-mln-0-8.csv na turnover-2
+df_wyniki$input <- gsub('turnover-edward','turn-edw',df_wyniki$input) # zamiana turnover-mln-7.csv na turnover-2
+df_wyniki$input <- gsub('colorectal-cancer','colorec',df_wyniki$input) # zamiana colorectal-canver na colorec
+df_wyniki$input <- gsub('prost_cancer_gen','pro_gen',df_wyniki$input) # zamiana prost_cancer_gen_mln na prost_cancer_gen
+df_wyniki$input <- gsub('prostate_cancer','pro',df_wyniki$input) # zamiana prostate_cancer na pro
+df_wyniki$input <- gsub('retinopatia','ret',df_wyniki$input) # zamiana prostate_cancer na pro
+
+
+
+
 
 #zamieniam kolejnosc kolumn
 df_wyniki <- df_wyniki[c("input","wiersze","watki","testy","seq","par","par_better","risk","surv","lower","upper")]
@@ -40,7 +53,8 @@ df_bledy <- df_wyniki[c("input","wiersze","watki","testy","risk","surv","lower",
 
 library(xtable)
 # print(xtable(df_czas, type = "latex"), file = "testy-czas-latex.tex")
-print(xtable(df_czas, type = "latex", tabular.environment="longtable"), file = "testy-czas-latex.tex")
+print(xtable(df_czas, type = "latex", tabular.environment="longtable"), file = "testy-czas-latex.tex", hline.after=1:nrow(df_czas))
+print(xtable(df_wyniki, type = "latex", tabular.environment="longtable"), file = "testy-calosc-latex.tex", hline.after=1:nrow(df_wyniki), include.rownames=FALSE)
 
 write.csv(df_bledy, ".//pogrupowany-wynik-bledy.csv", row.names = F, quote = F)
 write.csv(df_czas, ".//pogrupowany-wynik-czas.csv", row.names = F, quote = F)
