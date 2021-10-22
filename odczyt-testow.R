@@ -28,8 +28,8 @@ write.csv(df_wyniki, ".//pogrupowany-wynik-testow.csv", row.names = F, quote = F
 
 # dalej przerabiam dane zeby wrzucic je do tabeli latex
 # nrow(df_wyniki)
-group_by(df_wyniki, input) %>% summarise(n = n())
-tail(df_wyniki,50)
+# group_by(df_wyniki, input) %>% summarise(n = n())
+# tail(df_wyniki,50)
 # wyrzucam niepotrzebne fragmenty inputu, zeby nie zajmowac miejsca w tabelce w latex
 df_wyniki$input <- gsub('-mln.csv','',df_wyniki$input) # zamiana w kazdym zbiorze np flchain-mln.csv na flchain
 df_wyniki$input <- gsub('_mln.csv','',df_wyniki$input) # zamiana w kazdym zbiorze np flchain-mln.csv na flchain

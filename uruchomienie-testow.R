@@ -43,7 +43,7 @@ kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
 
 # testy_uruchomione_dla_zbiorow <- c(kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2) # mniejsza wersja bo przerwalo testy w trakcie
 
-testy_uruchomione_dla_zbiorow <- same_male
+testy_uruchomione_dla_zbiorow <- c(mgus, myeloid,nafld1, nwtco, pbc)
 
 watki <- c(3:10)
 
