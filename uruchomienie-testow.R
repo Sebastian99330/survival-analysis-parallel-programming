@@ -43,17 +43,17 @@ kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2)
 
 # testy_uruchomione_dla_zbiorow <- c(kidney2, mgus2, myeloid2, nafld1_2, nwtco2, pbc2) # mniejsza wersja bo przerwalo testy w trakcie
 
-testy_uruchomione_dla_zbiorow <- c(mgus, myeloid,nafld1, nwtco, pbc)
+testy_uruchomione_dla_zbiorow <- same_male
 
 watki <- c(3:10)
 
 parametry <- testy_uruchomione_dla_zbiorow
-suma_iteracji <- length(parametry) * length(watki) * 6
+suma_iteracji <- length(parametry) * length(watki) * 2
 iteracja <- 0
 
 for(slowo in parametry){ # petla z zestawem parametrow wywolujacych
   for(j in watki){ # testowac bedziemy od x do y watkow
-    for(i in 1:6){ # liczba testow dla tej samej liczby watkow
+    for(i in 1:2){ # liczba testow dla tej samej liczby watkow
       iteracja <- iteracja + 1
       liczba_watkow <- j
       polecenie <- paste0(odpalenie_java, slowo,liczba_watkow,'"')

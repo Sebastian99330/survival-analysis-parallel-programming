@@ -21,8 +21,14 @@ df_wyniki$par_better_seq <- paste0(as.character(seq_par_stosunek),"x")
 # zmiana nazw kolumn na dobre dla docelowego pliku
 colnames(df_wyniki) <- c("input","wiersze","watki","seq","par","risk", "surv", "lower","upper","testy", "par_better")
 
+# Usuniecie katalogu na output
+unlink( "output//statystyki", recursive = TRUE)
+# utworzenie katalogu na output
+dir.create( "output//statystyki", showWarnings = FALSE)
+
+
 # zapis do pliku podstawowej wersji ramki
-write.csv(df_wyniki, ".//pogrupowany-wynik-testow.csv", row.names = F, quote = F)
+write.csv(df_wyniki, "output//statystyki//pogrupowany-wynik-testow.csv", row.names = F, quote = F)
 
 
 
@@ -47,17 +53,19 @@ df_wyniki$input <- gsub('retinopatia','ret',df_wyniki$input) # zamiana prostate_
 
 #zamieniam kolejnosc kolumn
 df_wyniki <- df_wyniki[c("input","wiersze","watki","testy","seq","par","par_better","risk","surv","lower","upper")]
-df_czas <- df_wyniki[c("input","wiersze","watki","testy","seq","par","par_better")]
-# head(df_czas)
-df_bledy <- df_wyniki[c("input","wiersze","watki","testy","risk","surv","lower","upper")]
+
+
+# dziele dataframe na 4 czesci
+df_wyniki1 <- df_wyniki[c(1:38),]
+df_wyniki2 <- df_wyniki[c(39:75),]
+df_wyniki3 <- df_wyniki[c(76:98),]
+df_wyniki4 <- df_wyniki[c(99:114),]
 
 library(xtable)
-# print(xtable(df_czas, type = "latex"), file = "testy-czas-latex.tex")
-print(xtable(df_czas, type = "latex", tabular.environment="longtable"), file = "testy-czas-latex.tex", hline.after=1:nrow(df_czas))
-print(xtable(df_wyniki, type = "latex", tabular.environment="longtable"), file = "testy-calosc-latex.tex", hline.after=1:nrow(df_wyniki), include.rownames=FALSE)
-
-write.csv(df_bledy, ".//pogrupowany-wynik-bledy.csv", row.names = F, quote = F)
-write.csv(df_czas, ".//pogrupowany-wynik-czas.csv", row.names = F, quote = F)
+print(xtable(df_wyniki1, type = "latex", tabular.environment="longtable"), file = "output//statystyki//testy-latex-1.tex", hline.after=1:nrow(df_wyniki1), include.rownames=FALSE)
+print(xtable(df_wyniki2, type = "latex", tabular.environment="longtable"), file = "output//statystyki//testy-latex-2.tex", hline.after=1:nrow(df_wyniki2), include.rownames=FALSE)
+print(xtable(df_wyniki3, type = "latex", tabular.environment="longtable"), file = "output//statystyki//testy-latex-3.tex", hline.after=1:nrow(df_wyniki3), include.rownames=FALSE)
+print(xtable(df_wyniki4, type = "latex", tabular.environment="longtable"), file = "output//statystyki//testy-latex-4.tex", hline.after=1:nrow(df_wyniki4), include.rownames=FALSE)
 
 # head(df)
 # obliczenie sredniej bez grupowania - srednia ze wszystkich testow
@@ -70,5 +78,5 @@ df_calkowita_srednia <- df %>%
 # otrzymujemy przyspieszenie - ile razy jest szybciej?
 seq_par_stosunek_calk <- round((df_calkowita_srednia$seq / df_calkowita_srednia$par),2)
 df_calkowita_srednia$par_better <- paste0(as.character(seq_par_stosunek_calk),"x")
-write.csv(df_calkowita_srednia, ".//srednia-ze-wszystkich-testow.csv", row.names = F, quote = F)
+write.csv(df_calkowita_srednia, "output//statystyki//srednia-ze-wszystkich-testow.csv", row.names = F, quote = F)
 
