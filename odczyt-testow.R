@@ -46,6 +46,7 @@ df_wyniki$input <- gsub('colorectal-cancer','colorec',df_wyniki$input) # zamiana
 df_wyniki$input <- gsub('prost_cancer_gen','pro_gen',df_wyniki$input) # zamiana prost_cancer_gen_mln na prost_cancer_gen
 df_wyniki$input <- gsub('prostate_cancer','pro',df_wyniki$input) # zamiana prostate_cancer na pro
 df_wyniki$input <- gsub('retinopatia','ret',df_wyniki$input) # zamiana prostate_cancer na pro
+df_wyniki$input <- gsub('.csv','',df_wyniki$input) # zamiana dla zbiorow gdzie nie bylo -mln i _mln
 
 
 
