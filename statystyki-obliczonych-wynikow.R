@@ -1,3 +1,9 @@
+####
+# Ten skrypt nie wchodzi w zakres dzia³ania programu wykonuj¹cego obliczenia, 
+# jest jedynie skryptem pomocniczym, który s³u¿y do analizy wyników testów 
+# np. liczenia œredniej, odchylenia standardowego itd.
+####
+
 df <- read.table("statystyki.csv", sep = "," , header = T)
 df <- df[,c("liczba_wierszy","liczba_watkow","czas_seq","czas_par","par_lepsze_niz_seq","nazwa_inputu","n_risk","survival","lower","upper")] #zamieniam kolejnosc kolumn
 
@@ -75,6 +81,28 @@ min(df_testowa$upper)
 max(df_testowa$upper)
 mean(df_testowa$upper)
 sd(df_testowa$upper)
+
+# teraz chce policzyæ przyspieszenie dla ka¿dej grupy
+par_better_pogrupowane <- df_wyniki
+par_better_pogrupowane$par_better <- gsub('x', '', par_better_pogrupowane$par_better)
+par_better_pogrupowane$par_better <- as.numeric(par_better_pogrupowane$par_better)
+
+nrow(par_better_pogrupowane)
+head(par_better_pogrupowane)
+par_better_pogrupowane <- par_better_pogrupowane[par_better_pogrupowane[,"watki"]>=7,]
+
+
+
+par_better_pogrupowane <- par_better_pogrupowane %>% group_by(input) %>%
+                            summarise(par_better = round(mean(par_better, na.rm=TRUE),2)
+                                      ) %>%
+                            data.frame()
+  
+print(xtable(par_better_pogrupowane, type = "latex", tabular.environment="longtable"), file = "output//statystyki//wyniki-kazdego-zbioru.tex", hline.after=1:nrow(par_better_pogrupowane), include.rownames=T)
+
+range(par_better_pogrupowane$par_better)
+mean(par_better_pogrupowane$par_better)
+sd(par_better_pogrupowane$par_better)
 
 
 # dziele dataframe na 4 czesci
