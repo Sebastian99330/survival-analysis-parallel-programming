@@ -1,11 +1,19 @@
 ####
-# Ten skrypt nie wchodzi w zakres dzia³ania programu wykonuj¹cego obliczenia, 
-# jest jedynie skryptem pomocniczym, który s³u¿y do analizy wyników testów 
-# np. liczenia œredniej, odchylenia standardowego itd.
+# Ten skrypt nie wchodzi stricte w zakres pracy magisterskiej,
+# nie wp³ywa te¿ w ogóle na program który stanowi czesc praktyczna/informatyczna pracy magisterskiej
+# i nie jest przez ten program wywolywany.
+# Ten skrypt jest pomocniczy i sluzy s³u¿y do analizy wyników testów 
+# np. liczenia œredniej, odchylenia standardowego itd potrzebnego do opisania wynikow w cz. teoretycznej pracy
 ####
 
 df <- read.table("statystyki.csv", sep = "," , header = T)
 df <- df[,c("liczba_wierszy","liczba_watkow","czas_seq","czas_par","par_lepsze_niz_seq","nazwa_inputu","n_risk","survival","lower","upper")] #zamieniam kolejnosc kolumn
+
+min_max_pojedynczych_testow <- df
+min_max_pojedynczych_testow$par_lepsze_niz_seq <- gsub('x', '', min_max_pojedynczych_testow$par_lepsze_niz_seq)
+min_max_pojedynczych_testow$par_lepsze_niz_seq <- as.numeric(min_max_pojedynczych_testow$par_lepsze_niz_seq)
+min(min_max_pojedynczych_testow$par_lepsze_niz_seq)
+max(min_max_pojedynczych_testow$par_lepsze_niz_seq)
 
 library(dplyr)
 df_wyniki <- df %>%
@@ -111,6 +119,7 @@ df_wyniki2 <- df_wyniki[c(39:75),]
 df_wyniki3 <- df_wyniki[c(76:98),]
 df_wyniki4 <- df_wyniki[c(99:114),]
 
+# wypisanie tabel do latexa
 library(xtable)
 print(xtable(df_wyniki1, type = "latex", tabular.environment="longtable"), file = "output//statystyki//testy-latex-1.tex", hline.after=1:nrow(df_wyniki1), include.rownames=FALSE)
 print(xtable(df_wyniki2, type = "latex", tabular.environment="longtable"), file = "output//statystyki//testy-latex-2.tex", hline.after=1:nrow(df_wyniki2), include.rownames=FALSE)
