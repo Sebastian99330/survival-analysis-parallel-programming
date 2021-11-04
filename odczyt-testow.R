@@ -23,15 +23,3 @@ df_wyniki$par_better_seq <- paste0(as.character(seq_par_stosunek),"x")
 df_wyniki <- df_wyniki[,c("nazwa_inputu","liczba_wierszy","liczba_watkow","liczba_testow","czas_seq","czas_par","par_better_seq","n_risk","survival","lower","upper")]
 
 write.csv(df_wyniki, ".//pogrupowany-wynik-testow.csv", row.names = F)
-
-# obliczenie sredniej bez grupowania - srednia ze wszystkich testow
-df_calkowita_srednia <- df %>%
-  summarise(czas_seq = round(mean(czas_seq, na.rm=TRUE),4), 
-            czas_par = round(mean(czas_par, na.rm=TRUE),4)
-  ) %>%
-  data.frame()
-
-# otrzymujemy przyspieszenie - ile razy jest szybciej?
-seq_par_stosunek_calk <- round((df_calkowita_srednia$czas_seq / df_calkowita_srednia$czas_par),2)
-df_calkowita_srednia$par_better_seq <- paste0(as.character(seq_par_stosunek_calk),"x")
-write.csv(df_calkowita_srednia, ".//srednia-ze-wszystkich-testow.csv", row.names = F)

@@ -65,7 +65,6 @@ for (i in 1:length(lista_ramek)){
 # ------------------ koniec: Laczenie kolumny time ------------------ #
 
 # ------------------ Wypelniamy NA wartosciami z nast. wierszy ------------------ #
-
 # iterujemy po liscie z data frame czastkowych zbiorow
 for (i in 1:length(lista_ramek)){
   # jak juz jestesmy w pierwszej petli na pojedynczym data frame,
